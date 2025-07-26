@@ -1,0 +1,15 @@
+- name: silk shirt
+  cost: 100
+  bonus_magic_defense: 2
+  bonus_initiative: -1
+
+- name: combat tunic
+  cost: 150
+  bonus_defense: 1
+  bonus_magic_defense: 1
+
+- name: brigandine
+  cost: 150
+  martial: true
+  defense: 10
+  bonus_initiative: -1

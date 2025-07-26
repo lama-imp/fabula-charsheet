@@ -1,0 +1,55 @@
+- name: iron knuckle
+  cost: 150
+  martial: false
+  grip_type: one_handed
+  range: melee
+  weapon_category: brawling
+  accuracy:
+    - dexterity
+    - might
+  bonus_damage: 6
+
+- name: pistol
+  cost: 250
+  martial: true
+  grip_type: one_handed
+  range: ranged
+  weapon_category: firearm
+  accuracy:
+    - dexterity
+    - insight
+  bonus_damage: 8
+
+- name: staff
+  cost: 100
+  martial: false
+  grip_type: two_handed
+  range: melee
+  weapon_category: arcane
+  accuracy:
+    - willpower
+    - willpower
+  bonus_damage: 6
+
+- name: tome
+  cost: 100
+  martial: false
+  grip_type: two_handed
+  range: melee
+  weapon_category: arcane
+  accuracy:
+    - insight
+    - insight
+  bonus_damage: 6
+
+- name: katana
+  cost: 200
+  martial: true
+  grip_type: two_handed
+  range: melee
+  weapon_category: sword
+  accuracy:
+    - dexterity
+    - insight
+  bonus_damage: 10
+  bonus_accuracy: 1
