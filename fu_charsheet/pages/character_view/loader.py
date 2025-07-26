@@ -1,8 +1,7 @@
 import streamlit as st
 
-from data import compendium as c
 from data import saved_characters as s
-from pages.character_creation.controller import CharacterController
+from pages.controller import CharacterController
 from pages.character_view.utils import set_view_state, get_avatar_path
 from pages.character_view.view_state import ViewState
 

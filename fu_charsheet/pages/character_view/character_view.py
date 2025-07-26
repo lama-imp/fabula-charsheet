@@ -2,7 +2,7 @@ import streamlit as st
 
 from . import loader, view
 from .view_state import ViewState
-from pages.character_creation.controller import CharacterController
+from pages.controller import CharacterController
 
 
 title = "Load a character"

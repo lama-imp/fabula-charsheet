@@ -1,9 +1,9 @@
 import streamlit as st
 
+from data.models import Dexterity, Might, Insight, Willpower
 from .creation_state import CreationState
 from .utils import set_creation_state
-from .controller import CharacterController, ClassController
-from data.models.character_config import ClassName, ClassBonus, Ritual, Skill, Dexterity, Might, Insight, Willpower
+from pages.controller import CharacterController
 
 
 attributes_message = """Each of a Player Character’s main Attributes (**Dexterity**, **Insight**, **Might**, and **Willpower**) is represented by a die size, from a minimum of **d6** to a maximum of **d12**.

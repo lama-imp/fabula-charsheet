@@ -6,9 +6,9 @@ from typing import Optional
 import streamlit as st
 from pydantic import BaseModel
 
-from data.models.character_config import Skill, Spell, Weapon, Armor, AttributeName, CharClass, Character, Shield, \
+from data.models import Skill, Spell, Weapon, Armor, AttributeName, CharClass, Character, Shield, \
     Accessory, Therioform
-from .controller import ClassController
+from pages.controller import ClassController
 from .creation_state import CreationState
 
 

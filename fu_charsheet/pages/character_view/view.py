@@ -1,10 +1,9 @@
 import streamlit as st
 
-from data import compendium as c
-from data.models.character_config import CharState, Status, AttributeName, Weapon, GripType, WeaponCategory, \
+from data.models import CharState, Status, AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, Attribute, \
     Skill
-from pages.character_creation.controller import CharacterController, StateController
+from pages.controller import CharacterController, StateController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter
 from pages.character_view.utils import set_view_state, get_avatar_path

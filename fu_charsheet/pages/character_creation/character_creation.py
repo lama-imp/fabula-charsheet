@@ -1,11 +1,8 @@
-import json
-
 import streamlit as st
 
-from data.models import Character
 from . import identity, classes, attributes, equipment, preview
 from .creation_state import CreationState
-from .controller import CharacterController
+from pages.controller import CharacterController
 
 
 title = "Create a character"

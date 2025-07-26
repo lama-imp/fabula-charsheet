@@ -3,8 +3,7 @@ import streamlit as st
 from pages.character_creation.creation_state import CreationState
 from pages.character_creation.utils import set_creation_state, SkillTableWriter, if_show_spells, SpellTableWriter, \
     list_skills, show_martial
-from pages.character_creation.controller import CharacterController, ClassController
-from data.models.character_config import ClassName, Skill, Spell
+from pages.controller import CharacterController, ClassController
 from data import compendium as c
 
 

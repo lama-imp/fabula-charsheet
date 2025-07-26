@@ -4,9 +4,8 @@ import streamlit as st
 
 from .creation_state import CreationState
 from .utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial
-from .controller import CharacterController, ClassController
-from data.models.character_config import ClassName, ClassBonus, Ritual, Skill, Dexterity, Might, Insight, Willpower, \
-    Inventory
+from pages.controller import CharacterController
+from data.models import Inventory
 from data import compendium as c
 
 equipment_message = """You get a total budget of 500 zenit to purchase equipment with. By default, you can only purchase basic weapons and basic armor and shields; these items are listed on the next four pages for easy reference. If you want to purchase rare items (page 266) or transports (page 125), discuss it with the rest of your group.

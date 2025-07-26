@@ -4,7 +4,7 @@ from pathlib import Path
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from data.models.character_config import Character, CharClass, ClassBonus, Ritual, Skill, ClassName, Spell, Accessory, \
+from data.models import Character, CharClass, ClassBonus, Ritual, Skill, ClassName, Spell, Accessory, \
     Shield, Weapon, Armor, Item, CharState, Status, AttributeName
 
 

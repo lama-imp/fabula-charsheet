@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
-from data.models.character_config import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield
+from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield
 
 COMPENDIUM: Compendium | None = None
 
@@ -102,5 +102,5 @@ def init(assets_directory: Path) -> None:
 
 
 if __name__ == "__main__":
-    init(Path("/Users/macbook/Imp/fu_charsheet/fu_charsheet/assets"))
+    init(Path("fu_charsheet/assets"))
     print(COMPENDIUM)
