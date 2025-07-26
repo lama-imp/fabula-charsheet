@@ -9,3 +9,6 @@ dependencies = [
     "pyyaml>=6.0.2",
     "streamlit>=1.47.0",
 ]
+
+[project.scripts]
+fabula_charsheet = "fabula_charsheet.main:main"

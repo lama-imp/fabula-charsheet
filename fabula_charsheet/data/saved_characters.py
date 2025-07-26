@@ -34,5 +34,5 @@ def init(saved_chars_directory: Path) -> None:
 
 
 if __name__ == "__main__":
-    init(Path("fu_charsheet/characters"))
+    init(Path("fabula_charsheet/characters"))
     print(SAVED_CHARS)
