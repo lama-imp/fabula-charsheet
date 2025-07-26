@@ -12,3 +12,9 @@ wheels/
 .idea/
 .python-version
 .DS_Store
+
+# Character files and images
+fu_charsheet/characters/*.yaml
+fu_charsheet/characters/character_images/*.jpg
+fu_charsheet/characters/character_images/*.jpeg
+fu_charsheet/characters/character_images/*.png
