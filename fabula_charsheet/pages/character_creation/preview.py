@@ -126,7 +126,7 @@ def equip_item(controller, item: Item):
     try:
         controller.equip_item(item)
     except Exception as e:
-        st.warning(e)
+        st.warning(e, icon="🙅‍♂️")
 
 
 def unequip_item(controller, category: str):

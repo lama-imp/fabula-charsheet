@@ -12,8 +12,8 @@ pages = []
 
 
 for page in (
-        character_creation,
         character_view,
+        character_creation,
 ):
     build_error = lambda: None
 

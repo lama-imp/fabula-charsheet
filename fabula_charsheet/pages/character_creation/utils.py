@@ -221,7 +221,7 @@ class WeaponTableWriter(TableWriter):
             try:
                 st.session_state.char_controller.equip_item(item)
             except Exception as e:
-                st.warning(e)
+                st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 
@@ -311,7 +311,7 @@ class ArmorTableWriter(TableWriter):
             try:
                 st.session_state.char_controller.equip_item(item)
             except Exception as e:
-                st.warning(e)
+                st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 class ShieldTableWriter(TableWriter):
@@ -391,7 +391,7 @@ class ShieldTableWriter(TableWriter):
             try:
                 st.session_state.char_controller.equip_item(item)
             except Exception as e:
-                st.warning(e)
+                st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 
@@ -431,7 +431,7 @@ class AccessoryTableWriter(TableWriter):
             try:
                 st.session_state.char_controller.equip_item(item)
             except Exception as e:
-                st.warning(e)
+                st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 

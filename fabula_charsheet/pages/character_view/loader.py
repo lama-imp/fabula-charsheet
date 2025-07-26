@@ -9,7 +9,7 @@ st.set_page_config(layout="centered")
 
 def build(controller: CharacterController):
     st.title("Load a character")
-    if s.SAVED_CHARS:
+    if s.SAVED_CHARS.char_list:
         for char in s.SAVED_CHARS.char_list:
             col1, col2, col3 = st.columns(3)
             with col1:
@@ -26,5 +26,5 @@ def build(controller: CharacterController):
                     set_view_state(ViewState.view)
             st.divider()
     else:
-        st.write("No saved characters. Start with creating a character.")
+        st.info("No saved characters. Start with creating a character.", icon="👻")
 

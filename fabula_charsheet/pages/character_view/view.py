@@ -76,7 +76,7 @@ def add_chimerist_spell(controller: CharacterController):
             st.rerun()
         except Exception as e:
             st.error(e)
-            st.warning("Error adding a spell. Maybe some fields are empty?")
+            st.warning("Error adding a spell. Maybe some fields are empty?", icon="🪬")
 
 
 @st.dialog("Remove a Chimerist spell")
@@ -172,7 +172,7 @@ def add_item(controller: CharacterController):
             st.rerun()
         except Exception as e:
             st.error(e)
-            st.warning("Error adding an item. Maybe some fields are empty?")
+            st.warning("Error adding an item. Maybe some fields are empty?", icon="🪨")
 
 
 @st.dialog("Remove an item")
@@ -610,4 +610,4 @@ def unequip_item(controller, category: str):
     try:
         controller.unequip_item(category)
     except Exception as e:
-        st.warning(e)
+        st.warning(e, icon="💢")
