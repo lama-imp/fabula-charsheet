@@ -12,7 +12,7 @@ def set_view_state(state: ViewState):
 
 
 def get_avatar_path(char_name: str) -> Path | None:
-    temp_char_img_dir = Path("/Users/macbook/Imp/fabula_charsheet/fabula_charsheet/characters/character_images").resolve(
+    temp_char_img_dir = Path("./fabula_charsheet/characters/character_images").resolve(
         strict=True)
     char_name = char_name.lower().replace(' ', '_')
     for ext in ("jpg", "jpeg", "png"):
