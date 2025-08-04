@@ -20,7 +20,7 @@ Choose one of the following profiles for your hero, then distribute the correspo
 - **Specialized**: d10, d10, d6, d6
 """
 
-def build(view_model: CharacterController):
+def build(controller: CharacterController):
     st.title("Character attributes")
     st.markdown(attributes_message)
     dexterity = st.select_slider(
@@ -47,10 +47,10 @@ def build(view_model: CharacterController):
     if not_ready_for_the_next_step:
         st.error("Sum of your attributes should be equal to 32.", icon="🎲")
     try:
-        view_model.character.dexterity = Dexterity(base=dexterity, current=dexterity)
-        view_model.character.might = Might(base=might, current=might)
-        view_model.character.insight = Insight(base=insight, current=insight)
-        view_model.character.willpower = Willpower(base=willpower, current=willpower)
+        controller.character.dexterity = Dexterity(base=dexterity, current=dexterity)
+        controller.character.might = Might(base=might, current=might)
+        controller.character.insight = Insight(base=insight, current=insight)
+        controller.character.willpower = Willpower(base=willpower, current=willpower)
     except Exception as e:
         st.error(e, icon="🚨")
 

@@ -1,8 +1,14 @@
 import streamlit as st
 
 from pages.character_creation.creation_state import CreationState
-from pages.character_creation.utils import set_creation_state, SkillTableWriter, if_show_spells, SpellTableWriter, \
-    list_skills, show_martial
+from pages.character_creation.utils import (
+    set_creation_state,
+    SkillTableWriter,
+    if_show_spells,
+    SpellTableWriter,
+    list_skills,
+    show_martial,
+)
 from pages.controller import CharacterController, ClassController
 from data import compendium as c
 
@@ -14,7 +20,7 @@ def add_new_class(character_controller: CharacterController, class_controller: C
     class_not_ready = True
     selected_class_name = st.selectbox(
         "New class",
-        [str(char_class.name).title() for char_class in c.COMPENDIUM.classes.classes],
+        [str(char_class.name).title() for char_class in sorted(c.COMPENDIUM.classes.classes, key=lambda x: x.name)],
         index=None,
         placeholder="Select a class",
         accept_new_options=False,
@@ -42,13 +48,13 @@ def add_new_class(character_controller: CharacterController, class_controller: C
             with st.expander("Choose skills"):
                 SkillTableWriter().write_in_columns(selected_class.skills)
 
-            can_add_skill_number: int = character_controller.can_add_skill_number() - class_controller.char_class.class_level()
+            can_add_skill_number = character_controller.can_add_skill_number()
 
             if class_controller.char_class.class_level() < 1:
                 class_not_ready = True
                 st.error("You need to select at least one skill to add this class.")
             elif can_add_skill_number < 0:
-                st.error(f"Remove {(abs(can_add_skill_number))} level(s) from your skills.")
+                st.error(f"Remove {(abs(can_add_skill_number  - class_controller.char_class.class_level()))} level(s) from your skills.")
                 class_not_ready = True
             else:
                 list_skills(class_controller, can_add_skill_number)
@@ -67,19 +73,25 @@ def add_new_class(character_controller: CharacterController, class_controller: C
                 else:
                     class_not_ready = False
 
-
-            # try:
-            #
-            #     class_not_ready = False
-            # except Exception as e:
-            #     st.error(e, icon="🚨")
-
     if st.button("Add this class", disabled=class_not_ready):
         character_controller.add_class(class_controller.char_class)
         character_controller.character.spells[selected_class_name] = st.session_state.class_spells
         st.session_state.class_spells = []
         st.info(f"Added {selected_class} to your character.")
         st.rerun()
+
+
+@st.dialog("Remove a class", width="large")
+@st.fragment
+def remove_class(character_controller: CharacterController):
+    for char_class in character_controller.character.classes:
+        c1, c2 = st.columns(2)
+        with c1:
+            st.write(char_class.name.title())
+        with c2:
+            if st.button("Remove this class", key=f"{char_class.name}-remove"):
+                character_controller.character.classes.remove(char_class)
+                st.rerun()
 
 
 def build(character_controller: CharacterController):
@@ -90,8 +102,15 @@ def build(character_controller: CharacterController):
     current_classes = character_controller.get_character().classes
     st.write(f"Your character has {len(current_classes)} following classes: {', '.join([c.name.title() for c in current_classes])}")
     st.write(f"You added {character_controller.get_character().get_n_skill()} skills from {character_controller.get_character().level} available.")
-    if st.button("Add a class", disabled=character_controller.has_enough_skills()):
-        add_new_class(character_controller, st.session_state.class_controller)
+    col_1, col_2 = st.columns(2)
+    with col_1:
+        if st.button("Add a class", disabled=character_controller.has_enough_skills()):
+            add_new_class(character_controller, st.session_state.class_controller)
+    with col_2:
+        if st.button("Remove a class", disabled=not character_controller.character.classes):
+            remove_class(character_controller)
 
+    if not_ready_for_the_next_step:
+        st.warning(f"You need to put {character_controller.can_add_skill_number()} more points into skills.", icon="🎯")
     if st.button("Next", disabled=not_ready_for_the_next_step):
         set_creation_state(CreationState.attributes)

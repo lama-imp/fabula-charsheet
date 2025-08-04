@@ -6,8 +6,19 @@ from typing import Optional
 import streamlit as st
 from pydantic import BaseModel
 
-from data.models import Skill, Spell, Weapon, Armor, AttributeName, CharClass, Character, Shield, \
-    Accessory, Therioform, Item
+from data.models import (
+    Skill,
+    Spell,
+    Weapon,
+    Armor,
+    AttributeName,
+    CharClass,
+    Character,
+    Shield,
+    Accessory,
+    Therioform,
+    Item,
+)
 from pages.controller import ClassController
 from .creation_state import CreationState
 
@@ -74,11 +85,20 @@ class SkillTableWriter(TableWriter):
     @staticmethod
     def _level_input(skill: Skill):
         if skill.max_level > 1:
-            level = st.slider("level", min_value=0, max_value=skill.max_level,
+            level = st.slider("level",
+                              min_value=0,
+                              max_value=skill.max_level,
+                              value=skill.current_level,
                               key=f"{skill.name}-slider",
-                              label_visibility="hidden", )
+                              label_visibility="hidden",
+                              )
         else:
-            level = int(st.toggle("level2", label_visibility="hidden", key=f"{skill.name}-toggle"))
+            level = int(st.toggle("level2",
+                                  value=bool(skill.current_level),
+                                  key=f"{skill.name}-toggle",
+                                  label_visibility="hidden",
+                                  )
+                        )
         skill.current_level = level
 
     def _add_description(self, item):
@@ -141,7 +161,11 @@ class SpellTableWriter(TableWriter):
         st.write(spell.duration.title())
 
     def spell_selector(self, spell: Spell):
-        if st.checkbox("add spell", label_visibility="hidden", key=f"{spell.name}-toggle"):
+        if st.checkbox("add spell",
+                       value=(spell in st.session_state.class_spells),
+                       label_visibility="hidden",
+                       key=f"{spell.name}-toggle"
+                       ):
             if spell not in st.session_state.class_spells:
                 st.session_state.class_spells.append(spell)
         else:
@@ -198,7 +222,7 @@ class WeaponTableWriter(TableWriter):
                 if char_class.can_equip_weapon(weapon.range):
                     cannot_equip = False
 
-        if st.button('Add', key=f"{weapon.name}-add", disabled=cannot_equip):
+        if st.button('Add', key=f"{weapon.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < weapon.cost))):
             st.session_state.start_equipment.backpack.weapons.append(deepcopy(weapon))
             st.session_state.start_equipment.zenit -= weapon.cost
         if st.button('Add as', key=f"{weapon.name}-add-as"):
@@ -271,7 +295,7 @@ class ArmorTableWriter(TableWriter):
                 if char_class.martial_armor:
                     cannot_equip = False
 
-        if st.button('Add', key=f"{armor.name}-add", disabled=cannot_equip):
+        if st.button('Add', key=f"{armor.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < armor.cost))):
             st.session_state.start_equipment.backpack.armors.append(deepcopy(armor))
             st.session_state.start_equipment.zenit -= armor.cost
         if st.button('Add as', key=f"{armor.name}-add-as"):
@@ -355,11 +379,11 @@ class ShieldTableWriter(TableWriter):
         if shield.martial:
             cannot_equip = True
             for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_armor:
+                if char_class.martial_shields:
                     cannot_equip = False
 
-        if st.button('Add', key=f"{shield.name}-add", disabled=cannot_equip):
-            st.session_state.start_equipment.backpack.armors.append(deepcopy(shield))
+        if st.button('Add', key=f"{shield.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < shield.cost))):
+            st.session_state.start_equipment.backpack.shields.append(deepcopy(shield))
             st.session_state.start_equipment.zenit -= shield.cost
         if st.button('Add as', key=f"{shield.name}-add-as"):
             add_item_as(shield)
@@ -427,7 +451,6 @@ class AccessoryTableWriter(TableWriter):
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
-
 
 
 class ItemTableWriter(TableWriter):

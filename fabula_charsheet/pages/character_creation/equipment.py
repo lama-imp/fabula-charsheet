@@ -18,10 +18,16 @@ Needless to say, you are free to alter the name of any item that doesn't fit you
 
 def build(controller: CharacterController):
     st.session_state.start_equipment = st.session_state.get("start_equipment", Inventory(zenit=500))
+    st.session_state.additional_zenit = st.session_state.get(
+        "additional_zenit",
+        (random.randint(1, 6) + random.randint(1, 6)) * 10
+    )
     st.title("Purchase equipment")
     st.markdown(equipment_message)
 
     show_martial(controller.character)
+    st.warning("If you want to add several identical items, use `Add as` button to add the 2nd one and change the name (e.g., add `2` to it).",
+               icon="‼️")
 
     base_equipment = c.COMPENDIUM.equipment
     weapons = base_equipment.weapons_by_categories()
@@ -49,10 +55,12 @@ def build(controller: CharacterController):
     with col2:
         st.metric("Your remaining zenit", value=st.session_state.start_equipment.zenit, delta=None, )
 
+    st.info("You will not be able to edit your starting equipment on the next step.", icon="🔱")
+    st.info(f"You start with {st.session_state.start_equipment.zenit} + {st.session_state.additional_zenit} zenit ", icon="💰")
 
     if st.button("Next"):
         controller.character.inventory = st.session_state.start_equipment
         st.session_state.start_equipment = Inventory()
-        controller.character.inventory.zenit += (random.randint(1, 6) + random.randint(1, 6)) * 10
+        controller.character.inventory.zenit += st.session_state.additional_zenit
+        st.session_state.additional_zenit = None
         set_creation_state(CreationState.preview)
-

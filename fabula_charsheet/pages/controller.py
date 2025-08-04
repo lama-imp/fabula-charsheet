@@ -4,8 +4,23 @@ from pathlib import Path
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from data.models import Character, CharClass, ClassBonus, Ritual, Skill, ClassName, Spell, Accessory, \
-    Shield, Weapon, Armor, Item, CharState, Status, AttributeName
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY
+from data.models import (
+    Character,
+    CharClass,
+    Ritual,
+    Skill,
+    ClassName,
+    Spell,
+    Accessory,
+    Shield,
+    Weapon,
+    Armor,
+    Item,
+    CharState,
+    Status,
+    AttributeName,
+)
 
 
 class CharacterController:
@@ -25,6 +40,13 @@ class CharacterController:
     def add_class(self, new_class: CharClass):
         self.character.classes.append(new_class)
 
+    def update_class(self, updated_class: CharClass):
+        for i, existing in enumerate(self.character.classes):
+            if existing.name == updated_class.name:
+                self.character.classes[i] = updated_class
+                return
+        raise ValueError(f"No class with name '{updated_class.name}' found to update.")
+
     def can_add_skill_number(self):
         return self.character.level - self.character.get_n_skill()
 
@@ -36,7 +58,7 @@ class CharacterController:
         elif isinstance(new_class, str):
             class_name = new_class.lower()
         else:
-            raise Exception
+            raise Exception(f"Unexpected type for class: {type(new_class)}")
         return any(c.name == class_name for c in self.character.classes)
 
     def has_skill(self, skill_name: str) -> bool:
@@ -181,8 +203,7 @@ class CharacterController:
 
 
     def dump_character(self):
-        temp_char_dir = Path("./fabula_charsheet/characters").resolve(strict=True)
-        with open(Path(temp_char_dir,
+        with open(Path(SAVED_CHARS_DIRECTORY,
                 f"{self.character.name.lower().replace(' ', '_')}.yaml"),
                 "w") as yaml_file:
             yaml.dump(
@@ -193,10 +214,9 @@ class CharacterController:
                 default_flow_style=False
             )
 
-    def dump_avatar(self, image: UploadedFile):
-        temp_char_img_dir = Path("./fabula_charsheet/characters/character_images").resolve(strict=True)
+    def dump_avatar(self, image: UploadedFile | None ):
         if image is not None:
-            with open(Path(temp_char_img_dir,
+            with open(Path(SAVED_CHARS_IMG_DIRECTORY,
                     f"{self.character.name.lower().replace(' ', '_')}{Path(image.name).suffix}"),
                     'wb') as img_file:
                 img_file.write(image.getbuffer())
@@ -258,8 +278,3 @@ class StateController:
     def remove_status(self, status: Status):
         if status in self.state.statuses:
             self.state.statuses.remove(status)
-
-class SkillViewModel:
-
-    def __init__(self):
-        self.skill = Skill()
