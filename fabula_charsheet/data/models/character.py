@@ -38,7 +38,7 @@ class Character(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
 
     name: str = ""
-    level: int = conint(ge=1, le=60)
+    level: conint(ge=1, le=60) = 5
     identity: str = ""
     theme: str = ""
     origin: str = ""
