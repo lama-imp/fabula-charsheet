@@ -222,7 +222,7 @@ class WeaponTableWriter(TableWriter):
                 if char_class.can_equip_weapon(weapon.range):
                     cannot_equip = False
 
-        if st.button('Add', key=f"{weapon.name}-add", disabled=cannot_equip):
+        if st.button('Add', key=f"{weapon.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < weapon.cost))):
             st.session_state.start_equipment.backpack.weapons.append(deepcopy(weapon))
             st.session_state.start_equipment.zenit -= weapon.cost
         if st.button('Add as', key=f"{weapon.name}-add-as"):
@@ -295,7 +295,7 @@ class ArmorTableWriter(TableWriter):
                 if char_class.martial_armor:
                     cannot_equip = False
 
-        if st.button('Add', key=f"{armor.name}-add", disabled=cannot_equip):
+        if st.button('Add', key=f"{armor.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < armor.cost))):
             st.session_state.start_equipment.backpack.armors.append(deepcopy(armor))
             st.session_state.start_equipment.zenit -= armor.cost
         if st.button('Add as', key=f"{armor.name}-add-as"):
@@ -379,11 +379,11 @@ class ShieldTableWriter(TableWriter):
         if shield.martial:
             cannot_equip = True
             for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_armor:
+                if char_class.martial_shields:
                     cannot_equip = False
 
-        if st.button('Add', key=f"{shield.name}-add", disabled=cannot_equip):
-            st.session_state.start_equipment.backpack.armors.append(deepcopy(shield))
+        if st.button('Add', key=f"{shield.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < shield.cost))):
+            st.session_state.start_equipment.backpack.shields.append(deepcopy(shield))
             st.session_state.start_equipment.zenit -= shield.cost
         if st.button('Add as', key=f"{shield.name}-add-as"):
             add_item_as(shield)
@@ -451,7 +451,6 @@ class AccessoryTableWriter(TableWriter):
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
-
 
 
 class ItemTableWriter(TableWriter):
