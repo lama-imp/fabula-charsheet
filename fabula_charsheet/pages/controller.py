@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY
 from data.models import (
     Character,
     CharClass,
@@ -202,8 +203,7 @@ class CharacterController:
 
 
     def dump_character(self):
-        char_dir = Path("./fabula_charsheet/characters").resolve(strict=True)
-        with open(Path(char_dir,
+        with open(Path(SAVED_CHARS_DIRECTORY,
                 f"{self.character.name.lower().replace(' ', '_')}.yaml"),
                 "w") as yaml_file:
             yaml.dump(
@@ -215,9 +215,8 @@ class CharacterController:
             )
 
     def dump_avatar(self, image: UploadedFile | None ):
-        char_img_dir = Path("./fabula_charsheet/characters/character_images").resolve(strict=True)
         if image is not None:
-            with open(Path(char_img_dir,
+            with open(Path(SAVED_CHARS_IMG_DIRECTORY,
                     f"{self.character.name.lower().replace(' ', '_')}{Path(image.name).suffix}"),
                     'wb') as img_file:
                 img_file.write(image.getbuffer())
@@ -279,8 +278,3 @@ class StateController:
     def remove_status(self, status: Status):
         if status in self.state.statuses:
             self.state.statuses.remove(status)
-
-class SkillViewModel:
-
-    def __init__(self):
-        self.skill = Skill()

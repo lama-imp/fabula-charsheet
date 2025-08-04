@@ -9,6 +9,7 @@ assert ASSETS_DIRECTORY.is_dir(), "Assets directory does not exist"
 SAVED_CHARS_DIRECTORY = Path(PROJECT_ROOT_DIRECTORY, "characters").resolve()
 SAVED_CHARS_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
-Path(SAVED_CHARS_DIRECTORY, "character_images").mkdir(parents=True, exist_ok=True)
+SAVED_CHARS_IMG_DIRECTORY = Path(SAVED_CHARS_DIRECTORY, "character_images").resolve()
+SAVED_CHARS_IMG_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar_2.png")
