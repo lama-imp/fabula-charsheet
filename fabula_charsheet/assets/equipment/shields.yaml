@@ -1,0 +1,13 @@
+- name: bronze shield
+  cost: 100
+  martial: false
+  bonus_defense: 2
+  bonus_magic_defense: 0
+  bonus_initiative: 0
+
+- name: runic shield
+  cost: 150
+  martial: true
+  bonus_defense: 2
+  bonus_magic_defense: 2
+  bonus_initiative: 0

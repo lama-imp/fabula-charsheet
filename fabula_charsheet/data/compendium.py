@@ -16,6 +16,7 @@ COMPENDIUM: Compendium | None = None
 class Equipment:
     weapons: list[Weapon]
     armors: list[Armor]
+    shields: list[Shield]
 
     def weapons_by_categories(self) -> dict[WeaponCategory, list[Weapon]]:
         categories = defaultdict(list)

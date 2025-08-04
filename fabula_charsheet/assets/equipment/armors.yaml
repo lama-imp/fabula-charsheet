@@ -8,8 +8,39 @@
   bonus_defense: 1
   bonus_magic_defense: 1
 
+- name: travel garb
+  cost: 100
+  bonus_defense: 1
+  bonus_magic_defense: 1
+  bonus_initiative: -1
+
+- name: sage robe
+  cost: 200
+  bonus_defense: 1
+  bonus_magic_defense: 2
+  bonus_initiative: -2
+
 - name: brigandine
   cost: 150
   martial: true
   defense: 10
   bonus_initiative: -1
+
+- name: bronze plate
+  cost: 200
+  martial: true
+  defense: 11
+  bonus_initiative: -3
+
+- name: runic plate
+  cost: 250
+  martial: true
+  defense: 11
+  bonus_magic_defense: 1
+  bonus_initiative: -3
+
+- name: steel plate
+  cost: 300
+  martial: true
+  defense: 12
+  bonus_initiative: -4
