@@ -7,7 +7,7 @@ import streamlit as st
 from pydantic import BaseModel
 
 from data.models import Skill, Spell, Weapon, Armor, AttributeName, CharClass, Character, Shield, \
-    Accessory, Therioform
+    Accessory, Therioform, Item
 from pages.controller import ClassController
 from .creation_state import CreationState
 
@@ -201,10 +201,8 @@ class WeaponTableWriter(TableWriter):
         if st.button('Add', key=f"{weapon.name}-add", disabled=cannot_equip):
             st.session_state.start_equipment.backpack.weapons.append(deepcopy(weapon))
             st.session_state.start_equipment.zenit -= weapon.cost
-        if st.button('Remove', key=f"{weapon.name}-remove"):
-            if weapon in st.session_state.start_equipment.backpack.weapons:
-                st.session_state.start_equipment.backpack.weapons.remove(weapon)
-                st.session_state.start_equipment.zenit += weapon.cost
+        if st.button('Add as', key=f"{weapon.name}-add-as"):
+            add_item_as(weapon)
 
     def _equip(self, item: Weapon):
         cannot_equip = False
@@ -276,10 +274,8 @@ class ArmorTableWriter(TableWriter):
         if st.button('Add', key=f"{armor.name}-add", disabled=cannot_equip):
             st.session_state.start_equipment.backpack.armors.append(deepcopy(armor))
             st.session_state.start_equipment.zenit -= armor.cost
-        if st.button('Remove', key=f"{armor.name}-remove"):
-            if armor in st.session_state.start_equipment.backpack.armors:
-                st.session_state.start_equipment.backpack.armors.remove(armor)
-                st.session_state.start_equipment.zenit += armor.cost
+        if st.button('Add as', key=f"{armor.name}-add-as"):
+            add_item_as(armor)
 
     def _write_defense(self, item: Armor):
         def_bonus = f" + {item.bonus_defense}" if item.bonus_defense > 0 else ""
@@ -365,10 +361,8 @@ class ShieldTableWriter(TableWriter):
         if st.button('Add', key=f"{shield.name}-add", disabled=cannot_equip):
             st.session_state.start_equipment.backpack.armors.append(deepcopy(shield))
             st.session_state.start_equipment.zenit -= shield.cost
-        if st.button('Remove', key=f"{shield.name}-remove"):
-            if shield in st.session_state.start_equipment.backpack.armors:
-                st.session_state.start_equipment.backpack.armors.remove(shield)
-                st.session_state.start_equipment.zenit += shield.cost
+        if st.button('Add as', key=f"{shield.name}-add-as"):
+            add_item_as(shield)
 
     def _write_defense(self, item: Shield):
         st.write(f"+{str(item.bonus_defense)}")
@@ -517,3 +511,22 @@ def show_martial(input: CharClass | Character):
         st.write(f"Your character can equip martial {', '.join(martial[m] for m in can_equip)}.")
     else:
         st.write(f"Your character can not equip martial items.")
+
+@st.dialog("Create a new name")
+def add_item_as(item: Item):
+    new_name = st.text_input("Write new name here")
+    if st.button(f"Add this item as {new_name}", disabled= not new_name):
+        item = deepcopy(item)
+        item.name = new_name.lower()
+        if isinstance(item, Armor):
+            st.session_state.start_equipment.backpack.armors.append(item)
+        elif isinstance(item, Weapon):
+            st.session_state.start_equipment.backpack.weapons.append(item)
+        elif isinstance(item, Shield):
+            st.session_state.start_equipment.backpack.shields.append(item)
+        else:
+            st.error("Unknown item type. Cannot add.")
+            return
+        st.toast(f"Added {new_name}")
+        st.session_state.start_equipment.zenit -= item.cost
+        st.rerun()

@@ -11,6 +11,7 @@ class ClassName(StrEnum):
     spiritist =  auto()
     rogue = auto()
     mutant = auto()
+    guardian = auto()
 
 class ClassBonus(StrEnum):
     mp = auto()

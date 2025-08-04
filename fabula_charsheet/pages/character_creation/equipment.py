@@ -3,7 +3,7 @@ import random
 import streamlit as st
 
 from .creation_state import CreationState
-from .utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial
+from .utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial, ShieldTableWriter
 from pages.controller import CharacterController
 from data.models import Inventory
 from data import compendium as c
@@ -32,20 +32,20 @@ def build(controller: CharacterController):
                 WeaponTableWriter().write_in_columns(weapons[category])
     with st.expander("Armor"):
         ArmorTableWriter().write_in_columns(base_equipment.armors)
+    with st.expander("Shields"):
+        ShieldTableWriter().write_in_columns(base_equipment.shields)
 
-    with st.container():
-        if st.session_state.start_equipment.backpack:
+    col1, col2 = st.columns(2, border=True)
+    with col1:
+        if st.session_state.start_equipment.backpack.all_items():
             st.write("You added following items:")
             for item in st.session_state.start_equipment.backpack.all_items():
-                st.write(item.name.title())
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Add selected equipment"):
-            try:
-                controller.character.inventory = st.session_state.start_equipment
-                # st.session_state.start_equipment = Inventory()
-            except Exception as e:
-                st.error(e, icon="🚨")
+                st.write(f"- {item.name.title()}")
+        else:
+            st.write("Select your starting equipment from above.")
+        if st.button("Clear all added items"):
+            st.session_state.start_equipment = Inventory(zenit=500)
+            st.rerun()
     with col2:
         st.metric("Your remaining zenit", value=st.session_state.start_equipment.zenit, delta=None, )
 
