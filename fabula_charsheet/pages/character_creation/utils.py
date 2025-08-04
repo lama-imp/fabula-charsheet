@@ -515,3 +515,5 @@ def show_martial(input: CharClass | Character):
         can_equip = set(chain.from_iterable([x.can_equip_list() for x in input.classes]))
     if can_equip:
         st.write(f"Your character can equip martial {', '.join(martial[m] for m in can_equip)}.")
+    else:
+        st.write(f"Your character can not equip martial items.")

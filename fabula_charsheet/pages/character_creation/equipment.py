@@ -37,13 +37,13 @@ def build(controller: CharacterController):
         if st.session_state.start_equipment.backpack:
             st.write("You added following items:")
             for item in st.session_state.start_equipment.backpack.all_items():
-                st.write(item.name)
+                st.write(item.name.title())
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Add selected equipment"):
             try:
                 controller.character.inventory = st.session_state.start_equipment
-                st.session_state.start_equipment = Inventory()
+                # st.session_state.start_equipment = Inventory()
             except Exception as e:
                 st.error(e, icon="🚨")
     with col2:
