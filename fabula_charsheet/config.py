@@ -11,4 +11,4 @@ SAVED_CHARS_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 Path(SAVED_CHARS_DIRECTORY, "character_images").mkdir(parents=True, exist_ok=True)
 
-default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar.png")
+default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar_2.png")
