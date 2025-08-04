@@ -202,8 +202,8 @@ class CharacterController:
 
 
     def dump_character(self):
-        temp_char_dir = Path("./fabula_charsheet/characters").resolve(strict=True)
-        with open(Path(temp_char_dir,
+        char_dir = Path("./fabula_charsheet/characters").resolve(strict=True)
+        with open(Path(char_dir,
                 f"{self.character.name.lower().replace(' ', '_')}.yaml"),
                 "w") as yaml_file:
             yaml.dump(
@@ -214,10 +214,10 @@ class CharacterController:
                 default_flow_style=False
             )
 
-    def dump_avatar(self, image: UploadedFile):
-        temp_char_img_dir = Path("./fabula_charsheet/characters/character_images").resolve(strict=True)
+    def dump_avatar(self, image: UploadedFile | None ):
+        char_img_dir = Path("./fabula_charsheet/characters/character_images").resolve(strict=True)
         if image is not None:
-            with open(Path(temp_char_img_dir,
+            with open(Path(char_img_dir,
                     f"{self.character.name.lower().replace(' ', '_')}{Path(image.name).suffix}"),
                     'wb') as img_file:
                 img_file.write(image.getbuffer())

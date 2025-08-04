@@ -150,7 +150,11 @@ class SpellTableWriter(TableWriter):
         st.write(spell.duration.title())
 
     def spell_selector(self, spell: Spell):
-        if st.checkbox("add spell", label_visibility="hidden", key=f"{spell.name}-toggle"):
+        if st.checkbox("add spell",
+                       value=(spell in st.session_state.class_spells),
+                       label_visibility="hidden",
+                       key=f"{spell.name}-toggle"
+                       ):
             if spell not in st.session_state.class_spells:
                 st.session_state.class_spells.append(spell)
         else:

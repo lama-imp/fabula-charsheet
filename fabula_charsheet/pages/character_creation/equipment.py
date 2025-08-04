@@ -49,7 +49,7 @@ def build(controller: CharacterController):
     with col2:
         st.metric("Your remaining zenit", value=st.session_state.start_equipment.zenit, delta=None, )
 
-
+    st.info("You will not be able to edit your starting equipment on the next step.", icon="🔱")
     if st.button("Next"):
         controller.character.inventory = st.session_state.start_equipment
         st.session_state.start_equipment = Inventory()
