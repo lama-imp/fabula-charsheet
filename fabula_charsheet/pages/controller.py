@@ -4,8 +4,22 @@ from pathlib import Path
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from data.models import Character, CharClass, ClassBonus, Ritual, Skill, ClassName, Spell, Accessory, \
-    Shield, Weapon, Armor, Item, CharState, Status, AttributeName
+from data.models import (
+    Character,
+    CharClass,
+    Ritual,
+    Skill,
+    ClassName,
+    Spell,
+    Accessory,
+    Shield,
+    Weapon,
+    Armor,
+    Item,
+    CharState,
+    Status,
+    AttributeName,
+)
 
 
 class CharacterController:
@@ -25,6 +39,13 @@ class CharacterController:
     def add_class(self, new_class: CharClass):
         self.character.classes.append(new_class)
 
+    def update_class(self, updated_class: CharClass):
+        for i, existing in enumerate(self.character.classes):
+            if existing.name == updated_class.name:
+                self.character.classes[i] = updated_class
+                return
+        raise ValueError(f"No class with name '{updated_class.name}' found to update.")
+
     def can_add_skill_number(self):
         return self.character.level - self.character.get_n_skill()
 
@@ -36,7 +57,7 @@ class CharacterController:
         elif isinstance(new_class, str):
             class_name = new_class.lower()
         else:
-            raise Exception
+            raise Exception(f"Unexpected type for class: {type(new_class)}")
         return any(c.name == class_name for c in self.character.classes)
 
     def has_skill(self, skill_name: str) -> bool:
