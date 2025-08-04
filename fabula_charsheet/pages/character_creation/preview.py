@@ -53,8 +53,8 @@ def build(controller: CharacterController):
     with col1:
         st.markdown(f"#### Name: {controller.character.name}")
         st.write(f"{controller.character.identity} from {controller.character.origin}")
-        st.markdown(f"**Level**: {controller.character.level}")
         st.markdown(f"**Theme**: {controller.character.theme}")
+        st.markdown(f"**Level**: {controller.character.level}")
 
         st.markdown("##### Attributes")
         st.write(f"Dexterity: d{controller.character.dexterity.base}")
@@ -70,9 +70,13 @@ def build(controller: CharacterController):
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
         for char_class in sorted_classes:
             st.markdown(f"##### {char_class.name.title()}")
-            st.write("Skills:")
-            for skill in char_class.skills:
+            st.write("**Skills**:")
+            added_skills = [s for s in char_class.skills if s.current_level > 0]
+            for skill in added_skills:
                 st.write(f"{skill.name.title()} - level {skill.current_level}")
+            if controller.character.spells.get(char_class.name, None):
+                st.write("**Spells**:")
+                st.write(", ".join(spell.name.title() for spell in controller.character.spells[char_class.name]))
             st.divider()
 
     with col3:
