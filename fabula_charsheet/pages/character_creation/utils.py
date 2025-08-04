@@ -74,11 +74,20 @@ class SkillTableWriter(TableWriter):
     @staticmethod
     def _level_input(skill: Skill):
         if skill.max_level > 1:
-            level = st.slider("level", min_value=0, max_value=skill.max_level,
+            level = st.slider("level",
+                              min_value=0,
+                              max_value=skill.max_level,
+                              value=skill.current_level,
                               key=f"{skill.name}-slider",
-                              label_visibility="hidden", )
+                              label_visibility="hidden",
+                              )
         else:
-            level = int(st.toggle("level2", label_visibility="hidden", key=f"{skill.name}-toggle"))
+            level = int(st.toggle("level2",
+                                  value=bool(skill.current_level),
+                                  key=f"{skill.name}-toggle",
+                                  label_visibility="hidden",
+                                  )
+                        )
         skill.current_level = level
 
     def _add_description(self, item):
