@@ -232,7 +232,7 @@ class WeaponTableWriter(TableWriter):
         cannot_equip = False
         if item.martial:
             cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
+            for char_class in st.session_state.char_controller.character.classes:
                 if char_class.martial_weapon:
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
@@ -319,7 +319,7 @@ class ArmorTableWriter(TableWriter):
         cannot_equip = False
         if item.martial:
             cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
+            for char_class in st.session_state.char_controller.character.classes:
                 if char_class.martial_armor:
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
@@ -398,7 +398,7 @@ class ShieldTableWriter(TableWriter):
         cannot_equip = False
         if item.martial:
             cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
+            for char_class in st.session_state.char_controller.character.classes:
                 if char_class.martial_armor:
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
@@ -469,7 +469,7 @@ class ItemTableWriter(TableWriter):
             {
                 "name": "Quality",
                 "width": 0.155,
-                "process": lambda s: st.write(f"{s.quality} z"),
+                "process": lambda s: st.write(f"{s.quality}"),
             },
         )
         super().__init__()
