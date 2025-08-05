@@ -233,7 +233,7 @@ class WeaponTableWriter(TableWriter):
         if item.martial:
             cannot_equip = True
             for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_armor:
+                if char_class.martial_weapon:
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
