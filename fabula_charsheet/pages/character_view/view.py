@@ -201,7 +201,7 @@ def build(controller: CharacterController):
         with base_col:
             col1, col2 = st.columns(2)
             with col1:
-                avatar_path = get_avatar_path(controller.character.name)
+                avatar_path = get_avatar_path(controller.character.id)
                 if avatar_path:
                     st.image(avatar_path, use_container_width=True)
                 else:

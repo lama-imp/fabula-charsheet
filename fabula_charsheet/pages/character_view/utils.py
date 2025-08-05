@@ -1,3 +1,4 @@
+import uuid
 from pathlib import Path
 
 import streamlit as st
@@ -11,10 +12,9 @@ def set_view_state(state: ViewState):
     st.rerun()
 
 
-def get_avatar_path(char_name: str) -> Path | None:
-    char_name = char_name.lower().replace(' ', '_')
+def get_avatar_path(char_id: uuid.UUID) -> Path | None:
     for ext in ("jpg", "jpeg", "png"):
-        matches = list(config.SAVED_CHARS_IMG_DIRECTORY.glob(f"{char_name}.{ext}"))
+        matches = list(config.SAVED_CHARS_IMG_DIRECTORY.glob(f"{char_id}.{ext}"))
         if matches:
             return matches[0]
 

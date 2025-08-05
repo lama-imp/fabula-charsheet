@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+import uuid
+
 from pydantic import BaseModel, Field, ConfigDict, conint
 
 from .char_class import CharClass, ClassName
@@ -37,6 +40,7 @@ class CharSpecial(BaseModel):
 class Character(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
 
+    id: uuid.UUID = Field(default_factory=uuid.uuid4)
     name: str = ""
     level: conint(ge=1, le=60) = 5
     identity: str = ""
@@ -77,11 +81,11 @@ class Character(BaseModel):
         self.origin = origin
 
     def get_n_skill(self) -> int:
-        n_classes = 0
+        n_skills = 0
         for char_class in self.classes:
             for skill in char_class.skills:
-                n_classes += skill.current_level
-        return n_classes
+                n_skills += skill.current_level
+        return n_skills
 
     def get_spells_by_class(self, class_name: str | None) -> list[Spell]:
         if class_name is None:

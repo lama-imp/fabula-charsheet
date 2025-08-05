@@ -22,14 +22,14 @@ def delete_character(character: Character):
     with c2:
         if st.button(f"Yes, delete {character.name.title()}", icon="💀"):
             s.SAVED_CHARS.char_list.remove(character)
-            char_path = Path(config.SAVED_CHARS_DIRECTORY, f"{character.name.lower().replace(' ', '_')}.yaml")
+            char_path = Path(config.SAVED_CHARS_DIRECTORY, f"{character.id}.yaml")
             try:
                 char_path.unlink()
             except FileNotFoundError:
                 st.error("Character file does not exist.", icon="📜")
             except PermissionError:
                 st.error("You do not have permission to delete this character file.", icon="🔒")
-            avatar_path = get_avatar_path(character.name)
+            avatar_path = get_avatar_path(character.id)
             if avatar_path:
                 try:
                     avatar_path.unlink()
@@ -46,7 +46,7 @@ def build(controller: CharacterController):
         for char in s.SAVED_CHARS.char_list:
             col1, col2, col3 = st.columns(3)
             with col1:
-                avatar_path = get_avatar_path(char.name)
+                avatar_path = get_avatar_path(char.id)
                 if avatar_path:
                     st.image(avatar_path, width=150)
                 else:
@@ -56,14 +56,13 @@ def build(controller: CharacterController):
             with col3:
                 load_col, delete_col = st.columns(2)
                 with load_col:
-                    if st.button("Load", key=f"{char.name}-loader"):
+                    if st.button("Load", key=f"{char.id}-loader"):
                         controller.character = char
                         set_view_state(ViewState.view)
                 with delete_col:
-                    if st.button("Delete", key=f"{char.name}-delete"):
+                    if st.button("Delete", key=f"{char.id}-delete"):
                         delete_character(char)
 
             st.divider()
     else:
         st.info("No saved characters. Start with creating a character.", icon="👻")
-
