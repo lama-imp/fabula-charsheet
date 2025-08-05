@@ -58,10 +58,14 @@ def edit_identity(controller: CharacterController):
     character_name = st.text_input("Name", value=controller.character.name)
     identity = st.text_input("Identity", value=controller.character.identity)
     origin = st.text_input("Origin", value=controller.character.origin)
+    if controller.character.theme.lower():
+        default_theme_idx = character_themes.index(controller.character.theme.lower())
+    else:
+        default_theme_idx = None
     theme = st.selectbox(
         "Theme",
         [theme.title() for theme in character_themes],
-        index=character_themes.index(controller.character.theme.lower()),
+        index=default_theme_idx,
         placeholder="Select a theme or enter a new one",
         accept_new_options=True,
     )
@@ -243,6 +247,7 @@ def build(controller: CharacterController):
                 st.write(", ".join(spell.name.title() for spell in controller.character.spells[char_class.name]))
             st.divider()
         if st.button("Add new class", disabled=controller.has_enough_skills()):
+            st.session_state.class_spells = []
             add_new_class(controller, ClassController())
 
     with col3:
