@@ -1,5 +1,6 @@
 import streamlit as st
 
+import config
 from data import saved_characters as s
 from pages.controller import CharacterController
 from pages.character_view.utils import set_view_state, get_avatar_path
@@ -17,7 +18,7 @@ def build(controller: CharacterController):
                 if avatar_path:
                     st.image(avatar_path, width=150)
                 else:
-                    st.write("No avatar")
+                    st.image(config.default_avatar_path, width=150)
             with col2:
                 st.write(f"{char.name}, level {char.level}")
             with col3:

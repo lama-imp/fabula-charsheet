@@ -1,5 +1,6 @@
 import streamlit as st
 
+import config
 from data.models import CharState, Status, AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, Attribute, \
     Skill
@@ -136,7 +137,7 @@ def add_item(controller: CharacterController):
                 def_type = st.pills("Select defense type", ["Dexterity dice", "Flat"])
                 if def_type == "Dexterity dice":
                     return AttributeName.dexterity
-                if def_type == "Flat":
+                elif def_type == "Flat":
                     defense = st.number_input("Provide the defense value", value=0, step=1)
                     return defense
 
@@ -194,6 +195,7 @@ def build(controller: CharacterController):
     st.title(f"{controller.character.name}")
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Skills", "Spells", "Equipment", "Special"])
 
+    # Overview
     with tab1:
         base_col, points_col, attributes_col = st.columns([0.35, 0.4, 0.25], gap="medium")
         with base_col:
@@ -203,7 +205,7 @@ def build(controller: CharacterController):
                 if avatar_path:
                     st.image(avatar_path, use_container_width=True)
                 else:
-                    st.write("No avatar")
+                    st.image(config.default_avatar_path, width=150)
             with col2:
                 st.write(f"{controller.character.identity} from {controller.character.origin}")
                 st.markdown(f"**Level**: {controller.character.level}")
@@ -289,17 +291,17 @@ def build(controller: CharacterController):
                 st.write("")
             with col5:
                 st.write("")
-                if st.button("", icon=":material/laps:", key="reset_hp"):
+                if st.button("", icon=":material/laps:", key="reset_hp", help="Reset HP"):
                     st.session_state.state_controller.state.minus_hp = 0
                     st.rerun()
                 st.write("")
                 st.write("")
-                if st.button("", icon=":material/laps:", key="reset_mp"):
+                if st.button("", icon=":material/laps:", key="reset_mp", help="Reset MP"):
                     st.session_state.state_controller.state.minus_mp = 0
                     st.rerun()
                 st.write("")
                 st.write("")
-                if st.button("", icon=":material/laps:", key="reset_ip"):
+                if st.button("", icon=":material/laps:", key="reset_ip", help="Reset IP"):
                     st.session_state.state_controller.state.minus_ip = 0
                     st.rerun()
                 st.write("")
@@ -328,7 +330,21 @@ def build(controller: CharacterController):
 
             st.write("##### Equipped:")
             st.write("**Weapon**")
-            for weapon in controller.character.inventory.equipped.weapon:
+            equipped_weapon = controller.character.inventory.equipped.weapon
+            if not equipped_weapon:
+                equipped_weapon = [
+                    Weapon(
+                        name="unarmed strike",
+                        cost=0,
+                        quality="Automatically equipped in each empty hand slot",
+                        martial=False,
+                        grip_type=GripType.one_handed,
+                        range=WeaponRange.melee,
+                        weapon_category=WeaponCategory.brawling,
+                        accuracy=[AttributeName.dexterity, AttributeName.might],
+                    )
+                ]
+            for weapon in equipped_weapon:
                 c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
                 with c1:
                     st.markdown("⚔️")
@@ -345,39 +361,11 @@ def build(controller: CharacterController):
                             "",
                             icon=":material/arrow_downward:",
                             key=f"{weapon.name}-unequip",
+                            help="Unequip this item",
+                            disabled=(weapon.name == "unarmed strike")
                         ):
                         unequip_item(controller, "weapon")
                         st.rerun()
-                st.write(
-                    " ◆ ".join((
-                        weapon.grip_type.title().replace('_', '-'),
-                        weapon.range.title(),
-                        weapon.quality,
-                    ))
-                )
-            if not controller.character.inventory.equipped.weapon:
-                weapon = Weapon(
-                    name="unarmed strike",
-                    cost=0,
-                    quality="Automatically equipped in each empty hand slot",
-                    martial=False,
-                    grip_type=GripType.one_handed,
-                    range=WeaponRange.melee,
-                    weapon_category=WeaponCategory.brawling,
-                    accuracy=[AttributeName.dexterity, AttributeName.might],
-                )
-                c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
-                with c1:
-                    st.markdown("⚔️")
-                    st.write(weapon.name.title())
-                with c2:
-                    st.markdown("_Accuracy_")
-                    accuracy_str = (" + ".join(
-                        [str(getattr(controller.character, attribute).current) for attribute in weapon.accuracy]))
-                    st.write(accuracy_str)
-                with c3:
-                    st.markdown("_Damage_")
-                    st.write(f"【HR + {weapon.bonus_damage}】 {weapon.damage_type}")
                 st.write(
                     " ◆ ".join((
                         weapon.grip_type.title().replace('_', '-'),
@@ -412,6 +400,7 @@ def build(controller: CharacterController):
                             "",
                             icon=":material/arrow_downward:",
                             key=f"armor-unequip",
+                            help="Unequip this item",
                         ):
                         unequip_item(controller, "armor")
                         st.rerun()
@@ -435,6 +424,7 @@ def build(controller: CharacterController):
                             "",
                             icon=":material/arrow_downward:",
                             key=f"shield-unequip",
+                            help="Unequip this item",
                         ):
                         unequip_item(controller, "shield")
                         st.rerun()
@@ -453,6 +443,7 @@ def build(controller: CharacterController):
                             "",
                             icon=":material/arrow_downward:",
                             key=f"accessory-unequip",
+                            help="Unequip this item",
                         ):
                         unequip_item(controller, "accessory")
                         st.rerun()
@@ -498,6 +489,7 @@ def build(controller: CharacterController):
 
         st.divider()
 
+    # Skills
     with tab2:
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
         writer = SkillTableWriter()
@@ -516,6 +508,7 @@ def build(controller: CharacterController):
 
         st.divider()
 
+    # Spells
     with tab3:
         for char_class, spell_list in controller.character.spells.items():
             chimerist_skills = controller.get_skills(ClassName.chimerist)
@@ -543,7 +536,7 @@ def build(controller: CharacterController):
                             remove_chimerist_spell(controller)
                 writer.write_in_columns(spell_list)
 
-
+    #Equipment
     with tab4:
         col1, col2 = st.columns([0.2, 0.8])
         with col1:
@@ -556,10 +549,7 @@ def build(controller: CharacterController):
         if backpack.weapons:
             weapon_writer = WeaponTableWriter()
             weapon_writer.columns = (
-                WeaponTableWriter().columns[0],
-                WeaponTableWriter().columns[1],
-                WeaponTableWriter().columns[2],
-                WeaponTableWriter().columns[3],
+                *WeaponTableWriter().columns[0:4],
                 {
                     "name": "Equip",
                     "width": 0.2,
@@ -570,11 +560,7 @@ def build(controller: CharacterController):
         if backpack.armors:
             armor_writer = ArmorTableWriter()
             armor_writer.columns = (
-                ArmorTableWriter().columns[0],
-                ArmorTableWriter().columns[1],
-                ArmorTableWriter().columns[2],
-                ArmorTableWriter().columns[3],
-                ArmorTableWriter().columns[4],
+                *ArmorTableWriter().columns[0:5],
                 {
                     "name": "Equip",
                     "width": 0.2,
@@ -587,6 +573,7 @@ def build(controller: CharacterController):
         if backpack.other:
             ItemTableWriter().write_in_columns(backpack.other)
 
+    # Special
     with tab5:
         if controller.is_class_added(ClassName.mutant) and controller.has_skill("theriomorphosis"):
             therioforms = controller.character.special.get_special("therioforms")
@@ -596,7 +583,7 @@ def build(controller: CharacterController):
             if len(added_therioforms) < controller.get_skill_level(ClassName.mutant, "theriomorphosis"):
                 if st.button("Add a therioform"):
                     pass
-
+        st.divider()
 
     col1, col2 = st.columns([0.2, 0.8])
     with col1:
