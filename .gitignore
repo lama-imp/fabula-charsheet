@@ -13,6 +13,7 @@ wheels/
 .python-version
 .DS_Store
 
+
 # Character files and images
 fabula_charsheet/characters/*.yaml
 fabula_charsheet/characters/character_images/*.jpg
