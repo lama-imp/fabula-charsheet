@@ -1,10 +1,11 @@
 import math
+import uuid
 from pathlib import Path
 
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
 from data.models import (
     Character,
     CharClass,
@@ -275,3 +276,21 @@ class StateController:
     def remove_status(self, status: Status):
         if status in self.state.statuses:
             self.state.statuses.remove(status)
+
+    def dump_state(self, char_id: uuid.UUID):
+        with open(Path(SAVED_STATES_DIRECTORY, f"{char_id}.yaml"), "w", encoding="utf-8") as yaml_file:
+            yaml.dump(
+                self.state.model_dump(),
+                yaml_file,
+                sort_keys=False,
+                allow_unicode=True,
+                default_flow_style=False
+            )
+
+    def load_state(self, char_id: uuid.UUID):
+        try:
+            with open(Path(SAVED_STATES_DIRECTORY, f"{char_id}.yaml"), 'r', encoding="utf-8") as yaml_file:
+                raw_state = yaml.load(yaml_file, Loader=yaml.Loader)
+                self.state = CharState(**dict(raw_state))
+        except:
+            raise Exception("Unable to load state.")
