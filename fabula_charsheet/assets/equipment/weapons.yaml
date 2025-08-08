@@ -171,7 +171,7 @@
 
 - name: twin shields
   cost: 0
-  martial: false
+  martial: true
   grip_type: two_handed
   weapon_category: brawling
   accuracy:
