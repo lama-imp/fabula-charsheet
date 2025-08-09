@@ -1,10 +1,11 @@
 import math
+import uuid
 from pathlib import Path
 
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
 from data.models import (
     Character,
     CharClass,
@@ -270,8 +271,9 @@ class ClassController:
         self.char_class.skills.append(skill)
 
 class StateController:
-    def __init__(self):
+    def __init__(self, char_id: uuid.UUID):
         self.state = CharState()
+        self.char_id = char_id
 
     def add_status(self, status: Status):
         if status not in self.state.statuses:
@@ -280,3 +282,22 @@ class StateController:
     def remove_status(self, status: Status):
         if status in self.state.statuses:
             self.state.statuses.remove(status)
+
+    def dump_state(self):
+        with Path(SAVED_STATES_DIRECTORY, f"{self.char_id}.yaml").open("w", encoding="utf-8") as yaml_file:
+            yaml.dump(
+                self.state.model_dump(),
+                yaml_file,
+                sort_keys=False,
+                allow_unicode=True,
+                default_flow_style=False
+            )
+
+    def load_state(self):
+        try:
+            with Path(SAVED_STATES_DIRECTORY, f"{self.char_id}.yaml").open('r', encoding="utf-8") as yaml_file:
+                raw_state = yaml.load(yaml_file, Loader=yaml.Loader)
+                self.state = CharState(**dict(raw_state))
+        except:
+            self.state = CharState()
+            raise Exception("Unable to load state. Switching to default.")

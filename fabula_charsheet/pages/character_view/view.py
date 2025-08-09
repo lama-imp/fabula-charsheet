@@ -183,7 +183,7 @@ def remove_item(controller: CharacterController):
 
 def build(controller: CharacterController):
     st.set_page_config(layout="wide")
-    st.session_state.state_controller = st.session_state.get("state_controller", StateController())
+    st.session_state.state_controller = st.session_state.get("state_controller")
     st.title(f"{controller.character.name}")
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Skills", "Spells", "Equipment", "Special"])
 
@@ -563,6 +563,7 @@ def build(controller: CharacterController):
     with col1:
         if st.button("Save current character"):
             controller.dump_character()
+            st.session_state.state_controller.dump_state()
     with col2:
         if st.button("Load another character"):
             set_view_state(ViewState.load)
