@@ -1,4 +1,3 @@
-import uuid
 from collections.abc import Iterable, Callable
 from copy import deepcopy
 from itertools import chain

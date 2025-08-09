@@ -1,10 +1,8 @@
-import uuid
-
 import streamlit as st
 
 import config
-from data.models import CharState, Status, AttributeName, Weapon, GripType, WeaponCategory, \
-    WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, Attribute, \
+from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
+    WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
     Skill
 from pages.controller import CharacterController, StateController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
@@ -90,7 +88,7 @@ def remove_chimerist_spell(controller: CharacterController):
 @st.dialog("Add an item")
 def add_item(controller: CharacterController):
     item_type = st.segmented_control("Item type", [Weapon, Armor, Shield, Accessory, Item], format_func=lambda x: x.__name__, selection_mode="single")
-    print(item_type)
+
     if item_type:
         name = st.text_input("Item name")
         item_dict = {

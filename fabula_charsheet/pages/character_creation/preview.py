@@ -1,19 +1,15 @@
-import uuid
 from copy import deepcopy
-from pathlib import Path
 
 import streamlit as st
-import yaml
 
 import config
 from .classes import add_new_class
 from .utils import show_martial, SkillTableWriter, if_show_spells, SpellTableWriter, show_skill
 from pages.controller import CharacterController, ClassController
-from data.models import Dexterity, Might, Insight, Willpower, Character, Item, character_themes, CharClass
+from data.models import Dexterity, Might, Insight, Willpower, Item, character_themes, CharClass
 from data import compendium as c
 from data import saved_characters as s
-from ..character_view.utils import set_view_state
-from ..character_view.view_state import ViewState
+
 
 preview_message = """Take a look at your character.
 
@@ -240,7 +236,7 @@ def build(controller: CharacterController):
                     controller.character.classes.remove(char_class)
                     st.rerun()
             st.write("**Skills**:")
-            added_skills = [s for s in char_class.skills if s.current_level > 0]
+            added_skills = [skill for skill in char_class.skills if skill.current_level > 0]
             for skill in added_skills:
                 st.write(f"{skill.name.title()} - level {skill.current_level}")
             if controller.character.spells.get(char_class.name, None):
