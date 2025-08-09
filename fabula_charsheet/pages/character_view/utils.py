@@ -14,7 +14,7 @@ def set_view_state(state: ViewState):
 
 def get_avatar_path(char_id: uuid.UUID) -> Path | None:
     for ext in ("jpg", "jpeg", "png"):
-        matches = list(config.SAVED_CHARS_IMG_DIRECTORY.glob(f"{char_id}.{ext}"))
+        matches = list(config.SAVED_CHARS_IMG_DIRECTORY.glob(f"*{char_id}.{ext}"))
         if matches:
             return matches[0]
 

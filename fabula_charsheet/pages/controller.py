@@ -203,7 +203,10 @@ class CharacterController:
 
 
     def dump_character(self):
-        with open(Path(SAVED_CHARS_DIRECTORY, f"{self.character.id}.yaml"), "w") as yaml_file:
+        with Path(
+                SAVED_CHARS_DIRECTORY,
+                f"{self.character.name}.{self.character.id}.character.yaml"
+        ).open("w") as yaml_file:
             yaml.dump(
                 self.character.model_dump(),
                 yaml_file,
@@ -214,9 +217,11 @@ class CharacterController:
 
     def dump_avatar(self, image: UploadedFile | None ):
         if image is not None:
-            with open(Path(SAVED_CHARS_IMG_DIRECTORY, f"{self.character.id}{Path(image.name).suffix}"),
-                    'wb') as img_file:
-                img_file.write(image.getbuffer())
+            image_file_path = Path(
+                    SAVED_CHARS_IMG_DIRECTORY,
+                    f"{self.character.name}.{self.character.id}{Path(image.name).suffix}"
+            )
+            image_file_path.write_bytes(image.getbuffer())
 
     def apply_status(self, statuses: list[Status]):
         dex_malus = 0

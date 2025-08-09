@@ -16,7 +16,7 @@ from pages.character_view.view_state import ViewState
 @st.dialog("Select a skill to increase by 1 point.", width="large")
 def level_up(controller: CharacterController):
     selected = set()
-    def add_point(skill: Skill):
+    def add_point(skill: Skill, idx=None):
         if st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden"):
             selected.add(skill.name)
         else:
@@ -28,15 +28,7 @@ def level_up(controller: CharacterController):
         reverse=True
     )
     writer = SkillTableWriter()
-    writer.columns = (
-        SkillTableWriter().columns[0],
-        SkillTableWriter().columns[1],
-        {
-            "name": "Level",
-            "width": 0.2,
-            "process": add_point
-        }
-    )
+    writer.columns = writer.level_up_columns(add_point)
     for char_class in sorted_classes:
         st.markdown(f"#### {char_class.name.title()}")
         writer.write_in_columns([skill for skill in char_class.skills if skill.current_level < skill.max_level])

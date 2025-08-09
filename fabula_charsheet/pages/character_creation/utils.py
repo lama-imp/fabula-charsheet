@@ -53,9 +53,6 @@ class TableWriter:
                 self.columns
             ):
                 with cell:
-                    proc = column_config.process
-                    # DEBUG
-                    print(f"Calling process {proc} with arg count {proc.__code__.co_argcount}")
                     column_config.process(item, item_idx)
 
             self._add_description(item, item_idx)
@@ -102,6 +99,17 @@ class SkillTableWriter(TableWriter):
                 name="Level",
                 width=0.2,
                 process=lambda s, idx=None: st.write(str(s.current_level))
+            ),
+        )
+
+    def level_up_columns(self, add_point_handler: Callable):
+        return (
+            self.base_columns[0],
+            self.base_columns[1],
+            ColumnConfig(
+                name="Level",
+                width=0.2,
+                process=add_point_handler
             ),
         )
 
