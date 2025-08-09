@@ -1,0 +1,3 @@
+errors:
+  class_not_found: "No class with name '{class_name}' found to update."
+  unexpected_class_type: "Unexpected type for class: {class_type)}"

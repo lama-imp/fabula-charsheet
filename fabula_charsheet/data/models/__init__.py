@@ -42,3 +42,4 @@ from .weapon import (
     WeaponCategory,
     GripType,
 )
+from .language import LangEnum

@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY, LOCALS_DIRECTORY
 from data.models import (
     Character,
     CharClass,
@@ -46,7 +46,8 @@ class CharacterController:
             if existing.name == updated_class.name:
                 self.character.classes[i] = updated_class
                 return
-        raise ValueError(f"No class with name '{updated_class.name}' found to update.")
+        msg = self.localization["errors"]["class_not_found"].format(class_name=updated_class.name)
+        raise ValueError(msg)
 
     def can_add_skill_number(self):
         return self.character.level - self.character.get_n_skill()
@@ -59,6 +60,8 @@ class CharacterController:
         elif isinstance(new_class, str):
             class_name = new_class.lower()
         else:
+            msg = self.localization["errors"]["unexpected_class_type"].format(class_type=type(new_class))
+            raise ValueError(msg)
             raise Exception(f"Unexpected type for class: {type(new_class)}")
         return any(c.name == class_name for c in self.character.classes)
 

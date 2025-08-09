@@ -15,4 +15,7 @@ SAVED_CHARS_IMG_DIRECTORY.mkdir(parents=True, exist_ok=True)
 SAVED_STATES_DIRECTORY = Path(SAVED_CHARS_DIRECTORY, "states").resolve()
 SAVED_STATES_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
+LOCALS_DIRECTORY = Path(ASSETS_DIRECTORY, "locals").resolve()
+LOCALS_DIRECTORY.mkdir(parents=True, exist_ok=True)
+
 default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar_2.png")
