@@ -191,7 +191,7 @@ def remove_item(controller: CharacterController):
 
 def build(controller: CharacterController):
     st.set_page_config(layout="wide")
-    st.session_state.state_controller = st.session_state.get("state_controller", StateController())
+    st.session_state.state_controller = st.session_state.get("state_controller")
     st.title(f"{controller.character.name}")
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Skills", "Spells", "Equipment", "Special"])
 
