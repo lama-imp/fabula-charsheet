@@ -8,7 +8,7 @@ from data.models import CharState, Status, AttributeName, Weapon, GripType, Weap
     Skill
 from pages.controller import CharacterController, StateController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
-    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter
+    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter
 from pages.character_view.utils import set_view_state, get_avatar_path
 from pages.character_view.view_state import ViewState
 
@@ -495,15 +495,7 @@ def build(controller: CharacterController):
     with tab2:
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
         writer = SkillTableWriter()
-        writer.columns = (
-            SkillTableWriter().columns[0],
-            SkillTableWriter().columns[1],
-            {
-                "name": "Level",
-                "width": 0.2,
-                "process": lambda s: st.write(str(s.current_level))
-            }
-        )
+        writer.columns = writer.level_readonly_columns
         for char_class in sorted_classes:
             st.markdown(f"#### {char_class.name.title()}")
             writer.write_in_columns([skill for skill in char_class.skills if skill.current_level > 0])
@@ -550,26 +542,16 @@ def build(controller: CharacterController):
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
             weapon_writer = WeaponTableWriter()
-            weapon_writer.columns = (
-                *WeaponTableWriter().columns[0:4],
-                {
-                    "name": "Equip",
-                    "width": 0.2,
-                    "process": weapon_writer._equip
-                }
-            )
+            weapon_writer.columns = weapon_writer.equip_columns
             weapon_writer.write_in_columns(backpack.weapons)
         if backpack.armors:
             armor_writer = ArmorTableWriter()
-            armor_writer.columns = (
-                *ArmorTableWriter().columns[0:5],
-                {
-                    "name": "Equip",
-                    "width": 0.2,
-                    "process": ArmorTableWriter()._equip
-                }
-            )
+            armor_writer.columns = armor_writer.equip_columns
             armor_writer.write_in_columns(backpack.armors)
+        if backpack.shields:
+            shield_writer = ShieldTableWriter()
+            shield_writer.columns = shield_writer.equip_columns
+            shield_writer.write_in_columns(backpack.shields)
         if backpack.accessories:
             AccessoryTableWriter().write_in_columns(backpack.accessories)
         if backpack.other:
