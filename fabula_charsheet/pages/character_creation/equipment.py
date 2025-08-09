@@ -26,8 +26,6 @@ def build(controller: CharacterController):
     st.markdown(equipment_message)
 
     show_martial(controller.character)
-    st.warning("If you want to add several identical items, use `Add as` button to add the 2nd one and change the name (e.g., add `2` to it).",
-               icon="‼️")
 
     base_equipment = c.COMPENDIUM.equipment
     weapons = base_equipment.weapons_by_categories()
