@@ -4,11 +4,25 @@ import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
     Skill
-from pages.controller import CharacterController, StateController
+from pages.controller import CharacterController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter
 from pages.character_view.utils import set_view_state, get_avatar_path
 from pages.character_view.view_state import ViewState
+
+
+@st.dialog(title="Update your avatar")
+def avatar_update(controller: CharacterController):
+    uploaded_avatar = st.file_uploader(
+        "avatar uploader", accept_multiple_files=False,
+        type=["jpg", "jpeg", "png", "gif"],
+        label_visibility="hidden"
+    )
+    if uploaded_avatar is not None:
+        st.image(uploaded_avatar, width=100)
+    if st.button("Use this avatar", disabled=not uploaded_avatar):
+        controller.dump_avatar(uploaded_avatar)
+        st.rerun()
 
 
 @st.dialog("Select a skill to increase by 1 point.", width="large")
@@ -198,6 +212,8 @@ def build(controller: CharacterController):
                     st.image(avatar_path, use_container_width=True)
                 else:
                     st.image(config.default_avatar_path, width=150)
+                if st.button("Update avatar"):
+                    avatar_update(controller)
             with col2:
                 st.write(f"{controller.character.identity} from {controller.character.origin}")
                 st.markdown(f"**Level**: {controller.character.level}")
