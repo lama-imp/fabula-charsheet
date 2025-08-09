@@ -266,8 +266,9 @@ class ClassController:
         self.char_class.skills.append(skill)
 
 class StateController:
-    def __init__(self):
+    def __init__(self, char_id: uuid.UUID):
         self.state = CharState()
+        self.char_id = char_id
 
     def add_status(self, status: Status):
         if status not in self.state.statuses:
@@ -277,8 +278,8 @@ class StateController:
         if status in self.state.statuses:
             self.state.statuses.remove(status)
 
-    def dump_state(self, char_id: uuid.UUID):
-        with open(Path(SAVED_STATES_DIRECTORY, f"{char_id}.yaml"), "w", encoding="utf-8") as yaml_file:
+    def dump_state(self):
+        with Path(SAVED_STATES_DIRECTORY, f"{self.char_id}.yaml").open("w", encoding="utf-8") as yaml_file:
             yaml.dump(
                 self.state.model_dump(),
                 yaml_file,
@@ -287,10 +288,11 @@ class StateController:
                 default_flow_style=False
             )
 
-    def load_state(self, char_id: uuid.UUID):
+    def load_state(self):
         try:
-            with open(Path(SAVED_STATES_DIRECTORY, f"{char_id}.yaml"), 'r', encoding="utf-8") as yaml_file:
+            with Path(SAVED_STATES_DIRECTORY, f"{self.char_id}.yaml").open('r', encoding="utf-8") as yaml_file:
                 raw_state = yaml.load(yaml_file, Loader=yaml.Loader)
                 self.state = CharState(**dict(raw_state))
         except:
-            raise Exception("Unable to load state.")
+            self.state = CharState()
+            raise Exception("Unable to load state. Switching to default.")
