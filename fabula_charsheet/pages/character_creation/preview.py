@@ -40,7 +40,7 @@ def disable_equip_button(controller, item: Item) -> bool:
 def avatar_uploader():
     uploaded_avatar = st.file_uploader(
         "avatar uploader", accept_multiple_files=False,
-        type=["jpg", "jpeg", "png"],
+        type=["jpg", "jpeg", "png", "gif"],
         label_visibility="hidden"
     )
     if uploaded_avatar is not None:
