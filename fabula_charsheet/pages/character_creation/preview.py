@@ -1,3 +1,4 @@
+import uuid
 from copy import deepcopy
 from pathlib import Path
 
@@ -274,7 +275,7 @@ def build(controller: CharacterController):
         categories = [k for k, v in controller.character.inventory.backpack.model_dump().items() if v]
         st.markdown("**INVENTORY**")
         for category in categories:
-            for item in getattr(controller.character.inventory.backpack, category):
+            for i, item in enumerate(getattr(controller.character.inventory.backpack, category)):
                 if category == "armors":
                     formatter = f"{'Martial ' if item.martial else ''}Armor - "
                 elif category == "weapons":
@@ -288,7 +289,7 @@ def build(controller: CharacterController):
                     st.write(f"{formatter}**{item.name.title()}**")
                 with item_button_col:
                     if st.button('Equip',
-                                 key=f'{item.name}-equip',
+                                 key=f'{item.name}-{i}-equip',
                                  disabled=(item in controller.equipped_items())):
                         equip_item(controller, item)
                         st.rerun()

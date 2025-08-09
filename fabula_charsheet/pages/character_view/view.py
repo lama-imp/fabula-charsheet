@@ -1,3 +1,5 @@
+import uuid
+
 import streamlit as st
 
 import config
@@ -179,12 +181,12 @@ def add_item(controller: CharacterController):
 @st.dialog("Remove an item")
 def remove_item(controller: CharacterController):
     all_items = controller.character.inventory.backpack.all_items()
-    for item in all_items:
+    for i, item in enumerate(all_items):
         c1, c2 = st.columns([0.8, 0.2])
         with c1:
             st.write(f"{item.__class__.__name__} - {item.name.title()}")
         with c2:
-            if st.button("Remove", key=f"{item.name}-remove"):
+            if st.button("Remove", key=f"{item.name}-{i}-remove"):
                 controller.remove_item(item)
                 st.rerun()
 
@@ -344,7 +346,7 @@ def build(controller: CharacterController):
                         accuracy=[AttributeName.dexterity, AttributeName.might],
                     )
                 ]
-            for weapon in equipped_weapon:
+            for i, weapon in enumerate(equipped_weapon):
                 c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
                 with c1:
                     st.markdown("⚔️")
@@ -360,7 +362,7 @@ def build(controller: CharacterController):
                     if st.button(
                             "",
                             icon=":material/arrow_downward:",
-                            key=f"{weapon.name}-unequip",
+                            key=f"{weapon.name}-{i}-unequip",
                             help="Unequip this item",
                             disabled=(weapon.name == "unarmed strike")
                         ):

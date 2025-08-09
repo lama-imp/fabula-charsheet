@@ -1,3 +1,4 @@
+import uuid
 from collections.abc import Iterable, Callable
 from copy import deepcopy
 from itertools import chain
@@ -237,8 +238,9 @@ class WeaponTableWriter(TableWriter):
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
+        weapon_id = uuid.uuid4()
         if st.button('Equip',
-                     key=f'{item.name}-equip',
+                     key=f'{weapon_id}-equip',
                      disabled=cannot_equip):
             try:
                 st.session_state.char_controller.equip_item(item)
@@ -324,8 +326,9 @@ class ArmorTableWriter(TableWriter):
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
+        armor_id = uuid.uuid4()
         if st.button('Equip',
-                     key=f'{item.name}-equip',
+                     key=f'{armor_id}-equip',
                      disabled=cannot_equip
         ):
             try:
@@ -403,8 +406,9 @@ class ShieldTableWriter(TableWriter):
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
+        shield_id = uuid.uuid4()
         if st.button('Equip',
-                     key=f'{item.name}-equip',
+                     key=f'{shield_id}-equip',
                      disabled=cannot_equip):
             try:
                 st.session_state.char_controller.equip_item(item)
@@ -443,8 +447,9 @@ class AccessoryTableWriter(TableWriter):
         st.divider()
 
     def _equip(self, item: Accessory):
+        accessory_id = uuid.uuid4()
         if st.button('Equip',
-                     key=f'{item.name}-equip',
+                     key=f'{accessory_id}-equip',
                      disabled=(item in st.session_state.char_controller.equipped_items())):
             try:
                 st.session_state.char_controller.equip_item(item)
