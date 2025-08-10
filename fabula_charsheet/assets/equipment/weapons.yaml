@@ -168,3 +168,15 @@
   weapon_category: thrown
   range: ranged
   bonus_damage: 4
+
+- name: twin shields
+  cost: 0
+  martial: true
+  grip_type: two_handed
+  weapon_category: brawling
+  accuracy:
+    - might
+    - might
+  bonus_accuracy: 0
+  bonus_damage: 5
+

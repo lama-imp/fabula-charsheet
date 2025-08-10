@@ -12,7 +12,7 @@ from .accessory import Accessory
 
 class Equipped(BaseModel):
     armor: Armor | None = None
-    weapon: Annotated[list[Weapon], Len(max_length=2)] = list()
+    weapon: Annotated[list[Weapon], Len(max_length=2)] = list() 
     accessory: Accessory | None = None
     shield: Shield | None = None
 

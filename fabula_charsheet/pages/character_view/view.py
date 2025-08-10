@@ -136,6 +136,8 @@ def add_item(controller: CharacterController):
                 "accuracy": accuracy_input(),
                 "bonus_accuracy": st.number_input("Bonus to accuracy check", value=0, step=1),
                 "bonus_damage": st.number_input("Bonus to damage", value=0, step=1),
+                "bonus_defense": st.number_input("Bonus to physical defense", value=0, step=1),
+                "bonus_magic_defense": st.number_input("Bonus to magic defense", value=0, step=1),
             }
 
         if item_type.__name__ == "Armor":

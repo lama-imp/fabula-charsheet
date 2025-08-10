@@ -40,6 +40,9 @@ class Weapon(Item):
     ] = Field(default_factory=lambda : [AttributeName.dexterity, AttributeName.might])
     bonus_accuracy: int = 0
     bonus_damage: int = 0
+    bonus_defense: int = 0
+    bonus_magic_defense: int = 0
+
 
     def format_accuracy(self):
         return f"{AttributeName.to_alias(self.accuracy[0])} + {AttributeName.to_alias(self.accuracy[1])}"
