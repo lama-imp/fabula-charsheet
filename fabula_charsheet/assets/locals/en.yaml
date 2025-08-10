@@ -557,4 +557,22 @@ page_equipment_remaining_zenit: "Your remaining zenit"
 page_equipment_edit_warning: "You will not be able to edit your starting equipment on the next step."
 page_equipment_starting_zenit: "You start with {zenit} + {additional_zenit} zenit"
 
+# Attributes page
+page_attributes_title: "Character attributes"
+page_attributes_message: |
+  Each of a Player Character’s main Attributes (**Dexterity**, **Insight**, **Might**, and **Willpower**) is represented by a die size, from a minimum of **d6** to a maximum of **d12**.
+  Bigger die sizes indicate a more trained Attribute or a stronger natural talent.
+
+  - **Dexterity** measures precision, coordination, finesse and reflexes.
+  - **Insight** represents observation, understanding and reasoning.
+  - **Might** is a measure of strength, resilience and physical fortitude.
+  - **Willpower** represents determination, charisma and the ability to influence others.
+
+  Choose one of the following profiles for your hero, then distribute the corresponding die sizes among their four Attributes.
+  - **Jack of All Trades**: d8, d8, d8, d8 
+  - **Average**: d10, d8, d8, d6 
+  - **Specialized**: d10, d10, d6, d6
+
+page_attributes_sum_error: "Sum of your attributes should be equal to 32."
+
 
