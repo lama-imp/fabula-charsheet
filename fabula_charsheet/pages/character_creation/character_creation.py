@@ -5,7 +5,8 @@ from .creation_state import CreationState
 from pages.controller import CharacterController
 
 
-title = "Create a character"
+loc = st.session_state.localizator.get(st.session_state.language)
+title = loc.page_title_character_creation
 icon = ":material/add_circle:"
 
 
