@@ -575,4 +575,14 @@ page_attributes_message: |
 
 page_attributes_sum_error: "Sum of your attributes should be equal to 32."
 
+# Preview page
+page_character_preview_message: |
+  Take a look at your character.
+
+  If everything is OK, click on `{save_button}`.
+page_save_character_button: "Save character"
+page_save_character_toast: "Now you can load your character."
+page_character_preview_skill_points_warning: "You need to put exactly {level} points to your skills."
+page_upload_avatar_button: "Upload avatar"
+
 

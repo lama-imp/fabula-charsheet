@@ -6,7 +6,7 @@ import config
 from .classes import add_new_class
 from .utils import show_martial, SkillTableWriter, if_show_spells, SpellTableWriter, show_skill
 from pages.controller import CharacterController, ClassController
-from data.models import Dexterity, Might, Insight, Willpower, Item, character_themes, CharClass
+from data.models import Dexterity, Might, Insight, Willpower, Item, CharacterTheme, CharClass, LocNamespace
 from data import compendium as c
 from data import saved_characters as s
 
@@ -36,10 +36,10 @@ def disable_equip_button(controller, item: Item) -> bool:
     return item in equipped_items
 
 
-@st.dialog(title="Upload your avatar")
-def avatar_uploader():
+def avatar_uploader(loc: LocNamespace):
     uploaded_avatar = st.file_uploader(
-        "avatar uploader", accept_multiple_files=False,
+        loc.page_avatar_uploader_label,
+        accept_multiple_files=False,
         type=["jpg", "jpeg", "png", "gif"],
         label_visibility="hidden"
     )
@@ -50,20 +50,25 @@ def avatar_uploader():
         st.rerun()
 
 
-@st.dialog(title="Edit your name, identity, origin or theme.")
-def edit_identity(controller: CharacterController):
-    character_name = st.text_input("Name", value=controller.character.name)
-    identity = st.text_input("Identity", value=controller.character.identity)
-    origin = st.text_input("Origin", value=controller.character.origin)
-    if controller.character.theme.lower():
-        default_theme_idx = character_themes.index(controller.character.theme.lower())
+def edit_identity(controller: CharacterController, loc: LocNamespace):
+    character_name = st.text_input(loc.page_identity_character_name_label, value=controller.character.name)
+    identity = st.text_input(loc.page_identity_identity_label, value=controller.character.identity)
+    origin = st.text_input(loc.page_identity_origin_label, value=controller.character.origin)
+    if controller.character.theme:
+        if controller.character.theme in CharacterTheme:
+            default_theme_idx = list(CharacterTheme).index(controller.character.theme)
+            options = [theme.localized_name(loc) for theme in CharacterTheme]
+        else:
+            options = [controller.character.theme] + [theme.localized_name(loc) for theme in CharacterTheme]
+            default_theme_idx = None
     else:
+        options = [theme.localized_name(loc) for theme in CharacterTheme]
         default_theme_idx = None
     theme = st.selectbox(
-        "Theme",
-        [theme.title() for theme in character_themes],
+        loc.page_identity_theme_label,
+        options,
         index=default_theme_idx,
-        placeholder="Select a theme or enter a new one",
+        placeholder=loc.page_identity_theme_placeholder,
         accept_new_options=True,
     )
     if st.button("Update"):
@@ -77,32 +82,31 @@ def edit_identity(controller: CharacterController):
             st.warning(e, icon="🤌")
 
 
-@st.dialog(title="Edit attributes.")
-def edit_attributes(controller: CharacterController):
+def edit_attributes(controller: CharacterController, loc: LocNamespace):
     dexterity = st.select_slider(
-        "Dexterity",
+        loc.attr_dexterity,
         options=[6, 8, 10, 12],
         value=controller.character.dexterity.base,
     )
     might = st.select_slider(
-        "Might",
+        loc.attr_might,
         options=[6, 8, 10, 12],
         value=controller.character.might.base,
     )
     insight = st.select_slider(
-        "Insight",
+        loc.attr_insight,
         options=[6, 8, 10, 12],
         value=controller.character.insight.base,
     )
     willpower = st.select_slider(
-        "Willpower",
+        loc.attr_willpower,
         options=[6, 8, 10, 12],
         value=controller.character.willpower.base,
     )
     attributes_error = (sum([dexterity, might, insight, willpower]) != 32)
     if attributes_error:
-        st.warning("Sum of your attributes should be equal to 32.", icon="🎲")
-    if st.button("Update", disabled=attributes_error):
+        st.warning(loc.page_attributes_sum_error, icon="🎲")
+    if st.button(loc.page_attributes_update_button, disabled=attributes_error):
         try:
             controller.character.dexterity = Dexterity(base=dexterity, current=dexterity)
             controller.character.might = Might(base=might, current=might)
@@ -113,27 +117,25 @@ def edit_attributes(controller: CharacterController):
             st.error(e, icon="🚨")
 
 
-@st.dialog(title="Edit this class", width="large")
-def edit_class(character_controller: CharacterController, char_class: CharClass):
+def edit_class(character_controller: CharacterController, char_class: CharClass, loc: LocNamespace):
     class_controller = ClassController()
     class_controller.char_class = deepcopy(char_class)
     casting_skill = class_controller.char_class.get_spell_skill()
     st.session_state.class_spells = character_controller.character.spells[char_class.name]
 
-    with st.expander("Choose skills"):
+    with st.expander(loc.page_class_choose_skills):
         SkillTableWriter().write_in_columns(class_controller.char_class.skills)
 
     can_add_skill_number = character_controller.can_add_skill_number()
 
     if class_controller.char_class.class_level() < 1:
         class_not_ready = True
-        st.error("You need to select at least one skill to keep this class.")
+        st.error(loc.page_class_error_min_skill)
     elif can_add_skill_number < 0:
-        st.error(
-            f"Remove {abs(can_add_skill_number)} level(s) from your skills.")
+        st.error(loc.page_class_error_remove_skills.format(n=abs(can_add_skill_number)))
         class_not_ready = True
     else:
-        st.write("You have selected following skills:")
+        st.write(loc.page_class_selected_skills)
         for skill in class_controller.char_class.skills:
             if skill.current_level > 0:
                 show_skill(skill)
@@ -141,31 +143,59 @@ def edit_class(character_controller: CharacterController, char_class: CharClass)
 
     if if_show_spells(casting_skill):
         class_spells = c.COMPENDIUM.spells.get_spells(class_controller.char_class.name)
-        with st.expander("Select spells"):
+        with st.expander(loc.page_class_select_spells):
             SpellTableWriter().write_in_columns(class_spells)
         total_class_spells = len(st.session_state["class_spells"])
         max_n_spells = casting_skill.current_level
 
         if total_class_spells != max_n_spells:
             class_not_ready = True
-            st.error(f"You need to select exactly {max_n_spells} spells (one for each level in {casting_skill.name.title()}).")
+            st.error(loc.page_class_error_spell_count.format(n=max_n_spells, skill=casting_skill.name.title()))
         else:
             class_not_ready = False
 
-    if st.button("Update class", disabled=class_not_ready):
+    if st.button(loc.page_class_update_button, disabled=class_not_ready):
         try:
             character_controller.update_class(class_controller.char_class)
             character_controller.character.spells[char_class.name] = st.session_state.class_spells
             st.session_state.class_spells = []
-            st.info(f"Updated {char_class.name.title()}.")
+            st.info(loc.page_class_updated.format(class_name=char_class.name.title()))
             st.rerun()
         except Exception as e:
             st.error(e, icon="🚨")
 
 
 def build(controller: CharacterController):
+    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+
+    @st.dialog(loc.page_class_add_dialog_title, width="large")
+    @st.fragment
+    def add_new_class_dialog(
+            character_controller: CharacterController,
+            class_controller: ClassController,
+            loc: LocNamespace
+    ):
+        add_new_class(character_controller, class_controller, loc)
+
+    @st.dialog(title=loc.page_avatar_uploader_title)
+    def avatar_uploader_dialog():
+        avatar_uploader(loc)
+
+    @st.dialog(title=loc.page_identity_dialog_title)
+    def edit_identity_dialog():
+        edit_identity(controller, loc)
+
+    @st.dialog(title=loc.page_attributes_dialog_title)
+    def edit_attributes_dialog():
+        edit_attributes(controller, loc)
+
+    @st.dialog(title=loc.page_class_edit_dialog_title, width="large")
+    def edit_class_dialog(char_class: CharClass):
+        edit_class(controller, char_class, loc)
+
     st.set_page_config(layout="wide")
-    st.title("Character preview")
+    st.title(loc.page_character_preview_title)
+
     if "avatar" not in st.session_state.keys():
         st.session_state.avatar = None
 
@@ -173,22 +203,28 @@ def build(controller: CharacterController):
     if st.session_state.avatar is not None:
         controller.dump_avatar(st.session_state.avatar)
     with message_col:
-        st.markdown(preview_message)
-        if st.button("Save character", disabled= not controller.has_enough_skills()):
+        st.markdown(
+            loc.page_character_preview_message.format(
+                save_button=loc.page_save_character_button
+            )
+        )
+        if st.button(loc.page_save_character_button, disabled= not controller.has_enough_skills()):
             controller.dump_character()
             controller.dump_avatar(st.session_state.avatar)
             s.SAVED_CHARS.char_list.append(controller.character)
-            st.toast("Now you can load your character.", icon="🧙")
+            st.toast(loc.page_save_character_toast, icon="🧙")
         if not controller.has_enough_skills():
-            st.warning(f"You need to put exactly {controller.character.level} points to your skills.")
+            st.warning(
+                loc.page_character_preview_skill_points_warning.format(level=controller.character.level)
+            )
 
     with img_col:
         if st.session_state.avatar is not None:
             st.image(st.session_state.avatar, width=150)
         else:
             st.image(config.default_avatar_path, width=150)
-        if st.button("Upload avatar"):
-            avatar_uploader()
+        if st.button(loc.page_upload_avatar_button):
+            avatar_uploader_dialog(loc)
 
 
     st.divider()
@@ -200,7 +236,7 @@ def build(controller: CharacterController):
             st.markdown(f"#### Name: {controller.character.name}")
         with i_col2:
             if st.button("Edit"):
-                edit_identity(controller)
+                edit_identity_dialog(controller)
         st.write(f"{controller.character.identity} from {controller.character.origin}")
         st.markdown(f"**Theme**: {controller.character.theme}")
         st.markdown(f"**Level**: {controller.character.level}")
@@ -210,7 +246,7 @@ def build(controller: CharacterController):
             st.markdown("##### Attributes")
         with a_col2:
             if st.button("Edit attributes"):
-                edit_attributes(controller)
+                edit_attributes_dialog(controller)
         st.write(f"Dexterity: d{controller.character.dexterity.base}")
         st.write(f"Might: d{controller.character.might.base}")
         st.write(f"Insight: d{controller.character.insight.base}")
@@ -230,7 +266,7 @@ def build(controller: CharacterController):
                 st.markdown(f"##### {char_class.name.title()}")
             with c_col2:
                 if st.button("Edit", key=f"{char_class.name}-edit"):
-                    edit_class(controller, char_class)
+                    edit_class_dialog(controller, char_class)
             with c_col3:
                 if st.button("Remove", key=f"{char_class.name}-remove"):
                     controller.character.classes.remove(char_class)
@@ -245,7 +281,7 @@ def build(controller: CharacterController):
             st.divider()
         if st.button("Add new class", disabled=controller.has_enough_skills()):
             st.session_state.class_spells = []
-            add_new_class(controller, ClassController())
+            add_new_class_dialog(controller, ClassController(), loc)
 
     with col3:
         st.markdown("#### Equipment")
