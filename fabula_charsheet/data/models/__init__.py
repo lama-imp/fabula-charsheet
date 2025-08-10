@@ -18,7 +18,7 @@ from .character import (
     Character,
     CharSpecial,
     Therioform,
-    character_themes,
+    CharacterTheme,
 )
 from .damage import DamageType
 from .inventory import (
@@ -42,4 +42,7 @@ from .weapon import (
     WeaponCategory,
     GripType,
 )
-from .language import LangEnum
+from .language import (
+    LangEnum,
+    LocNamespace
+)

@@ -8,37 +8,18 @@ martial_shields: false
 rituals: [ritualism]
 skills:
 
-  - name: healing power
-    description: |
-      When you cast a spell that targets one or more allies, if you have an arcane weapon equipped, you may have each of those allies recover an amount of Hit Points equal to 【SL, multiplied by the number of Bonds you have】.
-      This healing is separate from any healing caused by the effects of the spell.
+  - name: healing_power
     max_level: 2
 
-  - name: ritual spiritism
-    description: |
-      You may perform Rituals whose effects fall within the Spiritism discipline.
-      Spiritism Rituals use【INS + WLP】for the Magic Check.
+  - name: ritual_spiritism
     max_level: 1
 
-  - name: spiritual magic
-    description: >
-      Each time you acquire this Skill, learn one Spiritist spell (add a point here to see available spells).
-      Offensive (⚡) Spiritist spells use【INS + WLP】for the Magic Check.
+  - name: spiritual_magic
     max_level: 10
     can_add_spell: true
 
-  - name: support magic
-    description: |
-      When you cast a spell that targets one or more allies, if you have an arcane weapon equipped,
-      you may choose one of those allies you have a Bond towards. If you do, that ally gains a bonus
-      to the next Check they perform during the current scene; this bonus is equal to the strength
-      of your Bond towards them.
+  - name: support_magic
     max_level: 1
 
   - name: vismagus
-    description: |
-      When you cast a spell, if you don't have enough Mind Points to pay for its total cost,
-      you may choose to spend twice as many Hit Points instead. You cannot use this Skill if doing
-      so would reduce you to 0 Hit Points. If a spell cast this way would cause you to recover Hit Points,
-      you instead recover no Hit Points (the spell functions normally on any other target).
     max_level: 1

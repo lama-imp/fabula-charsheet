@@ -3,7 +3,7 @@ from pathlib import Path
 import yaml
 import streamlit as st
 
-from data.models import LangEnum
+from data.models import LangEnum, LocNamespace
 
 
 class Localizator:
@@ -13,7 +13,7 @@ class Localizator:
         self.__translations = translations
 
     def get(self, lang: LangEnum):
-        return self.__translations.get(lang, self.default_language)
+        return LocNamespace(root=self.__translations.get(lang, {}))
 
 
 def init_localizator(locals_directory: Path):
@@ -41,4 +41,4 @@ def select_local():
             label_visibility="hidden",
         )
 
-        st.session_state["selected_language"] = selected_language
+        st.session_state.language = selected_language

@@ -7,39 +7,17 @@ martial_armor: false
 martial_shields: false
 rituals: []
 skills:
-  - name: cheap shot
-    description: When you hit a creature with an attack, if the attack only targeted that creature and they are suffering from one or more status effects,
-      you may have it deal extra damage equal to【SL + the number of status effects on the creature】.
-    current_level: 0
+  - name: cheap_shot
     max_level: 5
 
-  - name: high speed
-    description: >
-      At the start of a conflict, you may spend 10 Mind Points. If you do, choose one option and apply it before the start of the first round:
-      perform a free attack with a weapon you have equipped; or perform a Hinder or Objective action. You also gain a bonus equal to【SL】
-      to all Checks you perform as part of the chosen option.
-    current_level: 0
+  - name: high_speed
     max_level: 3
 
   - name: dodge
-    description: >
-      As long as you have no shields and no martial armor equipped, your Defense score is increased by【SL】.
-    current_level: 0
     max_level: 3
 
-  - name: see you later
-    description: >
-      You may use an action and spend 1 Fabula Point to vanish from the current scene, reappearing whenever you want during a different scene
-      in which another Player Character is present.
-      Describe how you escaped and miraculously got here!
-    current_level: 0
+  - name: see_you_later
     max_level: 1
 
-  - name: soul steal
-    description: "You may use an action to perform a【DEX + WLP】Check against the Magic Defense of a creature you can see.
-      If you succeed and the target is a soldier, you recover【SL】 Inventory Points;
-      if they are an elite or champion, the GM gives you the target’s soul treasure, an item worth zenit equal to or lower than【the target's level × 30, or × 50 if they are a Villain】.
-      This soul treasure will appear inside your backpack. A creature can only be successfully stolen from once with this Skill.\n
-      You gain a bonus equal to【SL】to your【DEX + WLP】Checks for this Skill."
-    current_level: 0
+  - name: soul_steal
     max_level: 5

@@ -1,76 +1,46 @@
 - name: aura
-  description: >
-    You project your soul outside your body and direct it to surround the targets,
-    shielding them from dangerous magic. Until this spell ends, each target may treat their
-    Magic Defense as being equal to 12 against any effects that target it (they are still free
-    to use their normal Defense score if higher than 12).
   is_offensive: false
   mp_cost: 5
   target: up_to_three
   duration: scene
 
 - name: awaken
-  description: >
-    You allow a creature to focus their vital energy into accomplishing what they previously could not.
-    Choose one Attribute: **Dexterity**, **Insight**, **Might**, or **Willpower**. Until this spell ends, the target
-    treats the chosen Attribute as if it were one die size higher (up to a maximum of **d12**).
   is_offensive: false
   mp_cost: 20
   target: one_creature
   duration: scene
 
 - name: barrier
-  description: >
-    You project your soul outside your body and weave it into a barrier to protect the targets from attacks.
-    Until this spell ends, each target may treat their Defense as being equal to 12 against any effects that
-    target it (they are still free to use their normal Defense score if higher than 12).
   is_offensive: false
   mp_cost: 5
   target: up_to_three
   duration: scene
 
 - name: cleanse
-  description: >
-    You strengthen and purify the soul energy coursing through your companions. Each target recovers
-    from all status effects.
   is_offensive: false
   mp_cost: 5
   target: up_to_three
   duration: scene
 
 - name: enrage
-  description: >
-    You cause a creature to lose any semblance of temper and act brazenly. The target suffers **enraged**
-    and cannot perform the **Guard** or **Spell** actions during their next turn.
   is_offensive: true
   mp_cost: 10
   target: one_creature
   duration: instantaneous
 
 - name: hallucination
-  description: >
-    You alter the senses of your enemies, causing them to experience bizarre or frightening hallucinations.
-    Choose **dazed** or **shaken**: you inflict the chosen status effect on each target hit by this spell.
   is_offensive: true
   mp_cost: 5
   target: up_to_three
   duration: instantaneous
 
 - name: heal
-  description: >
-    You invigorate your companions, soothing their pain and healing their fatigue. Each target recovers
-    **40** Hit Points. This amount increases to **50** Hit Points if you are **level 20 or higher**, or to **60** Hit
-    Points if you are **level 40 or higher**.
   is_offensive: false
   mp_cost: 10
   target: up_to_three
   duration: instantaneous
 
 - name: lux
-  description: "You focus your inner energy into a barrage of blinding soul rays. Each target hit by
-    this spell suffers【HR + 15】**light** damage.\n
-    
-    **Opportunity**: Each target hit by this spell suffers **dazed**."
   is_offensive: true
   mp_cost: 10
   target: up_to_three
@@ -78,40 +48,24 @@
   damage_type: light
 
 - name: mercy
-  description: >
-    You strengthen the heart of a creature against suffering and despair. Until this spell ends, if
-    the target would be reduced to 0 Hit Points, they are instead left standing with exactly 1 Hit Point.
-    Once that happens, this spell ends.
   is_offensive: false
   mp_cost: 20
   target: one_creature
   duration: scene
 
 - name: reinforce
-  description: >
-    You protect the targets from attacks that would corrupt their body and spirit. Choose **dazed**,
-    **enraged**, **poisoned**, **shaken**, **slow**, or **weak**. Until this spell ends, each target becomes
-    immune to the chosen status effect.
   is_offensive: false
   mp_cost: 5
   target: up_to_three
   duration: scene
 
 - name: soul weapon
-  description: "You imbue a weapon with the cleansing energy of your spirit. Until this spell ends, all
-    damage dealt by the weapon becomes of the **light** type. If you have that weapon equipped while you
-    cast this spell, you may perform a **free attack** with it as part of the same action.\n
-
-    This spell can only be cast on a weapon equipped by a willing creature."
   is_offensive: false
   mp_cost: 10
   target: weapon
   duration: scene
 
 - name: torpor
-  description: >
-    You smother the soul energy coursing through the bodies of your foes, hindering their movements.
-    Choose **slow** or **weak**: you inflict the chosen status effect on each target hit by this spell.
   is_offensive: true
   mp_cost: 5
   target: up_to_three
