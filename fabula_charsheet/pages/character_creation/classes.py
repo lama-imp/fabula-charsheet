@@ -20,13 +20,13 @@ def add_new_class(character_controller: CharacterController, class_controller: C
     class_not_ready = True
     selected_class_name = st.selectbox(
         "New class",
-        [str(char_class.name).title() for char_class in sorted(c.COMPENDIUM.classes.classes, key=lambda x: x.name)],
+        [char_class.name for char_class in sorted(c.COMPENDIUM.classes.classes, key=lambda x: x.name)],
         index=None,
         placeholder="Select a class",
+        format_func=lambda x: str(x.name).title(),
         accept_new_options=False,
     )
     selected_class = c.COMPENDIUM.classes.get_class(selected_class_name)
-    selected_class_name = selected_class_name.lower() if selected_class_name else selected_class_name
 
     if selected_class:
         if character_controller.is_class_added(selected_class):

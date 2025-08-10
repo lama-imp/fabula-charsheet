@@ -1,18 +1,15 @@
 from copy import deepcopy
-from pathlib import Path
 
 import streamlit as st
-import yaml
 
 import config
 from .classes import add_new_class
 from .utils import show_martial, SkillTableWriter, if_show_spells, SpellTableWriter, show_skill
 from pages.controller import CharacterController, ClassController
-from data.models import Dexterity, Might, Insight, Willpower, Character, Item, character_themes, CharClass
+from data.models import Dexterity, Might, Insight, Willpower, Item, character_themes, CharClass
 from data import compendium as c
 from data import saved_characters as s
-from ..character_view.utils import set_view_state
-from ..character_view.view_state import ViewState
+
 
 preview_message = """Take a look at your character.
 
@@ -43,7 +40,7 @@ def disable_equip_button(controller, item: Item) -> bool:
 def avatar_uploader():
     uploaded_avatar = st.file_uploader(
         "avatar uploader", accept_multiple_files=False,
-        type=["jpg", "jpeg", "png"],
+        type=["jpg", "jpeg", "png", "gif"],
         label_visibility="hidden"
     )
     if uploaded_avatar is not None:
@@ -239,7 +236,7 @@ def build(controller: CharacterController):
                     controller.character.classes.remove(char_class)
                     st.rerun()
             st.write("**Skills**:")
-            added_skills = [s for s in char_class.skills if s.current_level > 0]
+            added_skills = [skill for skill in char_class.skills if skill.current_level > 0]
             for skill in added_skills:
                 st.write(f"{skill.name.title()} - level {skill.current_level}")
             if controller.character.spells.get(char_class.name, None):
@@ -274,7 +271,7 @@ def build(controller: CharacterController):
         categories = [k for k, v in controller.character.inventory.backpack.model_dump().items() if v]
         st.markdown("**INVENTORY**")
         for category in categories:
-            for item in getattr(controller.character.inventory.backpack, category):
+            for i, item in enumerate(getattr(controller.character.inventory.backpack, category)):
                 if category == "armors":
                     formatter = f"{'Martial ' if item.martial else ''}Armor - "
                 elif category == "weapons":
@@ -288,7 +285,7 @@ def build(controller: CharacterController):
                     st.write(f"{formatter}**{item.name.title()}**")
                 with item_button_col:
                     if st.button('Equip',
-                                 key=f'{item.name}-equip',
+                                 key=f'{item.name}-{i}-equip',
                                  disabled=(item in controller.equipped_items())):
                         equip_item(controller, item)
                         st.rerun()

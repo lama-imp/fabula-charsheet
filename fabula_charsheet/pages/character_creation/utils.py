@@ -24,7 +24,6 @@ from .creation_state import CreationState
 
 
 class ColumnConfig(BaseModel):
-    key: str
     name: str
     width: float
     process: Optional[Callable]
@@ -33,7 +32,11 @@ class TableWriter:
     columns = None
 
     def __init__(self):
-        assert self.columns
+        if self.columns is None:
+            if hasattr(self, "base_columns"):
+                self.columns = self.base_columns
+            else:
+                raise AssertionError("TableWriter requires 'columns' or 'base_columns' to be defined")
 
     def write_in_columns(
             self,
@@ -43,111 +46,140 @@ class TableWriter:
         if header:
             self._write_header()
 
-        for item in data:
-            for cell, column_config in zip(st.columns(spec=[col['width'] for col in self.columns]),
-                                           self.columns):
+        for item_idx, item in enumerate(data):
+            for cell, column_config in zip(
+                st.columns(spec=[col.width for col in self.columns]),
+                self.columns
+            ):
                 with cell:
-                    column_config.get('process')(item)
+                    column_config.process(item, item_idx)
 
-            self._add_description(item)
+            self._add_description(item, item_idx)
 
     def _write_header(self):
-        for cell, column_name in zip(st.columns(spec=[col['width'] for col in self.columns]),
-                                     (col['name'] for col in self.columns)):
+        for cell, column_name in zip(
+            st.columns(spec=[col.width for col in self.columns]),
+            (col.name for col in self.columns)
+        ):
             with cell:
                 st.markdown(f"##### {column_name}")
 
-    def _add_description(self, item):
+    def _add_description(self, item, idx=None):
         raise NotImplementedError
 
 
 class SkillTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Skill",
-                "width": 0.2,
-                "process": lambda s: st.write(s.name.title()),
-            },
-            {
-                "name": "Description",
-                "width": 0.7,
-                "process": lambda s: st.write(s.description),
-            },
-            {
-                "name": "Level",
-                "width": 0.2,
-                "process": self._level_input
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Skill",
+                width=0.2,
+                process=lambda s, idx=None: st.write(s.name.title()),
+            ),
+            ColumnConfig(
+                name="Description",
+                width=0.7,
+                process=lambda s, idx=None: st.write(s.description),
+            ),
+            ColumnConfig(
+                name="Level",
+                width=0.2,
+                process=self._level_input,
+            ),
         )
-        super().__init__()
+
+    @property
+    def level_readonly_columns(self):
+        return (
+            self.base_columns[0],
+            self.base_columns[1],
+            ColumnConfig(
+                name="Level",
+                width=0.2,
+                process=lambda s, idx=None: st.write(str(s.current_level))
+            ),
+        )
+
+    def level_up_columns(self, add_point_handler: Callable):
+        return (
+            self.base_columns[0],
+            self.base_columns[1],
+            ColumnConfig(
+                name="Level",
+                width=0.2,
+                process=add_point_handler
+            ),
+        )
 
     @staticmethod
-    def _level_input(skill: Skill):
+    def _level_input(skill: Skill, idx=None):
         if skill.max_level > 1:
-            level = st.slider("level",
-                              min_value=0,
-                              max_value=skill.max_level,
-                              value=skill.current_level,
-                              key=f"{skill.name}-slider",
-                              label_visibility="hidden",
-                              )
+            level = st.slider(
+                "level",
+                min_value=0,
+                max_value=skill.max_level,
+                value=skill.current_level,
+                key=f"{skill.name}-slider",
+                label_visibility="hidden",
+            )
         else:
-            level = int(st.toggle("level2",
-                                  value=bool(skill.current_level),
-                                  key=f"{skill.name}-toggle",
-                                  label_visibility="hidden",
-                                  )
-                        )
+            level = int(
+                st.toggle(
+                    "level2",
+                    value=bool(skill.current_level),
+                    key=f"{skill.name}-toggle",
+                    label_visibility="hidden",
+                )
+            )
         skill.current_level = level
 
-    def _add_description(self, item):
+    def _add_description(self, item, idx=None):
         pass
 
 
 class SpellTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Spell",
-                "width": 0.25,
-                "process": self.write_spell_name,
-            },
-            {
-                "name": "MP",
-                "width": 0.15,
-                "process": self.write_mp_cost,
-            },
-            {
-                "name": "Target",
-                "width": 0.25,
-                "process": self.write_target
-            },
-            {
-                "name": "Duration",
-                "width": 0.2,
-                "process": self.write_duration
-            },
-            {
-                "name": "Select",
-                "width": 0.15,
-                "process": self.spell_selector
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Spell",
+                width=0.25,
+                process=self.write_spell_name,
+            ),
+            ColumnConfig(
+                name="MP",
+                width=0.15,
+                process=self.write_mp_cost,
+            ),
+            ColumnConfig(
+                name="Target",
+                width=0.25,
+                process=self.write_target,
+            ),
+            ColumnConfig(
+                name="Duration",
+                width=0.2,
+                process=self.write_duration,
+            ),
+            ColumnConfig(
+                name="Select",
+                width=0.15,
+                process=self.spell_selector,
+            ),
         )
-        super().__init__()
 
-
-    def _add_description(self, item):
-        st.markdown(item.description)
+    def _add_description(self, spell: Spell, idx=None):
+        st.markdown(spell.description)
         st.divider()
 
-    def write_spell_name(self, spell: Spell):
+    def write_spell_name(self, spell: Spell, idx=None):
         st.write(f"{spell.name.title()}{'⚡' if spell.is_offensive else ''}")
 
-    def write_mp_cost(self, spell: Spell):
+    def write_mp_cost(self, spell: Spell, idx=None):
         st.write(f"{spell.mp_cost}{' x T' if spell.target == 'up_to_three' else ''}")
 
-    def write_target(self, spell: Spell):
+    def write_target(self, spell: Spell, idx=None):
         mapping = {
             "one_creature": "One creature",
             "up_to_three": "Up to three creatures",
@@ -157,10 +189,10 @@ class SpellTableWriter(TableWriter):
         }
         st.write(mapping[spell.target])
 
-    def write_duration(self, spell: Spell):
+    def write_duration(self, spell: Spell, idx=None):
         st.write(spell.duration.title())
 
-    def spell_selector(self, spell: Spell):
+    def spell_selector(self, spell: Spell, idx=None):
         if st.checkbox("add spell",
                        value=(spell in st.session_state.class_spells),
                        label_visibility="hidden",
@@ -174,37 +206,48 @@ class SpellTableWriter(TableWriter):
 
 
 class WeaponTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Weapon",
-                "width": 0.2,
-                "process": lambda s: st.write(f"{s.name.title()} {'♦️' if s.martial else ''}"),
-            },
-            {
-                "name": "Cost",
-                "width": 0.15,
-                "process": lambda s: st.write(f"{s.cost} z"),
-            },
-            {
-                "name": "Accuracy",
-                "width": 0.2,
-                "process": lambda s: st.write(s.format_accuracy())
-            },
-            {
-                "name": "Damage",
-                "width": 0.2,
-                "process": lambda s: st.write(f"【HR + {s.bonus_damage}】 {s.damage_type}")
-            },
-            {
-                "name": "Add",
-                "width": 0.15,
-                "process": self._add_weapon
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Weapon",
+                width=0.2,
+                process=lambda s, idx=None: st.write(f"{s.name.title()} {'♦️' if s.martial else ''}"),
+            ),
+            ColumnConfig(
+                name="Cost",
+                width=0.15,
+                process=lambda s, idx=None: st.write(f"{s.cost} z"),
+            ),
+            ColumnConfig(
+                name="Accuracy",
+                width=0.2,
+                process=lambda s, idx=None: st.write(s.format_accuracy()),
+            ),
+            ColumnConfig(
+                name="Damage",
+                width=0.2,
+                process=lambda s, idx=None: st.write(f"【HR + {s.bonus_damage}】 {s.damage_type}"),
+            ),
+            ColumnConfig(
+                name="Add",
+                width=0.15,
+                process=self._add_weapon,
+            ),
         )
-        super().__init__()
 
-    def _add_description(self, item: Weapon):
+    @property
+    def equip_columns(self):
+        return (
+            *self.base_columns[:-1],
+            ColumnConfig(
+                name="Equip",
+                width=0.15,
+                process=self.equip,
+            ),
+        )
+
+    def _add_description(self, item: Weapon, idx=None):
         st.write(
             " ◆ ".join((
                 item.grip_type.title().replace('_', '-'),
@@ -214,7 +257,7 @@ class WeaponTableWriter(TableWriter):
         )
         st.divider()
 
-    def _add_weapon(self, weapon: Weapon):
+    def _add_weapon(self, weapon: Weapon, idx=None):
         cannot_equip = False
         if weapon.martial:
             cannot_equip = True
@@ -228,7 +271,7 @@ class WeaponTableWriter(TableWriter):
         if st.button('Add as', key=f"{weapon.name}-add-as"):
             add_item_as(weapon)
 
-    def _equip(self, item: Weapon):
+    def equip(self, item: Weapon, idx: int | None = None):
         cannot_equip = False
         if item.martial:
             cannot_equip = True
@@ -237,57 +280,70 @@ class WeaponTableWriter(TableWriter):
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
+        key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
         if st.button('Equip',
-                     key=f'{item.name}-equip',
+                     key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
                 st.session_state.char_controller.equip_item(item)
+                st.toast(f"Equipped {item.name.title()}")
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 
 class ArmorTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Armor",
-                "width": 0.2,
-                "process": lambda s: st.write(f"{s.name.title()} {'♦️' if s.martial else ''}"),
-            },
-            {
-                "name": "Cost",
-                "width": 0.15,
-                "process": lambda s: st.write(f"{s.cost} z"),
-            },
-            {
-                "name": "Defense",
-                "width": 0.155,
-                "process": self._write_defense
-            },
-            {
-                "name": "M.Defense",
-                "width": 0.155,
-                "process": self._write_magic_defense
-            },
-            {
-                "name": "Initiative",
-                "width": 0.15,
-                "process": lambda s: st.write(str(s.bonus_initiative))
-            },
-            {
-                "name": "Add",
-                "width": 0.15,
-                "process": self._add_armor
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Armor",
+                width=0.2,
+                process=lambda s, idx=None: st.write(f"{s.name.title()} {'♦️' if s.martial else ''}"),
+            ),
+            ColumnConfig(
+                name="Cost",
+                width=0.15,
+                process=lambda s, idx=None: st.write(f"{s.cost} z"),
+            ),
+            ColumnConfig(
+                name="Defense",
+                width=0.155,
+                process=self._write_defense,
+            ),
+            ColumnConfig(
+                name="M.Defense",
+                width=0.155,
+                process=self._write_magic_defense,
+            ),
+            ColumnConfig(
+                name="Initiative",
+                width=0.15,
+                process=lambda s, idx=None: st.write(str(s.bonus_initiative)),
+            ),
+            ColumnConfig(
+                name="Add",
+                width=0.15,
+                process=self._add_armor,
+            ),
         )
-        super().__init__()
 
-    def _add_description(self, item: Armor):
+    @property
+    def equip_columns(self):
+        return (
+            *self.base_columns[:-1],  # all except last (Add)
+            ColumnConfig(
+                name="Equip",
+                width=0.15,
+                process=self.equip,
+            ),
+        )
+
+    def _add_description(self, item: Armor, idx=None):
         st.write(item.quality)
         st.divider()
 
-    def _add_armor(self, armor: Armor):
+    def _add_armor(self, armor: Armor, idx=None):
         cannot_equip = False
         if armor.martial:
             cannot_equip = True
@@ -295,86 +351,104 @@ class ArmorTableWriter(TableWriter):
                 if char_class.martial_armor:
                     cannot_equip = False
 
-        if st.button('Add', key=f"{armor.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < armor.cost))):
+        disabled = cannot_equip or (st.session_state.start_equipment.zenit < armor.cost)
+        if st.button('Add', key=f"{armor.name}-add", disabled=disabled):
             st.session_state.start_equipment.backpack.armors.append(deepcopy(armor))
             st.session_state.start_equipment.zenit -= armor.cost
+
         if st.button('Add as', key=f"{armor.name}-add-as"):
             add_item_as(armor)
 
-    def _write_defense(self, item: Armor):
+    def _write_defense(self, item: Armor, idx=None):
         def_bonus = f" + {item.bonus_defense}" if item.bonus_defense > 0 else ""
         if isinstance(item.defense, AttributeName):
             st.write(f"{AttributeName.to_alias(item.defense)}{def_bonus}")
         else:
             st.write(f"{str(item.defense)}{def_bonus}")
 
-    def _write_magic_defense(self, item: Armor):
+    def _write_magic_defense(self, item: Armor, idx=None):
         def_bonus = f" + {item.bonus_magic_defense}" if item.bonus_magic_defense > 0 else ""
         if isinstance(item.magic_defense, AttributeName):
             st.write(f"{AttributeName.to_alias(item.magic_defense)}{def_bonus}")
         else:
             st.write(f"{str(item.magic_defense)}{def_bonus}")
 
-    def _equip(self, item: Armor):
+    def equip(self, item: Armor, idx: int | None = None):
         cannot_equip = False
         if item.martial:
             cannot_equip = True
             for char_class in st.session_state.char_controller.character.classes:
                 if char_class.martial_armor:
                     cannot_equip = False
+
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
+
+        key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
+
         if st.button('Equip',
-                     key=f'{item.name}-equip',
-                     disabled=cannot_equip
-        ):
+                     key=f'{key_suffix}-equip',
+                     disabled=cannot_equip):
             try:
                 st.session_state.char_controller.equip_item(item)
+                st.toast(f"Equipped {item.name.title()}")
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
-class ShieldTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Shield",
-                "width": 0.2,
-                "process": lambda s: st.write(f"{s.name.title()} {'♦️' if s.martial else ''}"),
-            },
-            {
-                "name": "Cost",
-                "width": 0.15,
-                "process": lambda s: st.write(f"{s.cost} z"),
-            },
-            {
-                "name": "Defense",
-                "width": 0.155,
-                "process": self._write_defense
-            },
-            {
-                "name": "M.Defense",
-                "width": 0.155,
-                "process": self._write_magic_defense
-            },
-            {
-                "name": "Initiative",
-                "width": 0.15,
-                "process": lambda s: st.write(str(s.bonus_initiative))
-            },
-            {
-                "name": "Add",
-                "width": 0.15,
-                "process": self._add_shield
-            },
-        )
-        super().__init__()
 
-    def _add_description(self, item: Shield):
+class ShieldTableWriter(TableWriter):
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Shield",
+                width=0.2,
+                process=lambda s, idx=None: st.write(f"{s.name.title()} {'♦️' if s.martial else ''}"),
+            ),
+            ColumnConfig(
+                name="Cost",
+                width=0.15,
+                process=lambda s, idx=None: st.write(f"{s.cost} z"),
+            ),
+            ColumnConfig(
+                name="Defense",
+                width=0.155,
+                process=self._write_defense,
+            ),
+            ColumnConfig(
+                name="M.Defense",
+                width=0.155,
+                process=self._write_magic_defense,
+            ),
+            ColumnConfig(
+                name="Initiative",
+                width=0.15,
+                process=lambda s, idx=None: st.write(str(s.bonus_initiative)),
+            ),
+            ColumnConfig(
+                name="Add",
+                width=0.15,
+                process=self._add_shield,
+            ),
+        )
+
+    @property
+    def equip_columns(self):
+        return (
+            *self.base_columns[:-1],  # all except last (Add)
+            ColumnConfig(
+                name="Equip",
+                width=0.15,
+                process=self.equip,
+            ),
+        )
+
+    def _add_description(self, item: Shield, idx=None):
         st.write(item.quality)
         st.divider()
 
-    def _add_shield(self, shield: Shield):
+    def _add_shield(self, shield: Shield, idx=None):
         cannot_equip = False
         if shield.martial:
             cannot_equip = True
@@ -382,119 +456,127 @@ class ShieldTableWriter(TableWriter):
                 if char_class.martial_shields:
                     cannot_equip = False
 
-        if st.button('Add', key=f"{shield.name}-add", disabled=(cannot_equip or (st.session_state.start_equipment.zenit < shield.cost))):
+        disabled = cannot_equip or (st.session_state.start_equipment.zenit < shield.cost)
+        if st.button('Add', key=f"{shield.name}-add", disabled=disabled):
             st.session_state.start_equipment.backpack.shields.append(deepcopy(shield))
             st.session_state.start_equipment.zenit -= shield.cost
+
         if st.button('Add as', key=f"{shield.name}-add-as"):
             add_item_as(shield)
 
-    def _write_defense(self, item: Shield):
-        st.write(f"+{str(item.bonus_defense)}")
+    def _write_defense(self, item: Shield, idx=None):
+        st.write(f"+{item.bonus_defense}")
 
-    def _write_magic_defense(self, item: Shield):
-        st.write(f"+{str(item.bonus_magic_defense)}")
+    def _write_magic_defense(self, item: Shield, idx=None):
+        st.write(f"+{item.bonus_magic_defense}")
 
-    def _equip(self, item: Shield):
+    def equip(self, item: Shield, idx=None):
         cannot_equip = False
         if item.martial:
             cannot_equip = True
             for char_class in st.session_state.char_controller.character.classes:
                 if char_class.martial_armor:
                     cannot_equip = False
+
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
+
+        key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
+
         if st.button('Equip',
-                     key=f'{item.name}-equip',
+                     key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
                 st.session_state.char_controller.equip_item(item)
+                st.toast(f"Equipped {item.name.title()}")
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 
 class AccessoryTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Accessory",
-                "width": 0.2,
-                "process": lambda s: st.write(s.name.title()),
-            },
-            {
-                "name": "Cost",
-                "width": 0.15,
-                "process": lambda s: st.write(f"{s.cost} z"),
-            },
-            {
-                "name": "Quality",
-                "width": 0.155,
-                "process": lambda s: st.write(s.quality),
-            },
-            {
-                "name": "Equip",
-                "width": 0.15,
-                "process": self._equip
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Accessory",
+                width=0.2,
+                process=lambda s, idx=None: st.write(s.name.title()),
+            ),
+            ColumnConfig(
+                name="Cost",
+                width=0.15,
+                process=lambda s, idx=None: st.write(f"{s.cost} z"),
+            ),
+            ColumnConfig(
+                name="Quality",
+                width=0.155,
+                process=lambda s, idx=None: st.write(s.quality),
+            ),
+            ColumnConfig(
+                name="Equip",
+                width=0.15,
+                process=self.equip,
+            ),
         )
-        super().__init__()
 
-    def _add_description(self, item: Accessory):
+    def _add_description(self, item: Accessory, idx=None):
         st.divider()
 
-    def _equip(self, item: Accessory):
-        if st.button('Equip',
-                     key=f'{item.name}-equip',
-                     disabled=(item in st.session_state.char_controller.equipped_items())):
+    def equip(self, item: Accessory, idx: int | None = None):
+        key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
+        disabled = item in st.session_state.char_controller.equipped_items()
+        if st.button('Equip', key=f'{key_suffix}-equip', disabled=disabled):
             try:
                 st.session_state.char_controller.equip_item(item)
+                st.toast(f"Equipped {item.name.title()}")
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
 
 class ItemTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Other items",
-                "width": 0.2,
-                "process": lambda s: st.write(s.name.title()),
-            },
-            {
-                "name": "Cost",
-                "width": 0.15,
-                "process": lambda s: st.write(f"{s.cost} z"),
-            },
-            {
-                "name": "Quality",
-                "width": 0.155,
-                "process": lambda s: st.write(f"{s.quality}"),
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Other items",
+                width=0.2,
+                process=lambda s, idx=None: st.write(s.name.title()),
+            ),
+            ColumnConfig(
+                name="Cost",
+                width=0.15,
+                process=lambda s, idx=None: st.write(f"{s.cost} z"),
+            ),
+            ColumnConfig(
+                name="Quality",
+                width=0.155,
+                process=lambda s, idx=None: st.write(f"{s.quality}"),
+            ),
         )
-        super().__init__()
 
-    def _add_description(self, item: Accessory):
+    def _add_description(self, item: Accessory, idx=None):
         st.divider()
 
 
 class TherioformTableWriter(TableWriter):
-    def __init__(self):
-        self.columns = (
-            {
-                "name": "Therioform",
-                "width": 0.3,
-                "process": lambda t: st.write(t.name.title()),
-            },
-            {
-                "name": "Genoclepsis suggestions",
-                "width": 0.7,
-                "process": lambda t: st.write(t.creatures),
-            },
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="Therioform",
+                width=0.3,
+                process=lambda t, idx=None: st.write(t.name.title()),
+            ),
+            ColumnConfig(
+                name="Genoclepsis suggestions",
+                width=0.7,
+                process=lambda t, idx=None: st.write(t.creatures),
+            ),
         )
-        super().__init__()
 
-    def _add_description(self, therioform: Therioform):
+    def _add_description(self, therioform: Therioform, idx=None):
         st.write(therioform.description)
 
 

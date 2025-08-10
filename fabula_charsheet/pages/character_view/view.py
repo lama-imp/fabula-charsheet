@@ -1,20 +1,34 @@
 import streamlit as st
 
 import config
-from data.models import CharState, Status, AttributeName, Weapon, GripType, WeaponCategory, \
-    WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, Attribute, \
+from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
+    WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
     Skill
-from pages.controller import CharacterController, StateController
+from pages.controller import CharacterController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
-    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter
+    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter
 from pages.character_view.utils import set_view_state, get_avatar_path
 from pages.character_view.view_state import ViewState
+
+
+@st.dialog(title="Update your avatar")
+def avatar_update(controller: CharacterController):
+    uploaded_avatar = st.file_uploader(
+        "avatar uploader", accept_multiple_files=False,
+        type=["jpg", "jpeg", "png", "gif"],
+        label_visibility="hidden"
+    )
+    if uploaded_avatar is not None:
+        st.image(uploaded_avatar, width=100)
+    if st.button("Use this avatar", disabled=not uploaded_avatar):
+        controller.dump_avatar(uploaded_avatar)
+        st.rerun()
 
 
 @st.dialog("Select a skill to increase by 1 point.", width="large")
 def level_up(controller: CharacterController):
     selected = set()
-    def add_point(skill: Skill):
+    def add_point(skill: Skill, idx=None):
         if st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden"):
             selected.add(skill.name)
         else:
@@ -26,15 +40,7 @@ def level_up(controller: CharacterController):
         reverse=True
     )
     writer = SkillTableWriter()
-    writer.columns = (
-        SkillTableWriter().columns[0],
-        SkillTableWriter().columns[1],
-        {
-            "name": "Level",
-            "width": 0.2,
-            "process": add_point
-        }
-    )
+    writer.columns = writer.level_up_columns(add_point)
     for char_class in sorted_classes:
         st.markdown(f"#### {char_class.name.title()}")
         writer.write_in_columns([skill for skill in char_class.skills if skill.current_level < skill.max_level])
@@ -96,7 +102,7 @@ def remove_chimerist_spell(controller: CharacterController):
 @st.dialog("Add an item")
 def add_item(controller: CharacterController):
     item_type = st.segmented_control("Item type", [Weapon, Armor, Shield, Accessory, Item], format_func=lambda x: x.__name__, selection_mode="single")
-    print(item_type)
+
     if item_type:
         name = st.text_input("Item name")
         item_dict = {
@@ -181,19 +187,19 @@ def add_item(controller: CharacterController):
 @st.dialog("Remove an item")
 def remove_item(controller: CharacterController):
     all_items = controller.character.inventory.backpack.all_items()
-    for item in all_items:
+    for i, item in enumerate(all_items):
         c1, c2 = st.columns([0.8, 0.2])
         with c1:
             st.write(f"{item.__class__.__name__} - {item.name.title()}")
         with c2:
-            if st.button("Remove", key=f"{item.name}-remove"):
+            if st.button("Remove", key=f"{item.name}-{i}-remove"):
                 controller.remove_item(item)
                 st.rerun()
 
 
 def build(controller: CharacterController):
     st.set_page_config(layout="wide")
-    st.session_state.state_controller = st.session_state.get("state_controller", StateController())
+    st.session_state.state_controller = st.session_state.get("state_controller")
     st.title(f"{controller.character.name}")
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Skills", "Spells", "Equipment", "Special"])
 
@@ -208,6 +214,8 @@ def build(controller: CharacterController):
                     st.image(avatar_path, use_container_width=True)
                 else:
                     st.image(config.default_avatar_path, width=150)
+                if st.button("Update avatar"):
+                    avatar_update(controller)
             with col2:
                 st.write(f"{controller.character.identity} from {controller.character.origin}")
                 st.markdown(f"**Level**: {controller.character.level}")
@@ -346,7 +354,7 @@ def build(controller: CharacterController):
                         accuracy=[AttributeName.dexterity, AttributeName.might],
                     )
                 ]
-            for weapon in equipped_weapon:
+            for i, weapon in enumerate(equipped_weapon):
                 c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
                 with c1:
                     st.markdown("⚔️")
@@ -362,7 +370,7 @@ def build(controller: CharacterController):
                     if st.button(
                             "",
                             icon=":material/arrow_downward:",
-                            key=f"{weapon.name}-unequip",
+                            key=f"{weapon.name}-{i}-unequip",
                             help="Unequip this item",
                             disabled=(weapon.name == "unarmed strike")
                         ):
@@ -495,15 +503,7 @@ def build(controller: CharacterController):
     with tab2:
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
         writer = SkillTableWriter()
-        writer.columns = (
-            SkillTableWriter().columns[0],
-            SkillTableWriter().columns[1],
-            {
-                "name": "Level",
-                "width": 0.2,
-                "process": lambda s: st.write(str(s.current_level))
-            }
-        )
+        writer.columns = writer.level_readonly_columns
         for char_class in sorted_classes:
             st.markdown(f"#### {char_class.name.title()}")
             writer.write_in_columns([skill for skill in char_class.skills if skill.current_level > 0])
@@ -550,26 +550,16 @@ def build(controller: CharacterController):
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
             weapon_writer = WeaponTableWriter()
-            weapon_writer.columns = (
-                *WeaponTableWriter().columns[0:4],
-                {
-                    "name": "Equip",
-                    "width": 0.2,
-                    "process": weapon_writer._equip
-                }
-            )
+            weapon_writer.columns = weapon_writer.equip_columns
             weapon_writer.write_in_columns(backpack.weapons)
         if backpack.armors:
             armor_writer = ArmorTableWriter()
-            armor_writer.columns = (
-                *ArmorTableWriter().columns[0:5],
-                {
-                    "name": "Equip",
-                    "width": 0.2,
-                    "process": ArmorTableWriter()._equip
-                }
-            )
+            armor_writer.columns = armor_writer.equip_columns
             armor_writer.write_in_columns(backpack.armors)
+        if backpack.shields:
+            shield_writer = ShieldTableWriter()
+            shield_writer.columns = shield_writer.equip_columns
+            shield_writer.write_in_columns(backpack.shields)
         if backpack.accessories:
             AccessoryTableWriter().write_in_columns(backpack.accessories)
         if backpack.other:
@@ -591,6 +581,7 @@ def build(controller: CharacterController):
     with col1:
         if st.button("Save current character"):
             controller.dump_character()
+            st.session_state.state_controller.dump_state()
     with col2:
         if st.button("Load another character"):
             set_view_state(ViewState.load)
