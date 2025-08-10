@@ -5,7 +5,8 @@ from .view_state import ViewState
 from pages.controller import CharacterController
 
 
-title = "Load a character"
+loc = st.session_state.localizator.get(st.session_state.language)
+title = loc.page_title_character_view
 icon = ":material/file_open:"
 
 
