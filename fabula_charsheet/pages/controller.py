@@ -131,8 +131,11 @@ class CharacterController:
                         + combined_weapon_bonus 
                         + other_bonuses)
             else:
-                return self.character.dexterity.current + armor.bonus_defense + other_bonuses
-        return self.character.dexterity.current + (shield.bonus_defense if shield else 0) + other_bonuses
+                return self.character.dexterity.current + armor.bonus_defense + combined_weapon_bonus + other_bonuses
+        return (self.character.dexterity.current 
+            + (shield.bonus_defense if shield else 0) 
+            + combined_weapon_bonus 
+            + other_bonuses)
 
     def magic_defense(self):
         armor = self.character.inventory.equipped.armor
