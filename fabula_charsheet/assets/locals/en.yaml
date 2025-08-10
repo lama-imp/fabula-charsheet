@@ -161,6 +161,10 @@ damage_poison: "Poison"
 # Items
 item_no_quality: "No Quality"
 
+# Zenit
+zenit: zenit
+zenit_short: z
+
 # Armors
 item_silk_shirt: "Silk Shirt"
 item_combat_tunic: "Combat Tunic"
@@ -196,6 +200,7 @@ item_greatsword: "Greatsword"
 item_rapier: "Rapier"
 item_improvised_ranged: "Improvised (Ranged)"
 item_shuriken: "Shuriken"
+hr: HR
 
 # Skills
 skill_consume: "Consume"
@@ -368,6 +373,7 @@ spell_target_special: "Special"
 # Spell Durations
 spell_duration_instantaneous: "Instantaneous"
 spell_duration_scene: "Scene"
+spell_target_marker: T
 
 # Spells
 spell_aura: "Aura"
@@ -484,4 +490,52 @@ page_class_skills_added_info: "You added {added} skills from {available} availab
 page_class_add_class_button: "Add a class"
 page_class_remove_class_button: "Remove a class"
 page_class_more_skill_points_warning: "You need to put {points} more points into skills."
+
+# Table writer
+column_skill: Skill
+column_description: Description
+column_level: Level
+column_spell: "Spell"
+column_mp: "MP"
+column_target: "Target"
+column_duration: "Duration"
+column_select: "Select"
+column_weapon: "Weapon"
+column_cost: "Cost"
+column_accuracy: "Accuracy"
+column_damage: "Damage"
+column_add: "Add"
+column_armor: "Armor"
+column_defense: "Defense"
+column_magic_defense: "M.Defense"
+column_initiative: "Initiative"
+column_shield: "Shield"
+column_equip: "Equip"
+column_accessory: "Accessory"
+column_quality: "Quality"
+column_items: "Other items"
+column_therioform: "Therioform"
+column_genoclepsis: "Genoclepsis suggestions"
+
+# Buttons
+add_button: Add
+add_as_button: Add as
+equip_button: Equip
+
+# Messages
+equipped_message: "Equipped {item_name}"
+skills_points_remaining: "You can put {count} more points to your skills."
+skills_selected: "You have selected following skills:"
+melee: "melee weapons"
+ranged: "ranged weapons"
+armor: "armor"
+shields: "shields"
+character_can_equip_martial: "Your character can equip martial {items}."
+character_cannot_equip_martial: "Your character can not equip martial items."
+page_equipment_create_new_name: "Create a new name"
+page_equipment_write_new_name: "Write new name here"
+page_equipment_add_item_as_button: "Add this item as {name}"
+page_equipment_unknown_item_type: "Unknown item type. Cannot add."
+page_equipment_added: "Added {name}"
+
 
