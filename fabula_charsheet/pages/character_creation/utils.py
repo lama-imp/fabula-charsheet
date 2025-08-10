@@ -84,12 +84,12 @@ class SkillTableWriter(TableWriter):
             ColumnConfig(
                 name="skill",
                 width=0.2,
-                process=lambda s, idx=None: st.write(s.name.title()),
+                process=lambda s, idx=None: st.write(s.localized_name(loc)),
             ),
             ColumnConfig(
                 name="description",
                 width=0.7,
-                process=lambda s, idx=None: st.write(s.description),
+                process=lambda s, idx=None: st.write(s.localized_description(loc)),
             ),
             ColumnConfig(
                 name="level",
@@ -259,7 +259,7 @@ class WeaponTableWriter(TableWriter):
         st.write(f"{s.cost} {currency}")
 
     def _process_accuracy(self, s, idx=None):
-        st.write(s.format_accuracy())
+        st.write(s.format_accuracy(loc))
 
     def _process_damage(self, s, idx=None):
         hr_label = getattr(loc, "hr", "HR")
