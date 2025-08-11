@@ -213,11 +213,11 @@ def build(controller: CharacterController):
                     st.write(weapon.localized_name(loc))
                 with c2:
                     st.markdown(f"_{loc.column_accuracy}_")
-                    accuracy_str = (" + ".join([f"d{getattr(controller.character, attribute).current }"for attribute in weapon.accuracy]))
+                    accuracy_str = (" + ".join([f"{loc.dice_prefix}{getattr(controller.character, attribute).current }"for attribute in weapon.accuracy]))
                     st.write(accuracy_str)
                 with c3:
                     st.markdown(f"_{loc.column_damage}_")
-                    st.write(f"【{loc.hr} + {weapon.bonus_damage}】 {weapon.damage_type}")
+                    st.write(f"【{loc.hr} + {weapon.bonus_damage}】 {weapon.damage_type.localized_name(loc)}")
                 with c4:
                     if st.button(
                             "",
@@ -337,12 +337,12 @@ def build(controller: CharacterController):
                 st.rerun()
 
             with att_col1:
-                st.write(f"**{loc.attr_dexterity}**: d{controller.character.dexterity.current}")
-                st.write(f"**{loc.attr_might}**: d{controller.character.might.current}")
+                st.write(f"**{loc.attr_dexterity}**: {loc.dice_prefix}{controller.character.dexterity.current}")
+                st.write(f"**{loc.attr_might}**: {loc.dice_prefix}{controller.character.might.current}")
                 st.markdown(f"**{loc.column_defense}**: {controller.defense()}")
             with att_col2:
-                st.write(f"**{loc.attr_insight}**: d{controller.character.insight.current}")
-                st.write(f"**{loc.attr_willpower}**: d{controller.character.willpower.current}")
+                st.write(f"**{loc.attr_insight}**: {loc.dice_prefix}{controller.character.insight.current}")
+                st.write(f"**{loc.attr_willpower}**: {loc.dice_prefix}{controller.character.willpower.current}")
                 st.markdown(f"**{loc.column_magic_defense}**: {controller.magic_defense()}")
 
         st.divider()

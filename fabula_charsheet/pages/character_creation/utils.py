@@ -243,7 +243,7 @@ class WeaponTableWriter(TableWriter):
         return (
             *self.base_columns[:-1],
             ColumnConfig(
-                name="Equip",
+                name="equip",
                 width=0.15,
                 process=self.equip,
             ),
@@ -357,7 +357,7 @@ class ArmorTableWriter(TableWriter):
         return (
             *self.base_columns[:-1],  # all except last (Add)
             ColumnConfig(
-                name="Equip",
+                name="equip",
                 width=0.15,
                 process=self.equip,
             ),

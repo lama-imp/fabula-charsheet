@@ -18,7 +18,7 @@ def build(controller: CharacterController):
         "additional_zenit",
         (random.randint(1, 6) + random.randint(1, 6)) * 10
     )
-    st.title("Purchase equipment")
+    st.title(loc.page_equipment_title)
     st.markdown(loc.equipment_message)
 
     show_martial(controller.character)

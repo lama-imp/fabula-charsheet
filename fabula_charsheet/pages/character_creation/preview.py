@@ -233,94 +233,118 @@ def build(controller: CharacterController):
     with col1:
         i_col1, i_col2 = st.columns([0.8, 0.2])
         with i_col1:
-            st.markdown(f"#### Name: {controller.character.name}")
+            st.markdown(f"#### {loc.page_view_character_name.format(name=controller.character.name)}")
         with i_col2:
-            if st.button("Edit"):
+            if st.button(loc.edit_button):
                 edit_identity_dialog(controller)
-        st.write(f"{controller.character.identity} from {controller.character.origin}")
-        st.markdown(f"**Theme**: {controller.character.theme}")
-        st.markdown(f"**Level**: {controller.character.level}")
+        st.write(loc.page_view_identity_origin.format(identity=controller.character.identity, origin=controller.character.origin))
+        st.markdown(f"**{loc.page_view_theme}**: {controller.character.theme}")
+        st.markdown(f"**{loc.page_view_level}**: {controller.character.level}")
 
         a_col1, a_col2 = st.columns(2)
         with a_col1:
-            st.markdown("##### Attributes")
+            st.markdown(f"##### {loc.page_view_attributes}")
         with a_col2:
-            if st.button("Edit attributes"):
+            if st.button(loc.edit_attributes_button):
                 edit_attributes_dialog(controller)
-        st.write(f"Dexterity: d{controller.character.dexterity.base}")
-        st.write(f"Might: d{controller.character.might.base}")
-        st.write(f"Insight: d{controller.character.insight.base}")
-        st.write(f"Willpower: d{controller.character.willpower.base}")
+        st.write(f"{loc.attr_dexterity}: {loc.dice_prefix}{controller.character.dexterity.base}")
+        st.write(f"{loc.attr_might}: {loc.dice_prefix}{controller.character.might.base}")
+        st.write(f"{loc.attr_insight}: {loc.dice_prefix}{controller.character.insight.base}")
+        st.write(f"{loc.attr_willpower}: {loc.dice_prefix}{controller.character.willpower.base}")
         st.write("")
-        st.markdown(f"**HP**: {controller.max_hp()} | **MP**: {controller.max_mp()} | **IP**: {controller.max_ip()}")
-        st.markdown(f"**Defense**: {controller.defense()} | **Magic Defense**: {controller.magic_defense()}")
+        st.markdown(
+            f"**{loc.hp}**: {controller.max_hp()} | **{loc.mp}**: {controller.max_mp()} | **{loc.ip}**: {controller.max_ip()}"
+        )
+        st.markdown(
+            f"**{loc.column_defense}**: {controller.defense()} | **{loc.column_magic_defense}**: {controller.magic_defense()}"
+        )
 
     with col2:
-        st.markdown("#### Classes")
+        st.markdown(f"#### {loc.page_view_classes}")
         if not controller.has_enough_skills():
             pass
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
         for char_class in sorted_classes:
             c_col1, c_col2, c_col3 = st.columns(3)
             with c_col1:
-                st.markdown(f"##### {char_class.name.title()}")
+                st.markdown(f"##### {char_class.name.localized_name(loc)}")
             with c_col2:
-                if st.button("Edit", key=f"{char_class.name}-edit"):
+                if st.button(loc.edit_button, key=f"{char_class.name}-edit"):
                     edit_class_dialog(controller, char_class)
             with c_col3:
-                if st.button("Remove", key=f"{char_class.name}-remove"):
+                if st.button(loc.remove_button, key=f"{char_class.name}-remove"):
                     controller.character.classes.remove(char_class)
                     st.rerun()
-            st.write("**Skills**:")
+            st.write(f"**{loc.page_view_skills}:**")
             added_skills = [skill for skill in char_class.skills if skill.current_level > 0]
             for skill in added_skills:
-                st.write(f"{skill.name.title()} - level {skill.current_level}")
+                st.write(f"{skill.localized_name(loc)} - level {skill.current_level}")
             if controller.character.spells.get(char_class.name, None):
-                st.write("**Spells**:")
-                st.write(", ".join(spell.name.title() for spell in controller.character.spells[char_class.name]))
+                st.write(f"**{loc.page_view_spells}:**")
+                st.write(", ".join(spell.localized_name(loc) for spell in controller.character.spells[char_class.name]))
             st.divider()
-        if st.button("Add new class", disabled=controller.has_enough_skills()):
+        if st.button(loc.page_view_add_new_class_button, disabled=controller.has_enough_skills()):
             st.session_state.class_spells = []
             add_new_class_dialog(controller, ClassController(), loc)
 
     with col3:
-        st.markdown("#### Equipment")
-        st.write(f"You have {controller.character.inventory.zenit} zenit")
-        st.markdown("**EQUIPPED**")
+        st.markdown(f"#### {loc.page_view_equipment}")
+        st.write(loc.page_view_zenit.format(amount=controller.character.inventory.zenit))
+        st.markdown(f"**{loc.page_view_equipped.upper()}**")
         equipped_categories = ["weapon", "armor", "shield"]
         for category in equipped_categories:
+            key = f"item_{category}"
+            localized_category = getattr(loc, key, category.title())
             eq_col1, eq_col_2 = st.columns([0.7, 0.3])
             with eq_col1:
                 equipped_item = getattr(controller.character.inventory.equipped, category)
                 if isinstance(equipped_item, list):
-                    equipped_item_str = ' | '.join([w.name.title() for w in equipped_item if w])
+                    equipped_item_str = ' | '.join([w.localized_name(loc) for w in equipped_item if w])
                 else:
-                    equipped_item_str = equipped_item.name.title() if equipped_item else ''
-                st.markdown(f"**{category.title()}**: {equipped_item_str}")
+                    equipped_item_str = equipped_item.localized_name(loc) if equipped_item else ''
+                st.markdown(f"**{localized_category}**: {equipped_item_str}")
             with eq_col_2:
-                if st.button("Unequip",
+                if st.button(loc.unequip_button,
                           key=f"{category}-unequip",
                           disabled=(not equipped_item)):
                     unequip_item(controller, category)
                     st.rerun()
         show_martial(controller.character)
         categories = [k for k, v in controller.character.inventory.backpack.model_dump().items() if v]
-        st.markdown("**INVENTORY**")
+        st.markdown(f"**{loc.page_view_inventory}**")
         for category in categories:
             for i, item in enumerate(getattr(controller.character.inventory.backpack, category)):
                 if category == "armors":
-                    formatter = f"{'Martial ' if item.martial else ''}Armor - "
+                    if item.martial:
+                        display_str = loc.page_view_martial_display_armor.format(name=item.localized_name(loc))
+                    else:
+                        display_str = loc.page_view_display_armor.format(name=item.localized_name(loc))
                 elif category == "weapons":
-                    formatter = f"{'Martial ' if item.martial else ''}{item.range.title()} {item.grip_type.replace('_', '-').title()} Weapon - "
+                    if item.martial:
+                        display_str = loc.page_view_martial_display_weapon.format(
+                            range=item.range.localized_name(loc),
+                            grip=item.grip_type.localized_name(loc),
+                            name=item.localized_name(loc),
+                        )
+                    else:
+                        display_str = loc.page_view_display_weapon.format(
+                            range=item.range.localized_name(loc),
+                            grip=item.grip_type.localized_name(loc),
+                            name=item.localized_name(loc),
+                        )
                 elif category == "shields":
-                    formatter = f"{'Martial ' if item.martial else ''}Shield - "
+                    if item.martial:
+                        display_str = loc.page_view_martial_display_shield.format(name=item.localized_name(loc))
+                    else:
+                        display_str = loc.page_view_display_shield.format(name=item.localized_name(loc))
                 else:
-                    formatter = ""
+                    display_str = f"**{item.localized_name(loc)}**"
+
                 item_name_col, item_button_col = st.columns([0.7, 0.3])
                 with item_name_col:
-                    st.write(f"{formatter}**{item.name.title()}**")
+                    st.write(display_str)
                 with item_button_col:
-                    if st.button('Equip',
+                    if st.button(loc.equip_button,
                                  key=f'{item.name}-{i}-equip',
                                  disabled=(item in controller.equipped_items())):
                         equip_item(controller, item)

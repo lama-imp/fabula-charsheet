@@ -37,16 +37,16 @@ ritual_elementalism: "Elementalism"
 ritual_entropism: "Entropism"
 
 # Character themes
-character_theme_ambition: "Ambition"
-character_theme_anger: "Anger"
-character_theme_belonging: "Belonging"
-character_theme_doubt: "Doubt"
-character_theme_duty: "Duty"
-character_theme_guilt: "Guilt"
-character_theme_hope: "Hope"
-character_theme_justice: "Justice"
-character_theme_mercy: "Mercy"
-character_theme_vengeance: "Vengeance"
+theme_ambition: "Ambition"
+theme_anger: "Anger"
+theme_belonging: "Belonging"
+theme_doubt: "Doubt"
+theme_duty: "Duty"
+theme_guilt: "Guilt"
+theme_hope: "Hope"
+theme_justice: "Justice"
+theme_mercy: "Mercy"
+theme_vengeance: "Vengeance"
 
 # Identity step errors
 invalid_level_error: "Level {level} should be between 1 and 60."
@@ -74,6 +74,11 @@ item_armor: "Armor"
 item_shield: "Shield"
 item_accessory: "Accessory"
 item_item: "Item"
+item_category_armors: "Armors"
+item_category_weapons: "Weapons"
+item_category_shields: "Shields"
+item_category_accessories: "Accessories"
+item_category_other: "Other"
 
 # Zenit
 zenit: zenit
@@ -204,9 +209,11 @@ column_genoclepsis: "Genoclepsis suggestions"
 add_button: "Add"
 add_as_button: "Add as"
 equip_button: "Equip"
+unequip_button: "Unequip"
 no_button: "No"
 confirm_button: "Confirm"
 remove_button: "Remove"
+edit_button: "Edit"
 
 # Messages
 equipped_message: "Equipped {item_name}"
@@ -225,6 +232,7 @@ page_equipment_unknown_item_type: "Unknown item type. Cannot add."
 page_equipment_added: "Added {name}"
 
 # Equipment page
+page_equipment_title: "Purchase equipment"
 equipment_message: |
   You get a total budget of 500 zenit to purchase equipment with. By default, you can only purchase basic weapons and basic armor and shields; these items are listed on the next four pages for easy reference. If you want to purchase rare items (page 266) or transports (page 125), discuss it with the rest of your group.
 
@@ -262,6 +270,7 @@ page_attributes_message: |
 page_attributes_sum_error: "Sum of your attributes should be equal to 32."
 
 # Preview page
+page_character_preview_title: "Character preview"
 page_character_preview_message: |
   Take a look at your character.
 
@@ -270,6 +279,27 @@ page_save_character_button: "Save character"
 page_save_character_toast: "Now you can load your character."
 page_character_preview_skill_points_warning: "You need to put exactly {level} points to your skills."
 page_upload_avatar_button: "Upload avatar"
+page_avatar_uploader_title: "Upload your avatar"
+page_identity_dialog_title: "Edit your name, identity, origin or theme."
+page_attributes_dialog_title: "Edit attributes."
+page_class_edit_dialog_title: "Edit this class"
+page_view_character_name: "Name: {name}"
+page_view_attributes: "Attributes"
+edit_attributes_button: "Edit attributes"
+page_view_classes: "Classes"
+page_view_skills: "Skills"
+page_view_spells: "Spells"
+page_view_add_new_class_button: "Add new class"
+page_view_equipment: "Equipment"
+page_view_zenit: "You have {amount} zenit"
+page_view_inventory: "INVENTORY"
+page_view_martial: "Martial "
+page_view_display_weapon: "{range} {grip} Weapon - **{name}**"
+page_view_display_armor: "Armor - **{name}**"
+page_view_display_shield: "Shield - **{name}**"
+page_view_martial_display_weapon: "Martial {range} {grip} Weapon - **{name}**"
+page_view_martial_display_armor: "Martial Armor - **{name}**"
+page_view_martial_display_shield: "Martial Shield - **{name}**"
 
 # Loader page
 page_load_character_title: "Load a character"
