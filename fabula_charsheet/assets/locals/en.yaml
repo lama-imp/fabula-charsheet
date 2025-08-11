@@ -45,101 +45,6 @@ character_theme_justice: "Justice"
 character_theme_mercy: "Mercy"
 character_theme_vengeance: "Vengeance"
 
-# Mutant's therioforms
-therioform_amphibia: "Amphibia"
-therioform_amphibia_description: |
-  You may breathe underwater and your eyes can see perfectly in dim light.
-
-  When you recover Hit Points, you recover 5 additional Hit Points and you may
-  immediately recover from a single status effect of your choice.
-therioform_amphibia_creatures: "Frogs, salamanders, regenerating creatures, aquatic monsters."
-
-therioform_arpaktida: "Arpaktida"
-therioform_arpaktida_description: |
-  You treat your Insight as if it were one die size higher (to a maximum of d12).
-
-  When you deal damage to one or more creatures for the first time during your turn,
-  if at least one of them is in Crisis, you deal 5 extra damage to each of those creatures.
-therioform_arpaktida_creatures: "Wolves, birds of prey, creatures with sharp hunting senses."
-
-therioform_dynamotheria: "Dynamotheria"
-therioform_dynamotheria_description: |
-  You treat your Might as if it were one die size higher (to a maximum of d12).
-
-  When you succeed on a Check to advance or turn back a Clock, if that Check includes Might,
-  you may fill or erase 1 additional section of that Clock.
-therioform_dynamotheria_creatures: "Bears, dinosaurs, creatures of massive size and strength."
-
-therioform_electrophora: "Electrophora"
-therioform_electrophora_description: |
-  When you deal damage with an attack or spell, you may have all that damage become bolt.
-
-  While your unarmed strikes deal bolt damage, any enemy who loses 20 or more Hit Points
-  due to one of your unarmed strikes also suffers slow.
-therioform_electrophora_creatures: "Electric creatures, lightning elementals, robots."
-
-therioform_neurophagoida: "Neurophagoida"
-therioform_neurophagoida_description: |
-  When you use the Biophagy Skill, you also recover an amount of Mind Points equal to
-  【4 + (your Skill Level in Theriomorphosis)】.
-therioform_neurophagoida_creatures: "Parasites, undead, creatures who feed on souls."
-
-therioform_placophora: "Placophora"
-therioform_placophora_description: |
-  You may treat your Defense score as being equal to
-  【13 + (half your Skill Level in Theriomorphosis)】 (you may still use your normal scores if better).
-therioform_placophora_creatures: "Crustaceans, turtles, armored creatures and vehicles."
-
-therioform_pneumophora: "Pneumophora"
-therioform_pneumophora_description: |
-  When you deal damage with an attack or spell, you may have all that damage become air.
-
-  While your unarmed strikes deal air damage, any enemy who loses 20 or more Hit Points
-  due to one of your unarmed strikes also suffers weak.
-therioform_pneumophora_creatures: "Jet-propulsion mollusks, great winged beasts, rockets."
-
-therioform_polypoda: "Polypoda"
-therioform_polypoda_description: |
-  Your attacks with unarmed strikes gain multi (3).
-therioform_polypoda_creatures: "Squids, octopi, creatures with tendrils or vines."
-
-therioform_pterotheria: "Pterotheria"
-therioform_pterotheria_description: |
-  You are able to fly. In addition to the obvious advantages in mobility,
-  your melee attacks can target flying creatures and you cannot be targeted by melee attacks
-  unless the attacker is flying or is somehow able to reach flying targets.
-
-  These benefits do not apply if you are unable to fly freely (such as when inside a vehicle
-  designed for human-sized creatures, or in a narrow corridor).
-
-  Additionally, when you suffer air, bolt or ice damage during a conflict scene,
-  you lose these benefits until the start of your next turn.
-therioform_pterotheria_creatures: "Bats, birds, winged insects, flying creatures."
-
-therioform_pyrophora: "Pyrophora"
-therioform_pyrophora_description: |
-  When you deal damage with an attack or spell, you may have all that damage become fire.
-
-  While your unarmed strikes deal fire damage, any enemy who loses 20 or more Hit Points
-  due to one of your unarmed strikes also suffers dazed.
-therioform_pyrophora_creatures: "Bombardier beetles, pistol shrimps, fire elementals."
-
-therioform_tachytheria: "Tachytheria"
-therioform_tachytheria_description: |
-  You treat your Dexterity as if it were one die size higher (to a maximum of d12).
-
-  When you succeed on a Check to advance or turn back a Clock, if that Check includes Dexterity,
-  you may fill or erase 1 additional section of that Clock.
-therioform_tachytheria_creatures: "Cats, gazelles, hares, creatures that are agile and quick."
-
-therioform_toxicophora: "Toxicophora"
-therioform_toxicophora_description: |
-  When you deal damage with an attack or spell, you may have all that damage become poison.
-
-  While your unarmed strikes deal poison damage, any enemy who loses 20 or more Hit Points
-  due to one of your unarmed strikes also suffers poisoned.
-therioform_toxicophora_creatures: "Spiders, snakes, toxic slimes and other venomous creatures."
-
 # Identity step errors
 invalid_level_error: "Level {level} should be between 1 and 60."
 identity_empty_error: "Identity should not be empty."
@@ -148,6 +53,7 @@ theme_empty_error: "Theme should not be empty."
 origin_empty_error: "Origin should not be empty."
 
 # Damage
+damage_no_damage: "No Damage"
 damage_physical: "Physical"
 damage_air: "Air"
 damage_earth: "Earth"
@@ -160,6 +66,11 @@ damage_poison: "Poison"
 
 # Items
 item_no_quality: "No Quality"
+item_weapon: "Weapon"
+item_armor: "Armor"
+item_shield: "Shield"
+item_accessory: "Accessory"
+item_item: "Item"
 
 # Zenit
 zenit: zenit
@@ -200,253 +111,7 @@ item_greatsword: "Greatsword"
 item_rapier: "Rapier"
 item_improvised_ranged: "Improvised (Ranged)"
 item_shuriken: "Shuriken"
-hr: HR
-
-# Skills
-skill_consume: "Consume"
-skill_consume_description: "After you deal damage to one or more creatures with a spell, if you have an arcane, dagger or flail weapon equipped, you recover【SL × 2】Mind Points."
-
-skill_feral_speech: "Feral Speech"
-skill_feral_speech_description: "You can communicate with creatures of the beast, monster and plant Species."
-
-skill_pathogenesis: "Pathogenesis"
-skill_pathogenesis_description: |
-  When you deal damage to one or more creatures with one of your Chimerist spells,
-  each of those creatures that share their **Species** with the creature you originally
-  learned that spell from suffers **poisoned**.
-
-skill_ritual_chimerism: "Ritual Chimerism"
-skill_ritual_chimerism_description: |
-  You may perform Rituals whose effects fall within the Chimerism discipline.
-
-  When you acquire this Skill, choose【INS + WLP】or【MIG + WLP】. From now on, your Chimerism Rituals will
-  use the chosen Attributes for the Magic Check.
-
-skill_spell_mimic: "Spell Mimic"
-skill_spell_mimic_description: |
-  When you see a creature belonging to the beast, monster or plant Species cast a spell,
-  you may immediately choose to learn that spell as a Chimerist spell of your own: if you do, record
-  the Species of the creature you learned it from.
-  
-  When you first acquire this Skill, choose【INS + WLP】or【MIG + WLP】. From now on, your offensive
-  (⚡) Chimerist spells will use the chosen Attributes for the Magic Check, regardless of the Attributes
-  used by the creature you learned the spell from.
-  
-  You may have up to【SL + 2】different Chimerist spells memorized this way. If you want to memorize
-  a new Chimerist spell but are already at your limit, you must forget one of your old spells and
-  replace it with the new spell.
-
-skill_bodyguard: "Bodyguard"
-skill_bodyguard_description: >
-  If you perform the Guard action and choose to provide cover to another creature, that
-  creature gains Resistance to all damage types until the start of your next turn.
-
-skill_defensive_mastery: "Defensive Mastery"
-skill_defensive_mastery_description: >
-  As long as you have a shield or a martial armor equipped, all damage you suffer is
-  reduced by【SL】(applied before damage Affinities).
-
-skill_dual_shieldbearer: "Dual Shieldbearer"
-skill_dual_shieldbearer_description: >
-  You may now equip a shield in your main hand slot. As long as you have two shields
-  equipped, you gain the benefits of both items and may treat them as combined 
-  two-handed melee brawling weapon.
-
-skill_fortress: "Fortress"
-skill_fortress_description: >
-  Permanently increase your maximum Hit Points by【SL × 3】.
-
-skill_protect: "Protect"
-skill_protect_description: >
-  When another creature is threatened by an attack, spell or other danger, you may take
-  their place (any Checks that are part of the danger will be performed against you; you
-  may declare the use of this Skill before or after the Checks have been made). If the
-  danger already affected you, it affects you twice (resolve both instances separately);
-  you also cannot protect multiple creatures from the same danger. If you use this Skill
-  during a conflict, you cannot use it again until the start of your next turn.
-
-skill_mutant_unarmed_mastery: "Mutant Unarmed Mastery"
-skill_mutant_unarmed_mastery_description: >
-  Your unarmed strikes deal【6 + (SL × 2)】extra damage, and you gain a bonus equal to【SL】to your Accuracy Checks with them.
-  At the start of your turn during a conflict, you may choose a weapon Category other than brawling.
-  If you do, your unarmed strikes now belong to the chosen Category.
-  If you choose bow, firearm or thrown, they become ranged weapons instead of melee.
-  If you choose dagger or sword, they cannot be used with Triple Slash.
-  These changes last until the start of your next turn.
-
-skill_biophagy: "Biophagy"
-skill_biophagy_description: >
-  After one of your attacks or offensive spells causes one or more enemies to lose Hit Points,
-  if you are in Crisis, you may recover【SL × 5】Hit Points.
-
-skill_akromorphosis: "Akromorphosis"
-skill_akromorphosis_description: >
-  Each time you acquire this Skill, you learn a therioform.
-  You may use an action and spend one third of your current Hit Points (rounded down) to manifest the effects of up to two therioforms from those you have learned.
-  The details of this transformation are explained in the therioform section.
-
-skill_ecdysis: "Ecdysis"
-skill_ecdysis_description: >
-  After you lose Hit Points due to damage, if that damage had a type other than physical,
-  you may spend 10 Hit Points to gain Resistance to that damage type until you use this Skill again.
-  You cannot use this Skill if doing so would reduce you to 0 HP.
-
-skill_genoclepsis: "Genoclepsis"
-skill_genoclepsis_description: >
-  When you deal damage to one or more NPCs, you learn their Species,
-  and the GM chooses【SL】therioforms appropriate to those NPCs.
-  If you have acquired the Theriomorphosis Skill, you may immediately pay its HP cost and use it
-  to manifest those therioforms (even if they are not among those you have learned).
-
-skill_theriomorphosis: "Theriomorphosis"
-skill_theriomorphosis_description: |
-  Each time you acquire this Skill, you learn a therioform.
-  
-  You may use an action and spend one third of your current Hit Points (rounded down) to manifest the effects
-  of up to two therioforms from those you have learned.
-
-skill_cheap_shot: "Cheap Shot"
-skill_cheap_shot_description: >
-  When you hit a creature with an attack, if the attack only targeted that creature and they are suffering from one or more status effects,
-  you may have it deal extra damage equal to【SL + the number of status effects on the creature】.
-
-skill_high_speed: "High Speed"
-skill_high_speed_description: >
-  At the start of a conflict, you may spend 10 Mind Points. If you do, choose one option and apply it before the start of the first round:
-  perform a free attack with a weapon you have equipped; or perform a Hinder or Objective action. You also gain a bonus equal to【SL】
-  to all Checks you perform as part of the chosen option.
-
-skill_dodge: "Dodge"
-skill_dodge_description: >
-  As long as you have no shields and no martial armor equipped, your Defense score is increased by【SL】.
-
-skill_see_you_later: "See You Later"
-skill_see_you_later_description: >
-  You may use an action and spend 1 Fabula Point to vanish from the current scene, reappearing whenever you want during a different scene
-  in which another Player Character is present.
-  Describe how you escaped and miraculously got here!
-
-skill_soul_steal: "Soul Steal"
-skill_soul_steal_description: |
-  You may use an action to perform a【DEX + WLP】Check against the Magic Defense of a creature you can see.
-  If you succeed and the target is a soldier, you recover【SL】 Inventory Points;
-  if they are an elite or champion, the GM gives you the target’s soul treasure, an item worth zenit equal to or lower than【the target's level × 30, or × 50 if they are a Villain】.
-  This soul treasure will appear inside your backpack. A creature can only be successfully stolen from once with this Skill.
-  You gain a bonus equal to【SL】to your【DEX + WLP】Checks for this Skill.
-
-skill_healing_power: "Healing Power"
-skill_healing_power_description: |
-  When you cast a spell that targets one or more allies, if you have an arcane weapon equipped, you may have each of those allies recover an amount of Hit Points equal to 【SL, multiplied by the number of Bonds you have】.
-  This healing is separate from any healing caused by the effects of the spell.
-
-skill_ritual_spiritism: "Ritual Spiritism"
-skill_ritual_spiritism_description: |
-  You may perform Rituals whose effects fall within the Spiritism discipline.
-  Spiritism Rituals use【INS + WLP】for the Magic Check.
-
-skill_spiritual_magic: "Spiritual Magic"
-skill_spiritual_magic_description: >
-  Each time you acquire this Skill, learn one Spiritist spell (add a point here to see available spells).
-  Offensive (⚡) Spiritist spells use【INS + WLP】for the Magic Check.
-
-skill_support_magic: "Support Magic"
-skill_support_magic_description: |
-  When you cast a spell that targets one or more allies, if you have an arcane weapon equipped,
-  you may choose one of those allies you have a Bond towards. If you do, that ally gains a bonus
-  to the next Check they perform during the current scene; this bonus is equal to the strength
-  of your Bond towards them.
-
-skill_vismagus: "Vismagus"
-skill_vismagus_description: |
-  When you cast a spell, if you don't have enough Mind Points to pay for its total cost,
-  you may choose to spend twice as many Hit Points instead. You cannot use this Skill if doing
-  so would reduce you to 0 Hit Points. If a spell cast this way would cause you to recover Hit Points,
-  you instead recover no Hit Points (the spell functions normally on any other target).
-
-# Spell Targets
-spell_target_one_creature: "One creature"
-spell_target_up_to_three: "Up to three creatures"
-spell_target_weapon: "Weapon"
-spell_target_self: "Self"
-spell_target_special: "Special"
-
-# Spell Durations
-spell_duration_instantaneous: "Instantaneous"
-spell_duration_scene: "Scene"
-spell_target_marker: T
-
-# Spells
-spell_aura: "Aura"
-spell_aura_description: >
-  You project your soul outside your body and direct it to surround the targets,
-  shielding them from dangerous magic. Until this spell ends, each target may treat their
-  Magic Defense as being equal to 12 against any effects that target it (they are still free
-  to use their normal Defense score if higher than 12).
-
-spell_awaken: "Awaken"
-spell_awaken_description: >
-  You allow a creature to focus their vital energy into accomplishing what they previously could not.
-  Choose one Attribute: **Dexterity**, **Insight**, **Might**, or **Willpower**. Until this spell ends, the target
-  treats the chosen Attribute as if it were one die size higher (up to a maximum of **d12**).
-
-spell_barrier: "Barrier"
-spell_barrier_description: >
-  You project your soul outside your body and weave it into a barrier to protect the targets from attacks.
-  Until this spell ends, each target may treat their Defense as being equal to 12 against any effects that
-  target it (they are still free to use their normal Defense score if higher than 12).
-
-spell_cleanse: "Cleanse"
-spell_cleanse_description: >
-  You strengthen and purify the soul energy coursing through your companions. Each target recovers
-  from all status effects.
-
-spell_enrage: "Enrage"
-spell_enrage_description: >
-  You cause a creature to lose any semblance of temper and act brazenly. The target suffers **enraged**
-  and cannot perform the **Guard** or **Spell** actions during their next turn.
-
-spell_hallucination: "Hallucination"
-spell_hallucination_description: >
-  You alter the senses of your enemies, causing them to experience bizarre or frightening hallucinations.
-  Choose **dazed** or **shaken**: you inflict the chosen status effect on each target hit by this spell.
-
-spell_heal: "Heal"
-spell_heal_description: >
-  You invigorate your companions, soothing their pain and healing their fatigue. Each target recovers
-  **40** Hit Points. This amount increases to **50** Hit Points if you are **level 20 or higher**, or to **60** Hit
-  Points if you are **level 40 or higher**.
-
-spell_lux: "Lux"
-spell_lux_description: >
-  You focus your inner energy into a barrage of blinding soul rays. Each target hit by
-  this spell suffers【HR + 15】**light** damage.
-  
-  **Opportunity**: Each target hit by this spell suffers **dazed**.
-
-spell_mercy: "Mercy"
-spell_mercy_description: >
-  You strengthen the heart of a creature against suffering and despair. Until this spell ends, if
-  the target would be reduced to 0 Hit Points, they are instead left standing with exactly 1 Hit Point.
-  Once that happens, this spell ends.
-
-spell_reinforce: "Reinforce"
-spell_reinforce_description: >
-  You protect the targets from attacks that would corrupt their body and spirit. Choose **dazed**,
-  **enraged**, **poisoned**, **shaken**, **slow**, or **weak**. Until this spell ends, each target becomes
-  immune to the chosen status effect.
-
-spell_soul_weapon: "Soul Weapon"
-spell_soul_weapon_description: >
-  You imbue a weapon with the cleansing energy of your spirit. Until this spell ends, all
-  damage dealt by the weapon becomes of the **light** type. If you have that weapon equipped while you
-  cast this spell, you may perform a **free attack** with it as part of the same action.
-  
-  This spell can only be cast on a weapon equipped by a willing creature.
-
-spell_torpor: "Torpor"
-spell_torpor_description: >
-  You smother the soul energy coursing through the bodies of your foes, hindering their movements.
-  Choose **slow** or **weak**: you inflict the chosen status effect on each target hit by this spell.
+hr: "HR"
 
 # Statuses
 status_dazed: "Dazed"
@@ -492,9 +157,9 @@ page_class_remove_class_button: "Remove a class"
 page_class_more_skill_points_warning: "You need to put {points} more points into skills."
 
 # Table writer
-column_skill: Skill
-column_description: Description
-column_level: Level
+column_skill: "Skill"
+column_description: "Description"
+column_level: "Level"
 column_spell: "Spell"
 column_mp: "MP"
 column_target: "Target"
@@ -518,10 +183,12 @@ column_therioform: "Therioform"
 column_genoclepsis: "Genoclepsis suggestions"
 
 # Buttons
-add_button: Add
-add_as_button: Add as
-equip_button: Equip
-no_button: No
+add_button: "Add"
+add_as_button: "Add as"
+equip_button: "Equip"
+no_button: "No"
+confirm_button: "Confirm"
+remove_button: "Remove"
 
 # Messages
 equipped_message: "Equipped {item_name}"
@@ -599,3 +266,30 @@ page_delete_character_yes_button: "Yes, delete {name}"
 page_delete_character_file_missing: "Character file does not exist."
 page_delete_character_file_permission: "You do not have permission to delete this character file."
 page_delete_character_avatar_permission: "You do not have permission to delete this character avatar."
+
+page_avatar_use_button: "Use this avatar"
+
+page_view_item_type: "Item type"
+page_view_item_name: "Item name"
+page_view_item_cost: "Cost in zenit"
+page_view_item_quality: "Item quality"
+page_view_item_accuracy_check: "Accuracy check"
+page_view_item_martial: "Martial"
+page_view_item_grip: "Grip"
+page_view_item_range: "Range"
+page_view_item_category: "Category"
+page_view_item_damage_type: "Damage type"
+page_view_item_bonus_accuracy: "Bonus to accuracy check"
+page_view_item_bonus_damage: "Bonus to damage"
+page_view_item_bonus_defense: "Bonus to physical defense"
+page_view_item_bonus_magic_defense: "Bonus to magic defense"
+page_view_item_select_defense_type: "Select defense type"
+page_view_item_defense_type_dexterity_dice: "Dexterity dice"
+page_view_item_defense_type_flat: "Flat"
+page_view_item_provide_defense_value: "Provide the defense value"
+page_view_item_bonus_initiative: "Bonus to initiative"
+page_view_add_item_button: "Add this item"
+page_view_added_item_to_equipment: "Added {name} to your equipment."
+page_view_error_adding_item: "Error adding an item. Maybe some fields are empty?"
+
+

@@ -7,6 +7,7 @@ if TYPE_CHECKING:
     from data.models import LocNamespace
 
 class DamageType(StrEnum):
+    no_damage = auto()
     physical = auto()
     air = auto()
     earth = auto()

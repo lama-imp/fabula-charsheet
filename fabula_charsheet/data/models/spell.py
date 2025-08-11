@@ -43,15 +43,16 @@ class Spell(BaseModel):
     duration: SpellDuration = SpellDuration.instantaneous
     damage_type: DamageType | None = None
     char_class: ClassName | None = None
+    description: str = "" # for spells added by user that have no localized descriptions
 
     def localized_name(self, loc: LocNamespace) -> str:
         key = f"spell_{self.name}"
-        return getattr(loc, key, self.name.capitalize())
+        return getattr(loc, key, self.name)
 
     def localized_description(self, loc: LocNamespace) -> str:
         key = f"spell_{self.name}_description"
-        return getattr(loc, key, f"[Missing description for {self.name}]")
+        return getattr(loc, key, self.description)
 
     def localized_damage(self, loc: LocNamespace) -> str:
         key = f"damage_{self.damage_type}"
-        return getattr(loc, key, "Physical")
+        return getattr(loc, key, "Unknown damage")
