@@ -521,6 +521,7 @@ column_genoclepsis: "Genoclepsis suggestions"
 add_button: Add
 add_as_button: Add as
 equip_button: Equip
+no_button: No
 
 # Messages
 equipped_message: "Equipped {item_name}"
@@ -585,4 +586,16 @@ page_save_character_toast: "Now you can load your character."
 page_character_preview_skill_points_warning: "You need to put exactly {level} points to your skills."
 page_upload_avatar_button: "Upload avatar"
 
+# Loader page
+page_load_character_title: "Load a character"
+page_load_character_info: "{name}, level {level}"
+page_load_character_load_button: "Load"
+page_load_character_delete_button: "Delete"
+page_load_character_no_saved: "No saved characters. Start with creating a character."
 
+page_delete_character_title: "Delete a character"
+page_delete_character_warning: "Are you sure you want to completely delete this character?"
+page_delete_character_yes_button: "Yes, delete {name}"
+page_delete_character_file_missing: "Character file does not exist."
+page_delete_character_file_permission: "You do not have permission to delete this character file."
+page_delete_character_avatar_permission: "You do not have permission to delete this character avatar."
