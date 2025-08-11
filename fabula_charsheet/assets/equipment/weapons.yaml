@@ -63,7 +63,7 @@
 
 - name: improvised_melee
   bonus_damage: 2
-  quality: Breaks after the attack.
+  quality: improvised
 
 - name: steel_dagger
   cost: 150
@@ -161,7 +161,7 @@
   weapon_category: thrown
   range: ranged
   bonus_damage: 2
-  quality: Breaks after the attack.
+  quality: improvised
 
 - name: shuriken
   cost: 150

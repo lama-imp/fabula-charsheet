@@ -24,5 +24,10 @@ class Item(BaseModel):
                 return getattr(loc, "item_no_quality")
             except AttributeError:
                 return self.quality
+        elif self.quality == "improvised":
+            try:
+                return getattr(loc, "improvised_quality")
+            except AttributeError:
+                return self.quality
         else:
             return self.quality
