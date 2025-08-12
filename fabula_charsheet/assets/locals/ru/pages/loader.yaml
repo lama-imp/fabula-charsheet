@@ -1,0 +1,12 @@
+page_load_character_title: "Загрузить персонажа"
+page_load_character_info: "{name}, уровень {level}"
+page_load_character_load_button: "Загрузить"
+page_load_character_delete_button: "Удалить"
+page_load_character_no_saved: "Сохраненных персонажей нет. Начните с создания персонажа."
+
+page_delete_character_title: "Удалить персонажа"
+page_delete_character_warning: "Вы уверены, что хотите полностью удалить этого персонажа?"
+page_delete_character_yes_button: "Да, удалить {name}"
+page_delete_character_file_missing: "Файл персонажа не существует."
+page_delete_character_file_permission: "У вас нет разрешения на удаление файла персонажа."
+page_delete_character_avatar_permission: "У вас нет разрешения на удаление аватара персонажа."

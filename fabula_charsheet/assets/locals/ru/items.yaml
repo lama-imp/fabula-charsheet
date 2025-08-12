@@ -1,0 +1,78 @@
+item_no_quality: "Без качества"
+item_weapon: "Оружие"
+item_armor: "Броня"
+item_shield: "Щит"
+item_accessory: "Аксессуар"
+item_item: "Предмет"
+
+item_category_armors: "Брони"
+item_category_weapons: "Оружия"
+item_category_shields: "Щиты"
+item_category_accessories: "Аксессуары"
+item_category_other: "Прочее"
+
+# Armors
+item_silk_shirt: "Шёлковая рубашка"
+item_combat_tunic: "Боевая туника"
+item_travel_garb: "Дорожная одежда"
+item_sage_robe: "Одеяние мудреца"
+item_brigandine: "Бригантина"
+item_bronze_plate: "Бронзовый доспех"
+item_runic_plate: "Рунический доспех"
+item_steel_plate: "Стальной доспех"
+
+# Shields
+item_bronze_shield: "Бронзовый щит"
+item_runic_shield: "Рунический щит"
+
+# Weapons
+item_iron_knuckle: "Железный кастет"
+item_pistol: "Пистолет"
+item_staff: "Посох"
+item_tome: "Том"
+item_katana: "Катана"
+item_crossbow: "Арбалет"
+item_shortbow: "Короткий лук"
+item_improvised_melee: "Импровизированное (ближнего боя)"
+item_steel_dagger: "Стальной кинжал"
+item_chain_whip: "Цепной кнут"
+item_iron_hammer: "Железный молот"
+item_broadaxe: "Боевой топор"
+item_waraxe: "Секира"
+item_light_spear: "Короткое копьё"
+item_heavy_spear: "Тяжёлое копьё"
+item_bronze_sword: "Бронзовый меч"
+item_greatsword: "Двуручный меч"
+item_rapier: "Рапира"
+item_improvised_ranged: "Импровизированное (дальнего боя)"
+item_shuriken: "Сюрикен"
+
+unarmed_strike: "Удар без оружия"
+unarmed_strike_quality: "Автоматически экипируется, когда оба слота для рук пусты."
+improvised_quality: "Ломается после атаки."
+
+hr: "БЗ"
+
+# Weapon categories
+weapon_category_arcane: "Магическое"
+weapon_category_bow: "Луки"
+weapon_category_brawling: "Рукопашное"
+weapon_category_firearm: "Огнестрельное"
+weapon_category_dagger: "Кинжалы"
+weapon_category_flail: "Цепы"
+weapon_category_heavy: "Тяжёлое"
+weapon_category_spear: "Копья"
+weapon_category_sword: "Мечи"
+weapon_category_thrown: "Метательное"
+
+# Grip types
+grip_type_one_handed: "Одноручное"
+grip_type_two_handed: "Двуручное"
+
+# Weapon ranges
+weapon_range_melee: "Ближнего боя"
+weapon_range_ranged: "Дальнего боя"
+
+# Zenit
+zenit: "зенит"
+zenit_short: "з"

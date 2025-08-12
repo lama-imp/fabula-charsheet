@@ -1,0 +1,28 @@
+page_character_preview_title: "Просмотр персонажа"
+page_character_preview_message: |
+  Взгляните на вашего персонажа.
+
+  Если всё в порядке, нажмите `{save_button}`.
+page_save_character_toast: "Теперь вы можете загрузить вашего персонажа."
+page_character_preview_skill_points_warning: "Вам нужно распределить ровно {level} очков навыков."
+page_avatar_uploader_title: "Загрузить аватар"
+page_identity_dialog_title: "Редактировать имя, личность, происхождение или тему."
+page_attributes_dialog_title: "Редактировать атрибуты."
+page_class_edit_dialog_title: "Редактировать этот класс"
+page_view_character_name: "Имя: {name}"
+page_view_attributes: "Атрибуты"
+edit_attributes_button: "Редактировать атрибуты"
+page_view_classes: "Классы"
+page_view_skills: "Навыки"
+page_view_spells: "Заклинания"
+page_view_add_new_class_button: "Добавить новый класс"
+page_view_equipment: "Снаряжение"
+page_view_zenit: "У вас {amount} зенит"
+page_view_inventory: "ИНВЕНТАРЬ"
+page_view_martial: "Военный "
+page_view_display_weapon: "{range} {grip} оружие - **{name}**"
+page_view_display_armor: "Доспех - **{name}**"
+page_view_display_shield: "Щит - **{name}**"
+page_view_martial_display_weapon: "Военное {range} {grip} оружие - **{name}**"
+page_view_martial_display_armor: "Военные доспехи - **{name}**"
+page_view_martial_display_shield: "Военный щит - **{name}**"

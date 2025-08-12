@@ -1,0 +1,7 @@
+page_identity_character_info_title: "Имя персонажа, уровень, личность, происхождение и тема"
+page_identity_character_name_label: "Имя персонажа"
+page_identity_character_level_label: "Уровень персонажа"
+page_identity_identity_label: "Личность"
+page_identity_origin_label: "Происхождение"
+page_identity_theme_label: "Тема персонажа"
+page_identity_theme_placeholder: "Выберите тему или введите новую"
