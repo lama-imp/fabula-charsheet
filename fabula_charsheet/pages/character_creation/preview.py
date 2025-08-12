@@ -124,7 +124,7 @@ def edit_class(character_controller: CharacterController, char_class: CharClass,
     st.session_state.class_spells = character_controller.character.spells[char_class.name]
 
     with st.expander(loc.page_class_choose_skills):
-        SkillTableWriter().write_in_columns(class_controller.char_class.skills)
+        SkillTableWriter(loc).write_in_columns(class_controller.char_class.skills)
 
     can_add_skill_number = character_controller.can_add_skill_number()
 
@@ -144,7 +144,7 @@ def edit_class(character_controller: CharacterController, char_class: CharClass,
     if if_show_spells(casting_skill):
         class_spells = c.COMPENDIUM.spells.get_spells(class_controller.char_class.name)
         with st.expander(loc.page_class_select_spells):
-            SpellTableWriter().write_in_columns(class_spells)
+            SpellTableWriter(loc).write_in_columns(class_spells)
         total_class_spells = len(st.session_state["class_spells"])
         max_n_spells = casting_skill.current_level
 

@@ -53,7 +53,7 @@ def add_new_class(
             casting_skill = class_controller.char_class.get_spell_skill()
 
             with st.expander(loc.page_class_choose_skills_expander):
-                SkillTableWriter().write_in_columns(selected_class.skills)
+                SkillTableWriter(loc).write_in_columns(selected_class.skills)
 
             can_add_skill_number = character_controller.can_add_skill_number()
 
@@ -71,7 +71,7 @@ def add_new_class(
             if if_show_spells(casting_skill):
                 class_spells = c.COMPENDIUM.spells.get_spells(class_controller.char_class.name)
                 with st.expander(loc.page_class_select_spells_expander):
-                    SpellTableWriter().write_in_columns(class_spells)
+                    SpellTableWriter(loc).write_in_columns(class_spells)
                 total_class_spells = len(st.session_state["class_spells"])
                 max_n_spells = casting_skill.current_level
 
@@ -146,7 +146,7 @@ def build(character_controller: CharacterController):
             remove_class_dialog(character_controller, loc)
 
     if not_ready_for_the_next_step:
-        st.warning(loc.page_class_more_skill_points_warning.format(
+        st.warning(loc.warn_more_skill_points_needed.format(
             points=character_controller.can_add_skill_number()
         ), icon="🎯")
     if st.button(loc.page_next_button, disabled=not_ready_for_the_next_step):

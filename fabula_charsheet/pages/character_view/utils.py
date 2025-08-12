@@ -52,7 +52,7 @@ def level_up(controller: CharacterController, loc: LocNamespace):
         key=lambda x: x.class_level(),
         reverse=True
     )
-    writer = SkillTableWriter()
+    writer = SkillTableWriter(loc)
     writer.columns = writer.level_up_columns(add_point)
     for char_class in sorted_classes:
         st.markdown(f"#### {char_class.name.localized_name(loc)}")

@@ -350,7 +350,7 @@ def build(controller: CharacterController):
     # Skills
     with tab2:
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
-        writer = SkillTableWriter()
+        writer = SkillTableWriter(loc)
         writer.columns = writer.level_readonly_columns
         for char_class in sorted_classes:
             st.markdown(f"#### {char_class.name.localized_name(loc)}")
@@ -365,7 +365,7 @@ def build(controller: CharacterController):
             chimerist_condition = (char_class == ClassName.chimerist
                                    and "spell_mimic" in [s.name for s in chimerist_skills])
             if spell_list or chimerist_condition:
-                writer = SpellTableWriter()
+                writer = SpellTableWriter(loc)
                 writer.columns = writer.columns[:-1]
                 chimerist_message = ""
                 if chimerist_condition:
@@ -403,21 +403,21 @@ def build(controller: CharacterController):
                 remove_item_dialog(controller, loc)
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
-            weapon_writer = WeaponTableWriter()
+            weapon_writer = WeaponTableWriter(loc)
             weapon_writer.columns = weapon_writer.equip_columns
             weapon_writer.write_in_columns(backpack.weapons)
         if backpack.armors:
-            armor_writer = ArmorTableWriter()
+            armor_writer = ArmorTableWriter(loc)
             armor_writer.columns = armor_writer.equip_columns
             armor_writer.write_in_columns(backpack.armors)
         if backpack.shields:
-            shield_writer = ShieldTableWriter()
+            shield_writer = ShieldTableWriter(loc)
             shield_writer.columns = shield_writer.equip_columns
             shield_writer.write_in_columns(backpack.shields)
         if backpack.accessories:
-            AccessoryTableWriter().write_in_columns(backpack.accessories)
+            AccessoryTableWriter(loc).write_in_columns(backpack.accessories)
         if backpack.other:
-            ItemTableWriter().write_in_columns(backpack.other)
+            ItemTableWriter(loc).write_in_columns(backpack.other)
 
     # Special
     with tab5:
@@ -425,7 +425,7 @@ def build(controller: CharacterController):
             therioforms = controller.character.special.get_special("therioforms")
             added_therioforms = [t for t in therioforms if t.added]
             st.markdown(f"##### {loc.page_view_therioforms}")
-            TherioformTableWriter().write_in_columns(added_therioforms)
+            TherioformTableWriter(loc).write_in_columns(added_therioforms)
             if len(added_therioforms) < controller.get_skill_level(ClassName.mutant, "theriomorphosis"):
                 if st.button(loc.page_view_add_therioform):
                     pass
