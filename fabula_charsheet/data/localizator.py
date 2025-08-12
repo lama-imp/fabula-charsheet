@@ -23,10 +23,31 @@ def init_localizator(locals_directory: Path):
     translations = dict()
 
     for lang in LangEnum:
-        yaml_path = Path(locals_directory, f"{lang}.yaml").resolve(strict=True)
-        with yaml_path.open(encoding='utf8') as f:
-            raw_yaml = yaml.load(f, Loader=yaml.Loader)
-        translations[lang] = raw_yaml
+        lang_dir = Path(locals_directory, lang).resolve(strict=True)
+
+        if not lang_dir.is_dir():
+            raise FileNotFoundError(f"Missing translations directory for {lang.value}")
+
+        merged_translations = {}
+        key_origins = {}
+
+        for yaml_file in sorted(lang_dir.rglob("*.yaml")):
+            with yaml_file.open(encoding="utf8") as f:
+                data = yaml.load(f, Loader=yaml.SafeLoader) or {}
+                if not isinstance(data, dict):
+                    raise ValueError(f"Invalid YAML structure in {yaml_file}")
+
+                for key, value in data.items():
+                    if key in merged_translations:
+                        raise ValueError(
+                            f"Duplicate translation key '{key}' found in:\n"
+                            f"  - {key_origins[key]}\n"
+                            f"  - {yaml_file}"
+                        )
+                    merged_translations[key] = value
+                    key_origins[key] = yaml_file
+
+        translations[lang] = merged_translations
 
     st.session_state.localizator = Localizator(translations)
 
