@@ -1,4 +1,4 @@
-- name: iron knuckle
+- name: iron_knuckle
   cost: 150
   bonus_damage: 6
 
@@ -61,11 +61,11 @@
     - dexterity
   bonus_damage: 8
 
-- name: improvised (melee)
+- name: improvised_melee
   bonus_damage: 2
-  quality: Breaks after the attack.
+  quality: improvised
 
-- name: steel dagger
+- name: steel_dagger
   cost: 150
   weapon_category: dagger
   accuracy:
@@ -74,13 +74,13 @@
   bonus_accuracy: 1
   bonus_damage: 4
 
-- name: chain whip
+- name: chain_whip
   cost: 150
   grip_type: two_handed
   weapon_category: flail
   bonus_damage: 8
 
-- name: iron hammer
+- name: iron_hammer
   cost: 200
   martial: true
   weapon_category: heavy
@@ -161,7 +161,7 @@
   weapon_category: thrown
   range: ranged
   bonus_damage: 2
-  quality: Breaks after the attack.
+  quality: improvised
 
 - name: shuriken
   cost: 150

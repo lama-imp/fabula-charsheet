@@ -1,9 +1,12 @@
 from __future__ import annotations
 from enum import StrEnum, auto
 from pydantic import BaseModel
+from typing import TYPE_CHECKING
 
 from .skill import Skill
-from .weapon import  WeaponRange
+
+if TYPE_CHECKING:
+    from data.models import LocNamespace, WeaponRange
 
 
 class ClassName(StrEnum):
@@ -13,10 +16,24 @@ class ClassName(StrEnum):
     mutant = auto()
     guardian = auto()
 
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"class_{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
+
 class ClassBonus(StrEnum):
     mp = auto()
     hp = auto()
     ip = auto()
+
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
 
 class Ritual(StrEnum):
     ritualism = auto()
@@ -24,6 +41,13 @@ class Ritual(StrEnum):
     chimerism = auto()
     elementalism = auto()
     entropism = auto()
+
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"ritual_{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
 
 class CharClass(BaseModel):
     name: ClassName | None = None

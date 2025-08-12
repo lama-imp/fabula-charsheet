@@ -1,0 +1,73 @@
+# Spiritist spells
+
+spell_aura: "Aura"
+spell_aura_description: >
+  You project your soul outside your body and direct it to surround the targets,
+  shielding them from dangerous magic. Until this spell ends, each target may treat their
+  Magic Defense as being equal to 12 against any effects that target it (they are still free
+  to use their normal Defense score if higher than 12).
+
+spell_awaken: "Awaken"
+spell_awaken_description: >
+  You allow a creature to focus their vital energy into accomplishing what they previously could not.
+  Choose one Attribute: **Dexterity**, **Insight**, **Might**, or **Willpower**. Until this spell ends, the target
+  treats the chosen Attribute as if it were one die size higher (up to a maximum of **d12**).
+
+spell_barrier: "Barrier"
+spell_barrier_description: >
+  You project your soul outside your body and weave it into a barrier to protect the targets from attacks.
+  Until this spell ends, each target may treat their Defense as being equal to 12 against any effects that
+  target it (they are still free to use their normal Defense score if higher than 12).
+
+spell_cleanse: "Cleanse"
+spell_cleanse_description: >
+  You strengthen and purify the soul energy coursing through your companions. Each target recovers
+  from all status effects.
+
+spell_enrage: "Enrage"
+spell_enrage_description: >
+  You cause a creature to lose any semblance of temper and act brazenly. The target suffers **enraged**
+  and cannot perform the **Guard** or **Spell** actions during their next turn.
+
+spell_hallucination: "Hallucination"
+spell_hallucination_description: >
+  You alter the senses of your enemies, causing them to experience bizarre or frightening hallucinations.
+  Choose **dazed** or **shaken**: you inflict the chosen status effect on each target hit by this spell.
+
+spell_heal: "Heal"
+spell_heal_description: >
+  You invigorate your companions, soothing their pain and healing their fatigue. Each target recovers
+  **40** Hit Points. This amount increases to **50** Hit Points if you are **level 20 or higher**, or to **60** Hit
+  Points if you are **level 40 or higher**.
+
+spell_lux: "Lux"
+spell_lux_description: >
+  You focus your inner energy into a barrage of blinding soul rays. Each target hit by
+  this spell suffers【HR + 15】**light** damage.
+  
+  **Opportunity**: Each target hit by this spell suffers **dazed**.
+
+spell_mercy: "Mercy"
+spell_mercy_description: >
+  You strengthen the heart of a creature against suffering and despair. Until this spell ends, if
+  the target would be reduced to 0 Hit Points, they are instead left standing with exactly 1 Hit Point.
+  Once that happens, this spell ends.
+
+spell_reinforce: "Reinforce"
+spell_reinforce_description: >
+  You protect the targets from attacks that would corrupt their body and spirit. Choose **dazed**,
+  **enraged**, **poisoned**, **shaken**, **slow**, or **weak**. Until this spell ends, each target becomes
+  immune to the chosen status effect.
+
+spell_soul_weapon: "Soul Weapon"
+spell_soul_weapon_description: >
+  You imbue a weapon with the cleansing energy of your spirit. Until this spell ends, all
+  damage dealt by the weapon becomes of the **light** type. If you have that weapon equipped while you
+  cast this spell, you may perform a **free attack** with it as part of the same action.
+  
+  This spell can only be cast on a weapon equipped by a willing creature.
+
+spell_torpor: "Torpor"
+spell_torpor_description: >
+  You smother the soul energy coursing through the bodies of your foes, hindering their movements.
+  Choose **slow** or **weak**: you inflict the chosen status effect on each target hit by this spell.

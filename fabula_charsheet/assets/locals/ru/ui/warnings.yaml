@@ -1,0 +1,4 @@
+warn_edit_equipment_lost: "На следующем шаге вы не сможете редактировать стартовое снаряжение."
+warn_more_skill_points_needed: "Вам нужно распределить ещё {points} очков умений."
+warn_exact_skill_points_needed: "Вам нужно распределить ровно {level} очков умений."
+warn_confirm_delete_character: "Вы уверены, что хотите полностью удалить этого персонажа?"

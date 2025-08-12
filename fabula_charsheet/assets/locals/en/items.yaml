@@ -1,0 +1,78 @@
+item_no_quality: "No Quality"
+item_weapon: "Weapon"
+item_armor: "Armor"
+item_shield: "Shield"
+item_accessory: "Accessory"
+item_item: "Item"
+
+item_category_armors: "Armors"
+item_category_weapons: "Weapons"
+item_category_shields: "Shields"
+item_category_accessories: "Accessories"
+item_category_other: "Other"
+
+# Armors
+item_silk_shirt: "Silk Shirt"
+item_combat_tunic: "Combat Tunic"
+item_travel_garb: "Travel Garb"
+item_sage_robe: "Sage Robe"
+item_brigandine: "Brigandine"
+item_bronze_plate: "Bronze Plate"
+item_runic_plate: "Runic Plate"
+item_steel_plate: "Steel Plate"
+
+# Shields
+item_bronze_shield: "Bronze Shield"
+item_runic_shield: "Runic Shield"
+
+# Weapons
+item_iron_knuckle: "Iron Knuckle"
+item_pistol: "Pistol"
+item_staff: "Staff"
+item_tome: "Tome"
+item_katana: "Katana"
+item_crossbow: "Crossbow"
+item_shortbow: "Shortbow"
+item_improvised_melee: "Improvised Melee"
+item_steel_dagger: "Steel Dagger"
+item_chain_whip: "Chain Whip"
+item_iron_hammer: "Iron Hammer"
+item_broadaxe: "Broadaxe"
+item_waraxe: "Waraxe"
+item_light_spear: "Light Spear"
+item_heavy_spear: "Heavy Spear"
+item_bronze_sword: "Bronze Sword"
+item_greatsword: "Greatsword"
+item_rapier: "Rapier"
+item_improvised_ranged: "Improvised (Ranged)"
+item_shuriken: "Shuriken"
+
+unarmed_strike: "Unarmed Strike"
+unarmed_strike_quality: "Automatically equipped in each empty hand slot"
+improvised_quality: "Breaks after the attack."
+
+hr: "HR"
+
+# Weapon categories
+weapon_category_arcane: "Arcane"
+weapon_category_bow: "Bow"
+weapon_category_brawling: "Brawling"
+weapon_category_firearm: "Firearm"
+weapon_category_dagger: "Dagger"
+weapon_category_flail: "Flail"
+weapon_category_heavy: "Heavy"
+weapon_category_spear: "Spear"
+weapon_category_sword: "Sword"
+weapon_category_thrown: "Thrown"
+
+# Grip types
+grip_type_one_handed: "One Handed"
+grip_type_two_handed: "Two Handed"
+
+# Weapon ranges
+weapon_range_melee: "Melee"
+weapon_range_ranged: "Ranged"
+
+# Zenit
+zenit: "zenit"
+zenit_short: "z"

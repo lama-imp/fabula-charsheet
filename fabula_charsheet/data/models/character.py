@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import uuid
+from typing import TYPE_CHECKING
+from enum import StrEnum, auto
 
 from pydantic import BaseModel, Field, ConfigDict, conint
 
@@ -9,27 +11,44 @@ from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
 from .spell import Spell
 
-character_themes = [
-    "ambition",
-    "anger",
-    "belonging",
-    "doubt",
-    "duty",
-    "guilt",
-    "hope",
-    "justice",
-    "mercy",
-    "vengeance"
-]
+if TYPE_CHECKING:
+    from data.models import LocNamespace
+
+class CharacterTheme(StrEnum):
+    ambition = auto()
+    anger = auto()
+    belonging = auto()
+    doubt = auto()
+    duty = auto()
+    guilt = auto()
+    hope = auto()
+    justice = auto()
+    mercy = auto()
+    vengeance = auto()
+
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"theme_{self.name}"
+        return getattr(loc, key, self.name.capitalize())
 
 class InvalidCharacterField(Exception):
     pass
 
 class Therioform(BaseModel):
     name: str = ""
-    description: str = ""
-    creatures: str = ""
     added: bool = False
+
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"therioform_{self.name}"
+        return getattr(loc, key, self.name.capitalize())
+
+    def localized_description(self, loc: LocNamespace) -> str:
+        key = f"therioform_{self.name}_description"
+        return getattr(loc, key, f"[Missing description for {self.name}]")
+
+    def localized_creatures(self, loc: LocNamespace) -> str:
+        key = f"therioform_{self.name}_creatures"
+        return getattr(loc, key, f"[Missing creatures for {self.name}]")
+
 
 class CharSpecial(BaseModel):
     therioforms: list[Therioform] = list()
@@ -54,30 +73,37 @@ class Character(BaseModel):
     inventory: Inventory = Field(default_factory=Inventory)
     spells: dict[ClassName, list[Spell]] = dict()
     special: CharSpecial = Field(default_factory=CharSpecial)
-    
-    def set_level(self, level: int):
+
+    def set_level(self, level: int, loc: LocNamespace):
         if not 1 <= level <= 60:
-            raise InvalidCharacterField(f"Level {level} should be between 1 and 60.")
+            msg = loc.error_invalid_level.format(level=level) if hasattr(loc,
+                                                                         "error_invalid_level") else f"Level {level} should be between 1 and 60."
+            raise InvalidCharacterField(msg)
         self.level = level
-    
-    def set_identity(self, identity: str):
+
+    def set_identity(self, identity: str, loc: LocNamespace):
         if not identity:
-            raise InvalidCharacterField(f"Identity should not be empty.")
+            msg = loc.error_identity_empty if hasattr(loc,
+                                                      "error_identity_empty") else "Identity should not be empty."
+            raise InvalidCharacterField(msg)
         self.identity = identity
-    
-    def set_name(self, name: str):
+
+    def set_name(self, name: str, loc: LocNamespace):
         if not name:
-            raise InvalidCharacterField(f"Name should not be empty.")
+            msg = loc.error_name_empty if hasattr(loc, "error_name_empty") else "Name should not be empty."
+            raise InvalidCharacterField(msg)
         self.name = name
-    
-    def set_theme(self, theme: str):
+
+    def set_theme(self, theme: str, loc: LocNamespace):
         if not theme:
-            raise InvalidCharacterField(f"Theme should not be empty.")
+            msg = loc.error_theme_empty if hasattr(loc, "error_theme_empty") else "Theme should not be empty."
+            raise InvalidCharacterField(msg)
         self.theme = theme
-    
-    def set_origin(self, origin: str):
+
+    def set_origin(self, origin: str, loc: LocNamespace):
         if not origin:
-            raise InvalidCharacterField(f"Origin should not be empty.")
+            msg = loc.error_origin_empty if hasattr(loc, "error_origin_empty") else "Origin should not be empty."
+            raise InvalidCharacterField(msg)
         self.origin = origin
 
     def get_n_skill(self) -> int:

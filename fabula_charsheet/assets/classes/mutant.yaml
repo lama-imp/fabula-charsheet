@@ -7,54 +7,20 @@ martial_armor: false
 martial_shields: false
 rituals: []
 skills:
-  - name: mutant unarmed mastery
-    description: >
-      Your unarmed strikes deal【6 + (SL × 2)】extra damage, and you gain a bonus equal to【SL】to your Accuracy Checks with them.
-      At the start of your turn during a conflict, you may choose a weapon Category other than brawling.
-      If you do, your unarmed strikes now belong to the chosen Category.
-      If you choose bow, firearm or thrown, they become ranged weapons instead of melee.
-      If you choose dagger or sword, they cannot be used with Triple Slash.
-      These changes last until the start of your next turn.
-    current_level: 0
+  - name: mutant_unarmed_mastery
     max_level: 5
 
   - name: biophagy
-    description: >
-      After one of your attacks or offensive spells causes one or more enemies to lose Hit Points,
-      if you are in Crisis, you may recover【SL × 5】Hit Points.
-    current_level: 0
     max_level: 4
 
   - name: akromorphosis
-    description: >
-      Each time you acquire this Skill, you learn a therioform.
-      You may use an action and spend one third of your current Hit Points (rounded down) to manifest the effects of up to two therioforms from those you have learned.
-      The details of this transformation are explained in the therioform section.
-    current_level: 0
     max_level: 5
 
   - name: ecdysis
-    description: >
-      After you lose Hit Points due to damage, if that damage had a type other than physical,
-      you may spend 10 Hit Points to gain Resistance to that damage type until you use this Skill again.
-      You cannot use this Skill if doing so would reduce you to 0 HP.
-    current_level: 0
     max_level: 3
 
   - name: genoclepsis
-    description: >
-      When you deal damage to one or more NPCs, you learn their Species,
-      and the GM chooses【SL】therioforms appropriate to those NPCs.
-      If you have acquired the Theriomorphosis Skill, you may immediately pay its HP cost and use it
-      to manifest those therioforms (even if they are not among those you have learned).
-    current_level: 0
     max_level: 2
 
   - name: theriomorphosis
-    description: |
-      Each time you acquire this Skill, you learn a therioform.
-      
-      You may use an action and spend one third of your current Hit Points (rounded down) to manifest the effects
-      of up to two therioforms from those you have learned.
-    current_level: 0
     max_level: 6

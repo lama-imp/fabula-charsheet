@@ -1,6 +1,10 @@
 from __future__ import annotations
 from enum import StrEnum, auto
 from pydantic import BaseModel
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from data.models import LocNamespace
 
 
 class AttributeName(StrEnum):
@@ -9,19 +13,38 @@ class AttributeName(StrEnum):
     insight = auto()
     willpower = auto()
 
-    @classmethod
-    def to_alias(cls, attribute: AttributeName):
-        match attribute:
-            case cls.dexterity:
-                return "DEX"
-            case cls.might:
-                return "MIG"
-            case cls.insight:
-                return "INS"
-            case cls.willpower:
-                return "WLP"
-            case _:
-                raise Exception
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"attr_{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
+
+    def to_alias(self, loc: LocNamespace) -> str:
+        key_map = {
+            AttributeName.dexterity: "attr_dexterity_alias",
+            AttributeName.might: "attr_might_alias",
+            AttributeName.insight: "attr_insight_alias",
+            AttributeName.willpower: "attr_willpower_alias",
+        }
+        key = key_map.get(self)
+        if not key:
+            raise Exception(f"No localization key for attribute alias {self}")
+        return getattr(loc, key)
+
+    # @classmethod
+    # def to_alias(cls, attribute: AttributeName):
+    #     match attribute:
+    #         case cls.dexterity:
+    #             return "DEX"
+    #         case cls.might:
+    #             return "MIG"
+    #         case cls.insight:
+    #             return "INS"
+    #         case cls.willpower:
+    #             return "WLP"
+    #         case _:
+    #             raise Exception
 
 class Attribute(BaseModel):
     base: int = 8

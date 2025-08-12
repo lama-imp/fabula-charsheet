@@ -1,11 +1,13 @@
+from __future__ import annotations
 import math
 import uuid
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY, LOCALS_DIRECTORY
 from data.models import (
     Character,
     CharClass,
@@ -23,10 +25,14 @@ from data.models import (
     AttributeName,
 )
 
+if TYPE_CHECKING:
+    from data.models import LocNamespace
+
 
 class CharacterController:
-    def __init__(self):
+    def __init__(self, loc: LocNamespace):
         self.character = Character()
+        self.loc = loc
 
     def get_character(self):
         return self.character
@@ -46,7 +52,8 @@ class CharacterController:
             if existing.name == updated_class.name:
                 self.character.classes[i] = updated_class
                 return
-        raise ValueError(f"No class with name '{updated_class.name}' found to update.")
+        msg = self.loc.error_class_not_found.format(class_name=updated_class.name)
+        raise ValueError(msg)
 
     def can_add_skill_number(self):
         return self.character.level - self.character.get_n_skill()
@@ -59,12 +66,14 @@ class CharacterController:
         elif isinstance(new_class, str):
             class_name = new_class.lower()
         else:
-            raise Exception(f"Unexpected type for class: {type(new_class)}")
+            msg = self.loc.error_unexpected_class_type.format(class_type=type(new_class))
+            raise ValueError(msg)
+
         return any(c.name == class_name for c in self.character.classes)
 
     def has_skill(self, skill_name: str) -> bool:
         for char_class in self.character.classes:
-            if char_class.get_skill(skill_name):
+            if char_class.get_skill(skill_name) and char_class.get_skill(skill_name).current_level > 0:
                 return True
         return False
 
@@ -157,7 +166,7 @@ class CharacterController:
     def initiative(self) -> str:
         armor = self.character.inventory.equipped.armor
         shield = self.character.inventory.equipped.shield
-        initiative = f"d{self.character.insight.current} + d{self.character.dexterity.current}"
+        initiative = f"{self.loc.dice_prefix}{self.character.insight.current} + {self.loc.dice_prefix}{self.character.dexterity.current}"
         bonus = 0
         if shield:
             bonus += shield.bonus_initiative
@@ -182,7 +191,7 @@ class CharacterController:
         elif isinstance(item, Accessory):
             self.character.inventory.equipped.accessory = item
         else:
-            raise Exception("This item cannot be equipped")
+            raise Exception(self.loc.error_equipping_item)
 
     def unequip_item(self, category: str):
         equipped = getattr(self.character.inventory.equipped, category)

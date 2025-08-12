@@ -2,206 +2,53 @@ import streamlit as st
 
 import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
-    WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill
+    WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter
-from pages.character_view.utils import set_view_state, get_avatar_path
+from pages.character_view.utils import set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
+    remove_chimerist_spell, add_item, remove_item, unequip_item
 from pages.character_view.view_state import ViewState
-
-
-@st.dialog(title="Update your avatar")
-def avatar_update(controller: CharacterController):
-    uploaded_avatar = st.file_uploader(
-        "avatar uploader", accept_multiple_files=False,
-        type=["jpg", "jpeg", "png", "gif"],
-        label_visibility="hidden"
-    )
-    if uploaded_avatar is not None:
-        st.image(uploaded_avatar, width=100)
-    if st.button("Use this avatar", disabled=not uploaded_avatar):
-        controller.dump_avatar(uploaded_avatar)
-        st.rerun()
-
-
-@st.dialog("Select a skill to increase by 1 point.", width="large")
-def level_up(controller: CharacterController):
-    selected = set()
-    def add_point(skill: Skill, idx=None):
-        if st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden"):
-            selected.add(skill.name)
-        else:
-            selected.discard(skill.name)
-
-    sorted_classes = sorted(
-        [c for c in controller.character.classes if c.class_level() < 10],
-        key=lambda x: x.class_level(),
-        reverse=True
-    )
-    writer = SkillTableWriter()
-    writer.columns = writer.level_up_columns(add_point)
-    for char_class in sorted_classes:
-        st.markdown(f"#### {char_class.name.title()}")
-        writer.write_in_columns([skill for skill in char_class.skills if skill.current_level < skill.max_level])
-
-    if st.button("Confirm", disabled=(len(selected) != 1)):
-        controller.character.level += 1
-        selected_skill_name = list(selected)[0]
-        for char_class in controller.character.classes:
-            if char_class.get_skill(selected_skill_name):
-                char_class.levelup_skill(selected_skill_name)
-        st.rerun()
-
-
-@st.dialog("Add a Chimerist spell")
-def add_chimerist_spell(controller: CharacterController):
-    def prepare_spell_attributes(attribute_name, attribute_value):
-        if attribute_name == "name":
-            return attribute_value.lower()
-        if attribute_value == "No damage":
-            return None
-        return attribute_value
-    input_dict = {
-        "name": st.text_input("Spell name"),
-        "description": st.text_input("Spell description"),
-        "is_offensive": st.checkbox(label="Offensive"),
-        "mp_cost": st.number_input("MP cost", value=0, step=5),
-        "target": st.pills("Target", [t for t in SpellTarget], format_func=lambda s: s.replace('_', ' ').title(), selection_mode="single"),
-        "duration": st.pills("Duration", [t for t in SpellDuration], format_func=lambda s: s.replace('_', ' ').title(), selection_mode="single"),
-        "damage_type": st.pills("Damage type", ["No damage"] + [t for t in DamageType], format_func=lambda s: s.replace('_', ' ').title(), selection_mode="single"),
-        "char_class": ClassName.chimerist,
-    }
-
-    if st.button("Add this spell"):
-        try:
-            new_spell = Spell(
-                **{k: prepare_spell_attributes(k, v) for k, v in input_dict.items()}
-            )
-            controller.add_spell(new_spell, ClassName.chimerist)
-            st.toast(f"Added spell {input_dict['name']} to your spell list.")
-            st.rerun()
-        except Exception as e:
-            st.error(e)
-            st.warning("Error adding a spell. Maybe some fields are empty?", icon="🪬")
-
-
-@st.dialog("Remove a Chimerist spell")
-def remove_chimerist_spell(controller: CharacterController):
-    chimerist_spells = controller.character.spells[ClassName.chimerist]
-    for spell in chimerist_spells:
-        c1, c2 = st.columns([0.8, 0.2])
-        with c1:
-            st.write(spell.name.title())
-        with c2:
-            if st.button("Remove", key=f"{spell.name}-remove"):
-                controller.remove_spell(spell, ClassName.chimerist)
-                st.rerun()
-
-
-@st.dialog("Add an item")
-def add_item(controller: CharacterController):
-    item_type = st.segmented_control("Item type", [Weapon, Armor, Shield, Accessory, Item], format_func=lambda x: x.__name__, selection_mode="single")
-
-    if item_type:
-        name = st.text_input("Item name")
-        item_dict = {
-            "name": name.lower() if name else name,
-            "cost": st.number_input("Cost in zenit", value=0, step=50),
-            "quality": st.text_input("Item quality", value="No Quality"),
-         }
-        input_dict = {}
-        if item_type.__name__ == "Weapon":
-            def accuracy_input():
-                st.write("Accuracy check")
-                c1, c2 = st.columns(2)
-                with c1:
-                    accuracy1 = st.selectbox("", [a for a in AttributeName], key="acc-1", label_visibility="hidden",
-                                             format_func=lambda x: AttributeName.to_alias(x))
-                with c2:
-                    accuracy2 = st.selectbox("", [a for a in AttributeName], key="acc-2", label_visibility="hidden",
-                                             format_func=lambda x: AttributeName.to_alias(x))
-
-                return [accuracy1, accuracy2]
-
-            input_dict = {
-                "martial": st.checkbox(label="Martial"),
-                "grip_type": st.pills("Grip", [t for t in GripType], format_func=lambda s: s.replace('_', ' ').title(), selection_mode="single"),
-                "range": st.pills("Range", [t for t in WeaponRange], format_func=lambda s: s.replace('_', ' ').title(),
-                                      selection_mode="single"),
-                "weapon_category": st.pills("Category", [t for t in WeaponCategory], format_func=lambda s: s.replace('_', ' ').title(),
-                                      selection_mode="single"),
-                "damage_type": st.pills("Damage type", [t for t in DamageType],
-                                        format_func=lambda s: s.replace('_', ' ').title(), selection_mode="single"),
-                "accuracy": accuracy_input(),
-                "bonus_accuracy": st.number_input("Bonus to accuracy check", value=0, step=1),
-                "bonus_damage": st.number_input("Bonus to damage", value=0, step=1),
-                "bonus_defense": st.number_input("Bonus to physical defense", value=0, step=1),
-                "bonus_magic_defense": st.number_input("Bonus to magic defense", value=0, step=1),
-            }
-
-        if item_type.__name__ == "Armor":
-            def defense_input():
-                def_type = st.pills("Select defense type", ["Dexterity dice", "Flat"])
-                if def_type == "Dexterity dice":
-                    return AttributeName.dexterity
-                elif def_type == "Flat":
-                    defense = st.number_input("Provide the defense value", value=0, step=1)
-                    return defense
-
-            input_dict = {
-                "martial": st.checkbox(label="Martial"),
-                "defense": defense_input(),
-                "bonus_defense": st.number_input("Bonus to defense", value=0, step=1),
-                "bonus_magic_defense": st.number_input("Bonus to magic defense", value=0, step=1),
-                "bonus_initiative": st.number_input("Bonus to initiative", value=0, step=1),
-            }
-
-        if item_type.__name__ == "Shield":
-            input_dict = {
-                "martial": st.checkbox(label="Martial"),
-                "bonus_defense": st.number_input("Bonus to defense", value=0, step=1),
-                "bonus_magic_defense": st.number_input("Bonus to magic defense", value=0, step=1),
-                "bonus_initiative": st.number_input("Bonus to initiative", value=0, step=1),
-            }
-
-        if item_type.__name__ == "Accessory":
-            input_dict = {
-                "effect": st.text_input("Effect")
-            }
-
-    if st.button("Add this item", disabled=(not item_type)):
-        try:
-            combined_dict = item_dict | input_dict
-            new_item = item_type(
-                **combined_dict
-            )
-            controller.add_item(new_item)
-            st.toast(f"Added {combined_dict['name']} to your equipment.")
-            st.rerun()
-        except Exception as e:
-            st.error(e)
-            st.warning("Error adding an item. Maybe some fields are empty?", icon="🪨")
-
-
-@st.dialog("Remove an item")
-def remove_item(controller: CharacterController):
-    all_items = controller.character.inventory.backpack.all_items()
-    for i, item in enumerate(all_items):
-        c1, c2 = st.columns([0.8, 0.2])
-        with c1:
-            st.write(f"{item.__class__.__name__} - {item.name.title()}")
-        with c2:
-            if st.button("Remove", key=f"{item.name}-{i}-remove"):
-                controller.remove_item(item)
-                st.rerun()
 
 
 def build(controller: CharacterController):
     st.set_page_config(layout="wide")
+    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
     st.session_state.state_controller = st.session_state.get("state_controller")
+
+    @st.dialog(loc.page_view_avatar_update_dialog_title)
+    def avatar_update_dialog(controller: CharacterController, loc: LocNamespace):
+        avatar_update(controller, loc)
+
+    @st.dialog(loc.page_view_level_up_dialog_title, width="large")
+    def level_up_dialog(controller: CharacterController, loc: LocNamespace):
+        level_up(controller, loc)
+
+    @st.dialog(loc.page_view_add_chimerist_spell_dialog_title)
+    def add_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
+        add_chimerist_spell(controller, loc)
+
+    @st.dialog(loc.page_view_remove_chimerist_spell_dialog_title)
+    def remove_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
+        remove_chimerist_spell(controller, loc)
+
+    @st.dialog(loc.page_view_add_item_dialog_title)
+    def add_item_dialog(controller: CharacterController, loc: LocNamespace):
+        add_item(controller, loc)
+
+    @st.dialog(loc.page_view_remove_item_dialog_title)
+    def remove_item_dialog(controller: CharacterController, loc: LocNamespace):
+        remove_item(controller, loc)
+
     st.title(f"{controller.character.name}")
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Overview", "Skills", "Spells", "Equipment", "Special"])
+
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        loc.page_view_tab_overview,
+        loc.page_view_tab_skills,
+        loc.page_view_tab_spells,
+        loc.page_view_tab_equipment,
+        loc.page_view_tab_special,
+    ])
 
     # Overview
     with tab1:
@@ -214,28 +61,33 @@ def build(controller: CharacterController):
                     st.image(avatar_path, use_container_width=True)
                 else:
                     st.image(config.default_avatar_path, width=150)
-                if st.button("Update avatar"):
-                    avatar_update(controller)
+                if st.button(loc.update_avatar_button):
+                    avatar_update_dialog(controller, loc)
             with col2:
-                st.write(f"{controller.character.identity} from {controller.character.origin}")
-                st.markdown(f"**Level**: {controller.character.level}")
-                st.markdown(f"**Theme**: {controller.character.theme}")
-                st.number_input("**Fabula Points**", min_value=0)
+                st.write(loc.page_view_identity_origin.format(
+                    identity=controller.character.identity,
+                    origin=controller.character.origin
+                ))
+                st.markdown(f"**{loc.page_view_level}:** {controller.character.level}")
+                st.markdown(f"**{loc.page_view_theme}:** {controller.character.theme}")
+                st.number_input(loc.page_view_fabula_points, min_value=0)
                 current_hp = (controller.max_hp() - st.session_state.state_controller.state.minus_hp)
                 if current_hp <= controller.crisis_value():
-                    st.write(":red[CRISIS]")
+                    st.write(f":red[{loc.page_view_crisis_text}]")
                 else:
                     st.write("")
-                if st.button("Level up!"):
-                    level_up(controller)
-            st.markdown("##### Base Attributes")
-            st.write(f"Dexterity: d{controller.character.dexterity.base}")
-            st.write(f"Might: d{controller.character.might.base}")
-            st.write(f"Insight: d{controller.character.insight.base}")
-            st.write(f"Willpower: d{controller.character.willpower.base}")
+                if st.button(loc.page_view_level_up_button):
+                    level_up_dialog(controller, loc)
+
+            st.markdown(f"##### {loc.page_view_base_attributes}")
+            st.write(f"{loc.attr_dexterity}: {loc.dice_prefix}{controller.character.dexterity.base}")
+            st.write(f"{loc.attr_might}: {loc.dice_prefix}{controller.character.might.base}")
+            st.write(f"{loc.attr_insight}: {loc.dice_prefix}{controller.character.insight.base}")
+            st.write(f"{loc.attr_willpower}: {loc.dice_prefix}{controller.character.willpower.base}")
             st.write("")
             st.markdown(
-                f"**Max HP**: {controller.max_hp()} | **Max MP**: {controller.max_mp()} | **Max IP**: {controller.max_ip()}")
+                f"**{loc.hp}**: {controller.max_hp()} | **{loc.mp}**: {controller.max_mp()} | **{loc.ip}**: {controller.max_ip()}")
+
 
         with points_col:
             col1, col2, col3, col4, col5 = st.columns([0.5, 0.2, 0.1, 0.1, 0.1])
@@ -319,34 +171,34 @@ def build(controller: CharacterController):
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button("Health Potion", disabled=(current_ip < 3)):
+                if st.button(loc.page_view_health_potion, disabled=(current_ip < 3)):
                     st.session_state.state_controller.state.minus_hp = max(0, st.session_state.state_controller.state.minus_hp - 50)
                     st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
                                                                      st.session_state.state_controller.state.minus_ip + 3)
                     st.rerun()
             with col2:
-                if st.button("Mana Potion", disabled=(current_ip < 3)):
+                if st.button(loc.page_view_mana_potion, disabled=(current_ip < 3)):
                     st.session_state.state_controller.state.minus_mp = max(0, st.session_state.state_controller.state.minus_mp - 50)
                     st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
                                                                      st.session_state.state_controller.state.minus_ip + 3)
                     st.rerun()
             with col3:
-                if st.button("Magic Tent", disabled=(current_ip < 4)):
+                if st.button(loc.page_view_magic_tent, disabled=(current_ip < 4)):
                     st.session_state.state_controller.state.minus_hp = 0
                     st.session_state.state_controller.state.minus_mp = 0
                     st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
                                                                      st.session_state.state_controller.state.minus_ip + 4)
                     st.rerun()
 
-            st.write("##### Equipped:")
-            st.write("**Weapon**")
+            st.write(f"##### {loc.page_view_equipped}")
+            st.write(f"**{loc.item_weapon}**")
             equipped_weapon = controller.character.inventory.equipped.weapon
             if not equipped_weapon:
                 equipped_weapon = [
                     Weapon(
-                        name="unarmed strike",
+                        name=loc.unarmed_strike,
                         cost=0,
-                        quality="Automatically equipped in each empty hand slot",
+                        quality=loc.unarmed_strike_quality,
                         martial=False,
                         grip_type=GripType.one_handed,
                         range=WeaponRange.melee,
@@ -358,51 +210,51 @@ def build(controller: CharacterController):
                 c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
                 with c1:
                     st.markdown("⚔️")
-                    st.write(weapon.name.title())
+                    st.write(weapon.localized_name(loc))
                 with c2:
-                    st.markdown("_Accuracy_")
-                    accuracy_str = (" + ".join([f"d{getattr(controller.character, attribute).current }"for attribute in weapon.accuracy]))
+                    st.markdown(f"_{loc.column_accuracy}_")
+                    accuracy_str = (" + ".join([f"{loc.dice_prefix}{getattr(controller.character, attribute).current }"for attribute in weapon.accuracy]))
                     st.write(accuracy_str)
                 with c3:
-                    st.markdown("_Damage_")
-                    st.write(f"【HR + {weapon.bonus_damage}】 {weapon.damage_type}")
+                    st.markdown(f"_{loc.column_damage}_")
+                    st.write(f"【{loc.hr} + {weapon.bonus_damage}】 {weapon.damage_type.localized_name(loc)}")
                 with c4:
                     if st.button(
                             "",
                             icon=":material/arrow_downward:",
                             key=f"{weapon.name}-{i}-unequip",
-                            help="Unequip this item",
+                            help=loc.page_view_unequip_help,
                             disabled=(weapon.name == "unarmed strike")
                         ):
                         unequip_item(controller, "weapon")
                         st.rerun()
                 st.write(
                     " ◆ ".join((
-                        weapon.grip_type.title().replace('_', '-'),
-                        weapon.range.title(),
-                        weapon.quality,
+                        weapon.grip_type.localized_name(loc),
+                        weapon.range.localized_name(loc),
+                        weapon.localized_quality(loc),
                     ))
                 )
 
             armor = controller.character.inventory.equipped.armor
             if armor:
-                st.write("**Armor**")
+                st.write(f"**{loc.column_armor}**")
                 c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
                 with c1:
                     st.markdown("🧥")
-                    st.write(armor.name.title())
+                    st.write(armor.localized_name(loc))
                 with c2:
-                    st.markdown("_Defense_")
+                    st.markdown(f"_{loc.column_defense}_")
                     if isinstance(armor.defense, AttributeName):
                         def_bonus = f" + {armor.bonus_defense}" if armor.bonus_defense > 0 else ""
-                        st.write(f"d{str(getattr(controller.character, armor.defense).current)}{def_bonus}")
+                        st.write(f"{loc.dice_prefix}{str(getattr(controller.character, armor.defense).current)}{def_bonus}")
                     else:
                         st.write(str(armor.defense))
                 with c3:
-                    st.markdown("_M.Defense_")
+                    st.markdown(f"_{loc.column_magic_defense}_")
                     if isinstance(armor.magic_defense, AttributeName):
                         def_bonus = f" + {armor.bonus_magic_defense}" if armor.bonus_magic_defense > 0 else ""
-                        st.write(f"d{str(getattr(controller.character, armor.magic_defense).current)}{def_bonus}")
+                        st.write(f"{loc.dice_prefix}{str(getattr(controller.character, armor.magic_defense).current)}{def_bonus}")
                     else:
                         st.write(str(armor.magic_defense))
                 with c4:
@@ -410,102 +262,98 @@ def build(controller: CharacterController):
                             "",
                             icon=":material/arrow_downward:",
                             key=f"armor-unequip",
-                            help="Unequip this item",
+                            help=loc.page_view_unequip_help,
                         ):
                         unequip_item(controller, "armor")
                         st.rerun()
-                st.write(f"{armor.quality} ◆ Initiative: {armor.bonus_initiative}")
+                st.write(f"{armor.localized_quality(loc)} ◆ {loc.column_initiative}: {armor.bonus_initiative}")
 
             shield = controller.character.inventory.equipped.shield
             if shield:
-                st.write("**Shield**")
+                st.write(f"**{loc.column_shield}**")
                 c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
                 with c1:
                     st.markdown("🛡️")
-                    st.write(shield.name.title())
+                    st.write(shield.localized_name(loc))
                 with c2:
-                    st.markdown("_Defense_")
+                    st.markdown(f"_{loc.column_defense}_")
                     st.write(str(shield.bonus_defense))
                 with c3:
-                    st.markdown("_M.Defense_")
+                    st.markdown(f"_{loc.column_magic_defense}_")
                     st.write(str(shield.bonus_magic_defense))
                 with c4:
                     if st.button(
                             "",
                             icon=":material/arrow_downward:",
                             key=f"shield-unequip",
-                            help="Unequip this item",
+                            help=loc.page_view_unequip_help,
                         ):
                         unequip_item(controller, "shield")
                         st.rerun()
-                st.write(f"{shield.quality} ◆ Initiative: {shield.bonus_initiative}")
+                st.write(f"{shield.localized_quality(loc)} ◆ {loc.column_initiative}: {shield.bonus_initiative}")
 
             accessory = controller.character.inventory.equipped.accessory
             if accessory:
-                st.write("**Accessory**")
+                st.write(f"**{loc.column_accessory}**")
                 c1, c2, c3 = st.columns([0.4, 0.5, 0.1])
                 with c1:
-                    st.write(accessory.name.title())
+                    st.write(accessory.localized_name(loc))
                 with c2:
-                    st.write(accessory.quality)
+                    st.write(accessory.localized_quality(loc))
                 with c3:
                     if st.button(
                             "",
                             icon=":material/arrow_downward:",
                             key=f"accessory-unequip",
-                            help="Unequip this item",
+                            help=loc.page_view_unequip_help,
                         ):
                         unequip_item(controller, "accessory")
                         st.rerun()
 
 
         with attributes_col:
-            st.markdown("##### Current Attributes")
+            st.markdown(f"##### {loc.page_view_current_attributes}")
             att_col1, att_col2 = st.columns(2)
 
-            st.markdown(f"**Initiative**: {controller.initiative()}")
+            st.markdown(f"**{loc.column_initiative}**: {controller.initiative()}")
 
-            st.markdown("##### Statuses")
+            st.markdown(f"##### {loc.page_view_statuses}")
             col1, col2 = st.columns(2)
             for idx, stat in enumerate(Status):
-                if idx < 3:
-                    with col1:
+                col = col1 if idx < 3 else col2
+                with col:
+                    checked = st.checkbox(stat.localized_name(loc),
+                                          value=(stat in st.session_state.state_controller.state.statuses))
+                    if checked:
+                        st.session_state.state_controller.add_status(stat)
+                    else:
                         st.session_state.state_controller.remove_status(stat)
-
-                        if st.checkbox(f"{stat.title()}"):
-                            st.session_state.state_controller.add_status(stat)
-                else:
-                    with col2:
-                        st.session_state.state_controller.remove_status(stat)
-
-                        if st.checkbox(f"{stat.title()}"):
-                            st.session_state.state_controller.add_status(stat)
 
             changes = controller.apply_status(st.session_state.state_controller.state.statuses)
             for attribute, value in changes.items():
                 if value > 0:
-                    st.toast(f"Your {attribute} is lowered by {value}!")
-            if st.button("Refresh current attributes"):
+                    st.toast(f"{loc.page_view_status_change.format(attribute=attribute, value=value)}")
+            if st.button(loc.page_view_refresh_attributes):
                 st.rerun()
 
             with att_col1:
-                st.write(f"**Dexterity**: d{controller.character.dexterity.current}")
-                st.write(f"**Might**: d{controller.character.might.current}")
-                st.markdown(f"**Defense**: {controller.defense()}")
+                st.write(f"**{loc.attr_dexterity}**: {loc.dice_prefix}{controller.character.dexterity.current}")
+                st.write(f"**{loc.attr_might}**: {loc.dice_prefix}{controller.character.might.current}")
+                st.markdown(f"**{loc.column_defense}**: {controller.defense()}")
             with att_col2:
-                st.write(f"**Insight**: d{controller.character.insight.current}")
-                st.write(f"**Willpower**: d{controller.character.willpower.current}")
-                st.markdown(f"**Magic Defense**: {controller.magic_defense()}")
+                st.write(f"**{loc.attr_insight}**: {loc.dice_prefix}{controller.character.insight.current}")
+                st.write(f"**{loc.attr_willpower}**: {loc.dice_prefix}{controller.character.willpower.current}")
+                st.markdown(f"**{loc.column_magic_defense}**: {controller.magic_defense()}")
 
         st.divider()
 
     # Skills
     with tab2:
         sorted_classes = sorted(controller.character.classes, key=lambda x: x.class_level(), reverse=True)
-        writer = SkillTableWriter()
+        writer = SkillTableWriter(loc)
         writer.columns = writer.level_readonly_columns
         for char_class in sorted_classes:
-            st.markdown(f"#### {char_class.name.title()}")
+            st.markdown(f"#### {char_class.name.localized_name(loc)}")
             writer.write_in_columns([skill for skill in char_class.skills if skill.current_level > 0])
 
         st.divider()
@@ -515,79 +363,79 @@ def build(controller: CharacterController):
         for char_class, spell_list in controller.character.spells.items():
             chimerist_skills = controller.get_skills(ClassName.chimerist)
             chimerist_condition = (char_class == ClassName.chimerist
-                                   and "spell mimic" in [s.name for s in chimerist_skills])
+                                   and "spell_mimic" in [s.name for s in chimerist_skills])
             if spell_list or chimerist_condition:
-                writer = SpellTableWriter()
+                writer = SpellTableWriter(loc)
                 writer.columns = writer.columns[:-1]
                 chimerist_message = ""
                 if chimerist_condition:
-                    max_n_spells = controller.get_skill_level(ClassName.chimerist, "spell mimic")
-                    if "chimeric mastery" in [s.name for s in chimerist_skills]:
+                    max_n_spells = controller.get_skill_level(ClassName.chimerist, "spell_mimic")
+                    if "chimeric_mastery" in [s.name for s in chimerist_skills]:
                         max_n_spells += 2
-                    chimerist_message = f" ({len(spell_list)} from {max_n_spells})"
+                    chimerist_message = loc.page_view_chimerist_spell_count.format(
+                        current=len(spell_list),
+                        max=max_n_spells
+                    )
                 c1, c2, c3 = st.columns(3)
                 with c1:
-                    st.markdown(f"#### {char_class.title()} spells{chimerist_message}")
+                    st.markdown(f"#### {loc.page_view_class_spells.format(
+                        class_name=char_class.localized_name(loc),
+                        chimerist_message=chimerist_message
+                    )}")
                 with c2:
                     if chimerist_condition:
-                        if st.button("Learn a Chimerist spell", disabled=(len(spell_list) == max_n_spells)):
-                            add_chimerist_spell(controller)
+                        if st.button(loc.learn_chimerist_spell_button, disabled=(len(spell_list) == max_n_spells)):
+                            add_chimerist_spell_dialog(controller, loc)
                 with c3:
                     if chimerist_condition:
-                        if st.button("Forget a Chimerist spell", disabled=(len(spell_list) < 1)):
-                            remove_chimerist_spell(controller)
+                        if st.button(loc.forget_chimerist_spell_button, disabled=(len(spell_list) < 1)):
+                            remove_chimerist_spell_dialog(controller, loc)
                 writer.write_in_columns(spell_list)
 
     #Equipment
     with tab4:
         col1, col2 = st.columns([0.2, 0.8])
         with col1:
-            if st.button("Add item"):
-                add_item(controller)
+            if st.button(loc.add_item_button):
+                add_item_dialog(controller, loc)
         with col2:
-            if st.button("Remove item"):
-                remove_item(controller)
+            if st.button(loc.remove_item_button):
+                remove_item_dialog(controller, loc)
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
-            weapon_writer = WeaponTableWriter()
+            weapon_writer = WeaponTableWriter(loc)
             weapon_writer.columns = weapon_writer.equip_columns
             weapon_writer.write_in_columns(backpack.weapons)
         if backpack.armors:
-            armor_writer = ArmorTableWriter()
+            armor_writer = ArmorTableWriter(loc)
             armor_writer.columns = armor_writer.equip_columns
             armor_writer.write_in_columns(backpack.armors)
         if backpack.shields:
-            shield_writer = ShieldTableWriter()
+            shield_writer = ShieldTableWriter(loc)
             shield_writer.columns = shield_writer.equip_columns
             shield_writer.write_in_columns(backpack.shields)
         if backpack.accessories:
-            AccessoryTableWriter().write_in_columns(backpack.accessories)
+            AccessoryTableWriter(loc).write_in_columns(backpack.accessories)
         if backpack.other:
-            ItemTableWriter().write_in_columns(backpack.other)
+            ItemTableWriter(loc).write_in_columns(backpack.other)
 
     # Special
     with tab5:
         if controller.is_class_added(ClassName.mutant) and controller.has_skill("theriomorphosis"):
             therioforms = controller.character.special.get_special("therioforms")
             added_therioforms = [t for t in therioforms if t.added]
-            st.markdown("##### Therioforms")
-            TherioformTableWriter().write_in_columns(added_therioforms)
+            st.markdown(f"##### {loc.page_view_therioforms}")
+            TherioformTableWriter(loc).write_in_columns(added_therioforms)
             if len(added_therioforms) < controller.get_skill_level(ClassName.mutant, "theriomorphosis"):
-                if st.button("Add a therioform"):
+                if st.button(loc.page_view_add_therioform):
                     pass
         st.divider()
 
     col1, col2 = st.columns([0.2, 0.8])
     with col1:
-        if st.button("Save current character"):
+        if st.button(loc.save_current_character_button):
             controller.dump_character()
             st.session_state.state_controller.dump_state()
     with col2:
-        if st.button("Load another character"):
+        if st.button(loc.load_another_character_button):
             set_view_state(ViewState.load)
-
-def unequip_item(controller, category: str):
-    try:
-        controller.unequip_item(category)
-    except Exception as e:
-        st.warning(e, icon="💢")

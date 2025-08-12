@@ -8,40 +8,16 @@ martial_shields: true
 rituals: []
 skills:
   - name: bodyguard
-    description: > 
-      If you perform the Guard action and choose to provide cover to another creature, that
-      creature gains Resistance to all damage types until the start of your next turn.
-    current_level: 0
     max_level: 1
 
-  - name: defensive mastery
-    description: >
-      As long as you have a shield or a martial armor equipped, all damage you suffer is
-      reduced by【SL】(applied before damage Affinities).
-    current_level: 0
+  - name: defensive_mastery
     max_level: 5
 
-  - name: dual shieldbearer
-    description: >
-      You may now equip a shield in your main hand slot. As long as you have two shields
-      equipped, you gain the benefits of both items and may treat them as combined 
-      two-handed melee brawling weapon.
-    current_level: 0
+  - name: dual_shieldbearer
     max_level: 1
 
   - name: fortress
-    description: >
-      Permanently increase your maximum Hit Points by【SL × 3】.
-    current_level: 0
     max_level: 5
 
   - name: protect
-    description: >
-      When another creature is threatened by an attack, spell or other danger, you may take
-      their place (any Checks that are part of the danger will be performed against you; you
-      may declare the use of this Skill before or after the Checks have been made). If the
-      danger already affected you, it affects you twice (resolve both instances separately);
-      you also cannot protect multiple creatures from the same danger. If you use this Skill
-      during a conflict, you cannot use it again until the start of your next turn.
-    current_level: 0
     max_level: 1

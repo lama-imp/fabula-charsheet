@@ -58,7 +58,6 @@ class Compendium:
     spells: Spells
 
 
-
 def get_assets_from_file(file_path: Path, asset_class: type[BaseModel]) -> list[BaseModel]:
     with file_path.open(encoding='utf8') as f:
         raw_assets = yaml.load(f, Loader=yaml.UnsafeLoader)

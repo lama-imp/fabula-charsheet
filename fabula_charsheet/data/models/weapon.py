@@ -3,6 +3,10 @@ from annotated_types import Len
 from pydantic import Field
 from typing import Annotated
 from enum import StrEnum, auto
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from data.models import LocNamespace
 
 from .item import Item
 from .damage import DamageType
@@ -20,13 +24,34 @@ class WeaponCategory(StrEnum):
     sword = auto()
     thrown = auto()
 
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"weapon_category_{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
+
 class GripType(StrEnum):
     one_handed = auto()
     two_handed = auto()
 
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"grip_type_{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.replace("_", " ").capitalize()
+
 class WeaponRange(StrEnum):
     melee = auto()
     ranged = auto()
+
+    def localized_name(self, loc: LocNamespace) -> str:
+        key = f"weapon_range_{self.name}"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
 
 class Weapon(Item):
     martial: bool = False
@@ -44,5 +69,5 @@ class Weapon(Item):
     bonus_magic_defense: int = 0
 
 
-    def format_accuracy(self):
-        return f"{AttributeName.to_alias(self.accuracy[0])} + {AttributeName.to_alias(self.accuracy[1])}"
+    def format_accuracy(self, loc: LocNamespace):
+        return f"{AttributeName.to_alias(self.accuracy[0], loc)} + {AttributeName.to_alias(self.accuracy[1], loc)}"

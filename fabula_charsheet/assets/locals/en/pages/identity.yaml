@@ -1,0 +1,7 @@
+page_identity_character_info_title: "Character's name, level, identity, origin and theme"
+page_identity_character_name_label: "Character name"
+page_identity_character_level_label: "Character level"
+page_identity_identity_label: "Identity"
+page_identity_origin_label: "Origin"
+page_identity_theme_label: "Character's theme"
+page_identity_theme_placeholder: "Select a theme or enter a new one"

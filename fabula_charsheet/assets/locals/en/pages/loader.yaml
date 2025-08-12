@@ -1,0 +1,12 @@
+page_load_character_title: "Load a character"
+page_load_character_info: "{name}, level {level}"
+page_load_character_load_button: "Load"
+page_load_character_delete_button: "Delete"
+page_load_character_no_saved: "No saved characters. Start with creating a character."
+
+page_delete_character_title: "Delete a character"
+page_delete_character_warning: "Are you sure you want to completely delete this character?"
+page_delete_character_yes_button: "Yes, delete {name}"
+page_delete_character_file_missing: "Character file does not exist."
+page_delete_character_file_permission: "You do not have permission to delete this character file."
+page_delete_character_avatar_permission: "You do not have permission to delete this character avatar."

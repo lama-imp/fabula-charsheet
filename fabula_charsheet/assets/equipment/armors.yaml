@@ -1,20 +1,20 @@
-- name: silk shirt
+- name: silk_shirt
   cost: 100
   bonus_magic_defense: 2
   bonus_initiative: -1
 
-- name: combat tunic
+- name: combat_tunic
   cost: 150
   bonus_defense: 1
   bonus_magic_defense: 1
 
-- name: travel garb
+- name: travel_garb
   cost: 100
   bonus_defense: 1
   bonus_magic_defense: 1
   bonus_initiative: -1
 
-- name: sage robe
+- name: sage_robe
   cost: 200
   bonus_defense: 1
   bonus_magic_defense: 2
@@ -26,20 +26,20 @@
   defense: 10
   bonus_initiative: -1
 
-- name: bronze plate
+- name: bronze_plate
   cost: 200
   martial: true
   defense: 11
   bonus_initiative: -3
 
-- name: runic plate
+- name: runic_plate
   cost: 250
   martial: true
   defense: 11
   bonus_magic_defense: 1
   bonus_initiative: -3
 
-- name: steel plate
+- name: steel_plate
   cost: 300
   martial: true
   defense: 12

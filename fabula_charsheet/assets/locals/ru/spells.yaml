@@ -1,0 +1,11 @@
+# Spell Targets
+spell_target_one_creature: "Одно существо"
+spell_target_up_to_three: "До трёх существ"
+spell_target_weapon: "Оружие"
+spell_target_self: "На себя"
+spell_target_special: "Особое"
+
+# Spell Durations
+spell_duration_instantaneous: "Мгновенно"
+spell_duration_scene: "Сцена"
+spell_target_marker: "Ц"
