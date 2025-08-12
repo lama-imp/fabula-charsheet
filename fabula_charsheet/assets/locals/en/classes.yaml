@@ -1,0 +1,6 @@
+# Classes
+class_chimerist: "Chimerist"
+class_spiritist: "Spiritist"
+class_rogue: "Rogue"
+class_mutant: "Mutant"
+class_guardian: "Guardian"

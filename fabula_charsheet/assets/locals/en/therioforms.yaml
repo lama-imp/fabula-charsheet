@@ -1,0 +1,94 @@
+# Mutant's therioforms
+therioform_amphibia: "Amphibia"
+therioform_amphibia_description: |
+  You may breathe underwater and your eyes can see perfectly in dim light.
+
+  When you recover Hit Points, you recover 5 additional Hit Points and you may
+  immediately recover from a single status effect of your choice.
+therioform_amphibia_creatures: "Frogs, salamanders, regenerating creatures, aquatic monsters."
+
+therioform_arpaktida: "Arpaktida"
+therioform_arpaktida_description: |
+  You treat your Insight as if it were one die size higher (to a maximum of d12).
+
+  When you deal damage to one or more creatures for the first time during your turn,
+  if at least one of them is in Crisis, you deal 5 extra damage to each of those creatures.
+therioform_arpaktida_creatures: "Wolves, birds of prey, creatures with sharp hunting senses."
+
+therioform_dynamotheria: "Dynamotheria"
+therioform_dynamotheria_description: |
+  You treat your Might as if it were one die size higher (to a maximum of d12).
+
+  When you succeed on a Check to advance or turn back a Clock, if that Check includes Might,
+  you may fill or erase 1 additional section of that Clock.
+therioform_dynamotheria_creatures: "Bears, dinosaurs, creatures of massive size and strength."
+
+therioform_electrophora: "Electrophora"
+therioform_electrophora_description: |
+  When you deal damage with an attack or spell, you may have all that damage become bolt.
+
+  While your unarmed strikes deal bolt damage, any enemy who loses 20 or more Hit Points
+  due to one of your unarmed strikes also suffers slow.
+therioform_electrophora_creatures: "Electric creatures, lightning elementals, robots."
+
+therioform_neurophagoida: "Neurophagoida"
+therioform_neurophagoida_description: |
+  When you use the Biophagy Skill, you also recover an amount of Mind Points equal to
+  【4 + (your Skill Level in Theriomorphosis)】.
+therioform_neurophagoida_creatures: "Parasites, undead, creatures who feed on souls."
+
+therioform_placophora: "Placophora"
+therioform_placophora_description: |
+  You may treat your Defense score as being equal to
+  【13 + (half your Skill Level in Theriomorphosis)】 (you may still use your normal scores if better).
+therioform_placophora_creatures: "Crustaceans, turtles, armored creatures and vehicles."
+
+therioform_pneumophora: "Pneumophora"
+therioform_pneumophora_description: |
+  When you deal damage with an attack or spell, you may have all that damage become air.
+
+  While your unarmed strikes deal air damage, any enemy who loses 20 or more Hit Points
+  due to one of your unarmed strikes also suffers weak.
+therioform_pneumophora_creatures: "Jet-propulsion mollusks, great winged beasts, rockets."
+
+therioform_polypoda: "Polypoda"
+therioform_polypoda_description: |
+  Your attacks with unarmed strikes gain multi (3).
+therioform_polypoda_creatures: "Squids, octopi, creatures with tendrils or vines."
+
+therioform_pterotheria: "Pterotheria"
+therioform_pterotheria_description: |
+  You are able to fly. In addition to the obvious advantages in mobility,
+  your melee attacks can target flying creatures and you cannot be targeted by melee attacks
+  unless the attacker is flying or is somehow able to reach flying targets.
+
+  These benefits do not apply if you are unable to fly freely (such as when inside a vehicle
+  designed for human-sized creatures, or in a narrow corridor).
+
+  Additionally, when you suffer air, bolt or ice damage during a conflict scene,
+  you lose these benefits until the start of your next turn.
+therioform_pterotheria_creatures: "Bats, birds, winged insects, flying creatures."
+
+therioform_pyrophora: "Pyrophora"
+therioform_pyrophora_description: |
+  When you deal damage with an attack or spell, you may have all that damage become fire.
+
+  While your unarmed strikes deal fire damage, any enemy who loses 20 or more Hit Points
+  due to one of your unarmed strikes also suffers dazed.
+therioform_pyrophora_creatures: "Bombardier beetles, pistol shrimps, fire elementals."
+
+therioform_tachytheria: "Tachytheria"
+therioform_tachytheria_description: |
+  You treat your Dexterity as if it were one die size higher (to a maximum of d12).
+
+  When you succeed on a Check to advance or turn back a Clock, if that Check includes Dexterity,
+  you may fill or erase 1 additional section of that Clock.
+therioform_tachytheria_creatures: "Cats, gazelles, hares, creatures that are agile and quick."
+
+therioform_toxicophora: "Toxicophora"
+therioform_toxicophora_description: |
+  When you deal damage with an attack or spell, you may have all that damage become poison.
+
+  While your unarmed strikes deal poison damage, any enemy who loses 20 or more Hit Points
+  due to one of your unarmed strikes also suffers poisoned.
+therioform_toxicophora_creatures: "Spiders, snakes, toxic slimes and other venomous creatures."

@@ -1,0 +1,42 @@
+# Attributes
+attr_dexterity: "Dexterity"
+attr_might: "Might"
+attr_insight: "Insight"
+attr_willpower: "Willpower"
+
+attr_dexterity_alias: "DEX"
+attr_might_alias: "MIG"
+attr_insight_alias: "INS"
+attr_willpower_alias: "WLP"
+
+# ClassBonus
+mp: "MP"
+hp: "HP"
+ip: "IP"
+
+# Other
+defense: "Defense"
+magic_defense: "M.Defense"
+initiative: "Initiative"
+
+# Dice
+dice_prefix: "d"
+
+# Rituals
+ritual_ritualism: "Ritualism"
+ritual_spiritism: "Spiritism"
+ritual_chimerism: "Chimerism"
+ritual_elementalism: "Elementalism"
+ritual_entropism: "Entropism"
+
+# Character themes
+theme_ambition: "Ambition"
+theme_anger: "Anger"
+theme_belonging: "Belonging"
+theme_doubt: "Doubt"
+theme_duty: "Duty"
+theme_guilt: "Guilt"
+theme_hope: "Hope"
+theme_justice: "Justice"
+theme_mercy: "Mercy"
+theme_vengeance: "Vengeance"

@@ -1,0 +1,13 @@
+# Spell Targets
+spell_target_one_creature: "One creature"
+spell_target_up_to_three: "Up to three creatures"
+spell_target_weapon: "Weapon"
+spell_target_self: "Self"
+spell_target_special: "Special"
+
+# Spell Durations
+spell_duration_instantaneous: "Instantaneous"
+spell_duration_scene: "Scene"
+spell_target_marker: "T"
+
+# Other

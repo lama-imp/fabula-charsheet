@@ -1,0 +1,28 @@
+page_character_preview_title: "Character preview"
+page_character_preview_message: |
+  Take a look at your character.
+
+  If everything is OK, click on `{save_button}`.
+page_save_character_toast: "Now you can load your character."
+page_character_preview_skill_points_warning: "You need to put exactly {level} points to your skills."
+page_avatar_uploader_title: "Upload your avatar"
+page_identity_dialog_title: "Edit your name, identity, origin or theme."
+page_attributes_dialog_title: "Edit attributes."
+page_class_edit_dialog_title: "Edit this class"
+page_view_character_name: "Name: {name}"
+page_view_attributes: "Attributes"
+edit_attributes_button: "Edit attributes"
+page_view_classes: "Classes"
+page_view_skills: "Skills"
+page_view_spells: "Spells"
+page_view_add_new_class_button: "Add new class"
+page_view_equipment: "Equipment"
+page_view_zenit: "You have {amount} zenit"
+page_view_inventory: "INVENTORY"
+page_view_martial: "Martial "
+page_view_display_weapon: "{range} {grip} Weapon - **{name}**"
+page_view_display_armor: "Armor - **{name}**"
+page_view_display_shield: "Shield - **{name}**"
+page_view_martial_display_weapon: "Martial {range} {grip} Weapon - **{name}**"
+page_view_martial_display_armor: "Martial Armor - **{name}**"
+page_view_martial_display_shield: "Martial Shield - **{name}**"

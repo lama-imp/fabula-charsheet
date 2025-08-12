@@ -1,0 +1,27 @@
+page_equipment_title: "Purchase equipment"
+equipment_message: |
+  You get a total budget of 500 zenit to purchase equipment with. By default, you can only purchase basic weapons and basic armor and shields; these items are listed on the next four pages for easy reference. If you want to purchase rare items (page 266) or transports (page 125), discuss it with the rest of your group.
+
+  To purchase a martial (♦️) item, you must first be able to equip it — a benefit granted by specific Classes.
+
+  Needless to say, you are free to alter the name of any item that doesn't fit your character's concept — for instance, your bronze sword might become a scimitar or your silk vest might become a kimono.
+
+page_equipment_weapons: "Weapons"
+page_equipment_category: "{name} category"
+page_equipment_armor: "Armor"
+page_equipment_shields: "Shields"
+page_equipment_added_items: "You added following items:"
+page_equipment_select_items: "Select your starting equipment from above."
+page_equipment_clear_all: "Clear all added items"
+page_equipment_remaining_zenit: "Your remaining zenit"
+page_equipment_edit_warning: "You will not be able to edit your starting equipment on the next step."
+page_equipment_starting_zenit: "You start with {zenit} + {additional_zenit} zenit"
+page_equipment_create_new_name: "Create a new name"
+page_equipment_write_new_name: "Write new name here"
+page_equipment_add_item_as_button: "Add this item as {name}"
+page_equipment_unknown_item_type: "Unknown item type. Cannot add."
+page_equipment_added: "Added {name}"
+melee: "melee weapons"
+ranged: "ranged weapons"
+armor: "armor"
+shields: "shields"
