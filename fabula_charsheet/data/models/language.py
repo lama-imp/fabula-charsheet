@@ -5,6 +5,7 @@ from pydantic import RootModel
 
 class LangEnum(StrEnum):
     en = auto()
+    ru = auto()
 
 class LocNamespace(RootModel[dict[str, str]]):
     def __getattr__(self, item: str) -> str:
