@@ -54,12 +54,18 @@ def init_localizator(locals_directory: Path):
 
 def select_local():
     with st.sidebar:
-        selected_language = st.selectbox(
-            "Select Language",
-            options=list(LangEnum),
-            format_func=lambda lang: lang.value.upper(),
-            index=list(LangEnum).index(st.session_state.get("selected_language", LangEnum.en)),
-            label_visibility="hidden",
-        )
+        if "language" not in st.session_state:
+            st.session_state.language = LangEnum.en
 
-        st.session_state.language = selected_language
+        with st.sidebar:
+            st.selectbox(
+                "Select Language",
+                options=list(LangEnum),
+                format_func=lambda lang: lang.value.upper(),
+                index=list(LangEnum).index(st.session_state.language),
+                label_visibility="hidden",
+                key="language",
+            )
+
+        if "char_controller" in st.session_state:
+            st.session_state.char_controller.loc = st.session_state.localizator.get(st.session_state.language)
