@@ -643,7 +643,7 @@ def if_show_spells(casting_skill: Skill):
 
 def list_skills(class_controller: ClassController, can_add_skill_number: int):
     with st.container(border=True):
-        st.subheader(loc.skills_points_remaining.format(count=can_add_skill_number))
+        st.subheader(loc.msg_skills_points_remaining.format(count=can_add_skill_number))
         st.write(loc.skills_selected)
         for skill in class_controller.char_class.skills:
             if skill.current_level > 0:
@@ -669,9 +669,9 @@ def show_martial(input: CharClass | Character):
 
     if can_equip:
         can_equip_items = ", ".join(martial[m] for m in can_equip if m in martial)
-        st.write(loc.character_can_equip_martial.format(items=can_equip_items))
+        st.write(loc.msg_can_equip_martial.format(items=can_equip_items))
     else:
-        st.write(loc.character_cannot_equip_martial)
+        st.write(loc.msg_cannot_equip_martial)
 
 @st.dialog(loc.page_equipment_create_new_name)
 def add_item_as(item: Item):

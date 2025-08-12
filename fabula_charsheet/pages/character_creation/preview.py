@@ -38,14 +38,14 @@ def disable_equip_button(controller, item: Item) -> bool:
 
 def avatar_uploader(loc: LocNamespace):
     uploaded_avatar = st.file_uploader(
-        loc.page_avatar_uploader_label,
+        loc.msg_upload_avatar,
         accept_multiple_files=False,
         type=["jpg", "jpeg", "png", "gif"],
         label_visibility="hidden"
     )
     if uploaded_avatar is not None:
         st.image(uploaded_avatar, width=100)
-    if st.button("Use this avatar", disabled=not uploaded_avatar):
+    if st.button(loc.use_avatar_button, disabled=not uploaded_avatar):
         st.session_state.avatar = uploaded_avatar
         st.rerun()
 
@@ -106,7 +106,7 @@ def edit_attributes(controller: CharacterController, loc: LocNamespace):
     attributes_error = (sum([dexterity, might, insight, willpower]) != 32)
     if attributes_error:
         st.warning(loc.page_attributes_sum_error, icon="🎲")
-    if st.button(loc.page_attributes_update_button, disabled=attributes_error):
+    if st.button(loc.attributes_update_button, disabled=attributes_error):
         try:
             controller.character.dexterity = Dexterity(base=dexterity, current=dexterity)
             controller.character.might = Might(base=might, current=might)
@@ -178,19 +178,23 @@ def build(controller: CharacterController):
         add_new_class(character_controller, class_controller, loc)
 
     @st.dialog(title=loc.page_avatar_uploader_title)
-    def avatar_uploader_dialog():
+    def avatar_uploader_dialog(loc: LocNamespace):
         avatar_uploader(loc)
 
     @st.dialog(title=loc.page_identity_dialog_title)
-    def edit_identity_dialog():
+    def edit_identity_dialog(controller: CharacterController, loc: LocNamespace):
         edit_identity(controller, loc)
 
     @st.dialog(title=loc.page_attributes_dialog_title)
-    def edit_attributes_dialog():
+    def edit_attributes_dialog(controller: CharacterController, loc: LocNamespace):
         edit_attributes(controller, loc)
 
     @st.dialog(title=loc.page_class_edit_dialog_title, width="large")
-    def edit_class_dialog(char_class: CharClass):
+    def edit_class_dialog(
+            controller: CharacterController,
+            char_class: CharClass,
+            loc: LocNamespace
+    ):
         edit_class(controller, char_class, loc)
 
     st.set_page_config(layout="wide")
@@ -205,10 +209,10 @@ def build(controller: CharacterController):
     with message_col:
         st.markdown(
             loc.page_character_preview_message.format(
-                save_button=loc.page_save_character_button
+                save_button=loc.save_character_button
             )
         )
-        if st.button(loc.page_save_character_button, disabled= not controller.has_enough_skills()):
+        if st.button(loc.save_character_button, disabled= not controller.has_enough_skills()):
             controller.dump_character()
             controller.dump_avatar(st.session_state.avatar)
             s.SAVED_CHARS.char_list.append(controller.character)
@@ -223,7 +227,7 @@ def build(controller: CharacterController):
             st.image(st.session_state.avatar, width=150)
         else:
             st.image(config.default_avatar_path, width=150)
-        if st.button(loc.page_upload_avatar_button):
+        if st.button(loc.upload_avatar_button):
             avatar_uploader_dialog(loc)
 
 
@@ -236,7 +240,7 @@ def build(controller: CharacterController):
             st.markdown(f"#### {loc.page_view_character_name.format(name=controller.character.name)}")
         with i_col2:
             if st.button(loc.edit_button):
-                edit_identity_dialog(controller)
+                edit_identity_dialog(controller, loc)
         st.write(loc.page_view_identity_origin.format(identity=controller.character.identity, origin=controller.character.origin))
         st.markdown(f"**{loc.page_view_theme}**: {controller.character.theme}")
         st.markdown(f"**{loc.page_view_level}**: {controller.character.level}")
@@ -246,7 +250,7 @@ def build(controller: CharacterController):
             st.markdown(f"##### {loc.page_view_attributes}")
         with a_col2:
             if st.button(loc.edit_attributes_button):
-                edit_attributes_dialog(controller)
+                edit_attributes_dialog(controller, loc)
         st.write(f"{loc.attr_dexterity}: {loc.dice_prefix}{controller.character.dexterity.base}")
         st.write(f"{loc.attr_might}: {loc.dice_prefix}{controller.character.might.base}")
         st.write(f"{loc.attr_insight}: {loc.dice_prefix}{controller.character.insight.base}")
@@ -270,7 +274,7 @@ def build(controller: CharacterController):
                 st.markdown(f"##### {char_class.name.localized_name(loc)}")
             with c_col2:
                 if st.button(loc.edit_button, key=f"{char_class.name}-edit"):
-                    edit_class_dialog(controller, char_class)
+                    edit_class_dialog(controller, char_class, loc)
             with c_col3:
                 if st.button(loc.remove_button, key=f"{char_class.name}-remove"):
                     controller.character.classes.remove(char_class)

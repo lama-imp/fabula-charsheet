@@ -59,10 +59,10 @@ def add_new_class(
 
             if class_controller.char_class.class_level() < 1:
                 class_not_ready = True
-                st.error(loc.page_class_need_skill_error)
+                st.error(loc.error_class_need_skill)
             elif can_add_skill_number < 0:
                 levels_to_remove = abs(can_add_skill_number - class_controller.char_class.class_level())
-                st.error(loc.page_class_remove_skill_error.format(levels=levels_to_remove))
+                st.error(loc.error_class_remove_skill.format(levels=levels_to_remove))
                 class_not_ready = True
             else:
                 list_skills(class_controller, can_add_skill_number)

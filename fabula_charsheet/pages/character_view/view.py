@@ -61,7 +61,7 @@ def build(controller: CharacterController):
                     st.image(avatar_path, use_container_width=True)
                 else:
                     st.image(config.default_avatar_path, width=150)
-                if st.button(loc.page_view_update_avatar_button):
+                if st.button(loc.update_avatar_button):
                     avatar_update_dialog(controller, loc)
             with col2:
                 st.write(loc.page_view_identity_origin.format(
@@ -384,11 +384,11 @@ def build(controller: CharacterController):
                     )}")
                 with c2:
                     if chimerist_condition:
-                        if st.button(loc.page_view_learn_chimerist_spell, disabled=(len(spell_list) == max_n_spells)):
+                        if st.button(loc.learn_chimerist_spell_button, disabled=(len(spell_list) == max_n_spells)):
                             add_chimerist_spell_dialog(controller, loc)
                 with c3:
                     if chimerist_condition:
-                        if st.button(loc.page_view_forget_chimerist_spell, disabled=(len(spell_list) < 1)):
+                        if st.button(loc.forget_chimerist_spell_button, disabled=(len(spell_list) < 1)):
                             remove_chimerist_spell_dialog(controller, loc)
                 writer.write_in_columns(spell_list)
 
@@ -396,10 +396,10 @@ def build(controller: CharacterController):
     with tab4:
         col1, col2 = st.columns([0.2, 0.8])
         with col1:
-            if st.button(loc.page_view_add_item):
+            if st.button(loc.add_item_button):
                 add_item_dialog(controller, loc)
         with col2:
-            if st.button(loc.page_view_remove_item):
+            if st.button(loc.remove_item_button):
                 remove_item_dialog(controller, loc)
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
@@ -433,9 +433,9 @@ def build(controller: CharacterController):
 
     col1, col2 = st.columns([0.2, 0.8])
     with col1:
-        if st.button(loc.page_view_save_current_character):
+        if st.button(loc.save_current_character_button):
             controller.dump_character()
             st.session_state.state_controller.dump_state()
     with col2:
-        if st.button(loc.page_view_load_another_character):
+        if st.button(loc.load_another_character_button):
             set_view_state(ViewState.load)

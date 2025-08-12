@@ -80,7 +80,7 @@ def add_chimerist_spell(controller: CharacterController, loc: LocNamespace):
         "char_class": ClassName.chimerist,
     }
 
-    if st.button(loc.page_view_spell_add_button):
+    if st.button(loc.add_spell_button):
         try:
             new_spell = Spell(
                 **input_dict
@@ -126,10 +126,16 @@ def add_item(controller: CharacterController, loc: LocNamespace):
                 st.write(loc.page_view_item_accuracy_check)
                 c1, c2 = st.columns(2)
                 with c1:
-                    accuracy1 = st.selectbox("", [a for a in AttributeName], key="acc-1", label_visibility="hidden",
+                    accuracy1 = st.selectbox("accuracy_selector_1",
+                                             [a for a in AttributeName],
+                                             key="acc-1",
+                                             label_visibility="hidden",
                                              format_func=lambda x: AttributeName.to_alias(x, loc))
                 with c2:
-                    accuracy2 = st.selectbox("", [a for a in AttributeName], key="acc-2", label_visibility="hidden",
+                    accuracy2 = st.selectbox("accuracy_selector_2",
+                                             [a for a in AttributeName],
+                                             key="acc-2",
+                                             label_visibility="hidden",
                                              format_func=lambda x: AttributeName.to_alias(x, loc))
 
                 return [accuracy1, accuracy2]
