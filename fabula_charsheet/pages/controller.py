@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 import yaml
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY, LOCALS_DIRECTORY
+from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
 from data.models import (
     Character,
     CharClass,

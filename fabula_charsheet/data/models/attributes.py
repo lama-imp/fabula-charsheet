@@ -32,20 +32,6 @@ class AttributeName(StrEnum):
             raise Exception(f"No localization key for attribute alias {self}")
         return getattr(loc, key)
 
-    # @classmethod
-    # def to_alias(cls, attribute: AttributeName):
-    #     match attribute:
-    #         case cls.dexterity:
-    #             return "DEX"
-    #         case cls.might:
-    #             return "MIG"
-    #         case cls.insight:
-    #             return "INS"
-    #         case cls.willpower:
-    #             return "WLP"
-    #         case _:
-    #             raise Exception
-
 class Attribute(BaseModel):
     base: int = 8
     current: int = 8

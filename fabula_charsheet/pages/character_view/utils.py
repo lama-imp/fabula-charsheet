@@ -152,8 +152,8 @@ def add_item(controller: CharacterController, loc: LocNamespace):
                 "accuracy": accuracy_input(),
                 "bonus_accuracy": st.number_input(loc.page_view_item_bonus_accuracy, value=0, step=1),
                 "bonus_damage": st.number_input(loc.page_view_item_bonus_damage, value=0, step=1),
-                # "bonus_defense": st.number_input(loc.page_view_item_bonus_defense, value=0, step=1),
-                # "bonus_magic_defense": st.number_input(loc.page_view_item_bonus_magic_defense, value=0, step=1),
+                "bonus_defense": st.number_input(loc.page_view_item_bonus_defense, value=0, step=1),
+                "bonus_magic_defense": st.number_input(loc.page_view_item_bonus_magic_defense, value=0, step=1),
             }
 
         if item_type.__name__ == "Armor":
