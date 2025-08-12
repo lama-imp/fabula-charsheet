@@ -76,33 +76,33 @@ class Character(BaseModel):
 
     def set_level(self, level: int, loc: LocNamespace):
         if not 1 <= level <= 60:
-            msg = loc.invalid_level_error.format(level=level) if hasattr(loc,
-                                                                         "invalid_level_error") else f"Level {level} should be between 1 and 60."
+            msg = loc.error_invalid_level.format(level=level) if hasattr(loc,
+                                                                         "error_invalid_level") else f"Level {level} should be between 1 and 60."
             raise InvalidCharacterField(msg)
         self.level = level
 
     def set_identity(self, identity: str, loc: LocNamespace):
         if not identity:
-            msg = loc.identity_empty_error if hasattr(loc,
-                                                      "identity_empty_error") else "Identity should not be empty."
+            msg = loc.error_identity_empty if hasattr(loc,
+                                                      "error_identity_empty") else "Identity should not be empty."
             raise InvalidCharacterField(msg)
         self.identity = identity
 
     def set_name(self, name: str, loc: LocNamespace):
         if not name:
-            msg = loc.name_empty_error if hasattr(loc, "name_empty_error") else "Name should not be empty."
+            msg = loc.error_name_empty if hasattr(loc, "error_name_empty") else "Name should not be empty."
             raise InvalidCharacterField(msg)
         self.name = name
 
     def set_theme(self, theme: str, loc: LocNamespace):
         if not theme:
-            msg = loc.theme_empty_error if hasattr(loc, "theme_empty_error") else "Theme should not be empty."
+            msg = loc.error_theme_empty if hasattr(loc, "error_theme_empty") else "Theme should not be empty."
             raise InvalidCharacterField(msg)
         self.theme = theme
 
     def set_origin(self, origin: str, loc: LocNamespace):
         if not origin:
-            msg = loc.origin_empty_error if hasattr(loc, "origin_empty_error") else "Origin should not be empty."
+            msg = loc.error_origin_empty if hasattr(loc, "error_origin_empty") else "Origin should not be empty."
             raise InvalidCharacterField(msg)
         self.origin = origin
 
