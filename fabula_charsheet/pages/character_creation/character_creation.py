@@ -5,12 +5,12 @@ from .creation_state import CreationState
 from pages.controller import CharacterController
 
 
-loc = st.session_state.localizator.get(st.session_state.language)
-title = loc.page_title_character_creation
+title_key = "page_title_character_creation"
 icon = ":material/add_circle:"
 
 
 def build():
+    loc = st.session_state.localizator.get(st.session_state.language)
     st.session_state.creation_step = st.session_state.get("creation_step", CreationState.identity)
     st.session_state.creation_controller = st.session_state.get("creation_controller", CharacterController(loc))
 

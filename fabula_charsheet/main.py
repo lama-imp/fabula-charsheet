@@ -5,6 +5,7 @@ from data.localizator import init_localizator, select_local
 from data.compendium import init as init_compendium
 from data.saved_characters import init as init_saved_characters
 from config import ASSETS_DIRECTORY, SAVED_CHARS_DIRECTORY, LOCALS_DIRECTORY
+from pages import build_pages
 
 
 def main():
@@ -16,7 +17,7 @@ def main():
 
     select_local()
 
-    from pages import pages
+    pages = build_pages()
 
     pg = st.navigation([st.Page(**p) for p in pages], position="top")
 
