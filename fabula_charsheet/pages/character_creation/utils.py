@@ -644,7 +644,7 @@ def if_show_spells(casting_skill: Skill):
 def list_skills(class_controller: ClassController, can_add_skill_number: int):
     with st.container(border=True):
         st.subheader(loc.msg_skills_points_remaining.format(count=can_add_skill_number))
-        st.write(loc.skills_selected)
+        st.write(loc.msg_skills_selected)
         for skill in class_controller.char_class.skills:
             if skill.current_level > 0:
                 show_skill(skill)

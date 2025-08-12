@@ -12,7 +12,7 @@ icon = ":material/add_circle:"
 
 def build():
     st.session_state.creation_step = st.session_state.get("creation_step", CreationState.identity)
-    st.session_state.creation_controller = st.session_state.get("creation_controller", CharacterController())
+    st.session_state.creation_controller = st.session_state.get("creation_controller", CharacterController(loc))
 
     match st.session_state.creation_step:
         case CreationState.identity:

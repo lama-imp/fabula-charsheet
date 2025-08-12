@@ -77,9 +77,9 @@ def add_new_class(
 
                 if total_class_spells != max_n_spells:
                     class_not_ready = True
-                    st.error(loc.page_class_select_exact_spells_error.format(
+                    st.error(loc.error_class_select_exact_spells.format(
                         max_n_spells=max_n_spells,
-                        casting_skill=casting_skill.name.title()
+                        casting_skill=casting_skill.localized_name(loc)
                     ))
                 else:
                     class_not_ready = False
