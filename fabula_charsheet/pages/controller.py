@@ -73,7 +73,7 @@ class CharacterController:
 
     def has_skill(self, skill_name: str) -> bool:
         for char_class in self.character.classes:
-            if char_class.get_skill(skill_name):
+            if char_class.get_skill(skill_name) and char_class.get_skill(skill_name).current_level > 0:
                 return True
         return False
 
