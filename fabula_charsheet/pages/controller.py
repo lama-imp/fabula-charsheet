@@ -120,6 +120,13 @@ class CharacterController:
     def defense(self):
         armor = self.character.inventory.equipped.armor
         shield = self.character.inventory.equipped.shield
+        weapon = self.character.inventory.equipped.weapon
+
+        combined_weapon_bonus = 0
+        if weapon:
+            for weapon_item in weapon:
+                combined_weapon_bonus += weapon_item.bonus_defense
+
         other_bonuses = 0
         for char_class in self.character.classes:
             if char_class.name == ClassName.rogue:
@@ -128,18 +135,32 @@ class CharacterController:
                         other_bonuses += skill.current_level
         if armor:
             if isinstance(armor.defense, int):
-                return armor.defense + armor.bonus_defense + (shield.bonus_defense if shield else 0) + other_bonuses
+                return (armor.defense 
+                        + armor.bonus_defense 
+                        + (shield.bonus_defense if shield else 0) 
+                        + combined_weapon_bonus 
+                        + other_bonuses)
             else:
-                return self.character.dexterity.current + armor.bonus_defense + other_bonuses
-        return self.character.dexterity.current + (shield.bonus_defense if shield else 0) + other_bonuses
+                return self.character.dexterity.current + armor.bonus_defense + combined_weapon_bonus + other_bonuses
+        return (self.character.dexterity.current 
+            + (shield.bonus_defense if shield else 0) 
+            + combined_weapon_bonus 
+            + other_bonuses)
 
     def magic_defense(self):
         armor = self.character.inventory.equipped.armor
         shield = self.character.inventory.equipped.shield
+        weapon = self.character.inventory.equipped.weapon
+
+        combined_weapon_bonus = 0
+        if weapon:
+            for weapon_item in weapon:
+                combined_weapon_bonus += weapon_item.bonus_magic_defense
 
         return (self.character.insight.current
                 + (shield.bonus_magic_defense if shield else 0)
                 + (armor.bonus_magic_defense if armor else 0)
+                + combined_weapon_bonus
         )
 
     def initiative(self) -> str:

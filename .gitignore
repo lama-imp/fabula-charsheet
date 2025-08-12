@@ -19,3 +19,4 @@ fabula_charsheet/characters/**/*.yaml
 fabula_charsheet/characters/character_images/*.jpg
 fabula_charsheet/characters/character_images/*.jpeg
 fabula_charsheet/characters/character_images/*.png
+fabula_charsheet/characters/character_images/*.gif
