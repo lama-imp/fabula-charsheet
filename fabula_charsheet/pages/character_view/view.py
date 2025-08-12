@@ -102,17 +102,17 @@ def build(controller: CharacterController):
                     unsafe_allow_html=True,
                 )
                 current_hp = (controller.max_hp() - st.session_state.state_controller.state.minus_hp)
-                st.progress(max((current_hp / controller.max_hp()), 0), text=f"HP {current_hp}")
+                st.progress(max((current_hp / controller.max_hp()), 0), text=f"{loc.hp} {current_hp} // {controller.max_hp()}")
                 st.write("")
                 st.write("")
 
                 current_mp = (controller.max_mp() - st.session_state.state_controller.state.minus_mp)
-                st.progress(max((current_mp / controller.max_mp()), 0), text=f"MP {current_mp}")
+                st.progress(max((current_mp / controller.max_mp()), 0), text=f"{loc.mp} {current_mp} // {controller.max_mp()}")
                 st.write("")
                 st.write("")
 
                 current_ip = (controller.max_ip() - st.session_state.state_controller.state.minus_ip)
-                st.progress(max((current_ip / controller.max_ip()), 0), text=f"IP {current_ip}")
+                st.progress(max((current_ip / controller.max_ip()), 0), text=f"{loc.ip} {current_ip} // {controller.max_ip()}")
             with col2:
                 hp_input = st.number_input("hp_input", min_value=0, label_visibility="hidden", value=10)
                 mp_input = st.number_input("mp_input", min_value=0, label_visibility="hidden", value=10)
