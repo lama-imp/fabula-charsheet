@@ -61,3 +61,7 @@ page_view_chimerist_spell_count: " ({current} из {max})"
 page_view_class_spells: "Заклинания класса {class_name}{chimerist_message}"
 
 page_view_therioforms: "Therioforms"
+page_view_add_heroic_skill_dialog_title: "Добавить Геройское Умение"
+heroic_skill_one_mastery_requirement: "Вы должны овладеть Классом {class_name}."
+heroic_skill_skill_requirement: " и также иметь Умение {skill_name}."
+heroic_skill_several_mastery_requirement: "Вы должны овладеть одним или несколькими Классами из следующего списка: {classes}."
