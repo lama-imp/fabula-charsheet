@@ -246,3 +246,4 @@ spells:
     char_class: null
 special:
   therioforms: []
+heroic_skills: [ ]

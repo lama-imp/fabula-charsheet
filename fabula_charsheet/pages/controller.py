@@ -289,6 +289,12 @@ class CharacterController:
     def crisis_value(self) -> int:
         return math.floor(self.max_hp() / 2)
 
+    def can_add_heroic_skill(self):
+        mastered_classes = [char_class for char_class in self.character.classes if char_class.class_level() == 10]
+        if len(mastered_classes) > len(self.character.heroic_skills):
+            return True
+        return False
+
 
 class ClassController:
     def __init__(self):

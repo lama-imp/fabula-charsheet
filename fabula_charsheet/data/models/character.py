@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict, conint
 from .char_class import CharClass, ClassName
 from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
+from .skill import HeroicSkill
 from .spell import Spell
 
 if TYPE_CHECKING:
@@ -73,6 +74,7 @@ class Character(BaseModel):
     inventory: Inventory = Field(default_factory=Inventory)
     spells: dict[ClassName, list[Spell]] = dict()
     special: CharSpecial = Field(default_factory=CharSpecial)
+    heroic_skills: list[HeroicSkill] = list()
 
     def set_level(self, level: int, loc: LocNamespace):
         if not 1 <= level <= 60:

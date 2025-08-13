@@ -18,7 +18,7 @@ from data.models import (
     Accessory,
     Therioform,
     Item,
-    LocNamespace,
+    LocNamespace, HeroicSkill,
 )
 from pages.controller import ClassController
 from .creation_state import CreationState
@@ -115,6 +115,13 @@ class SkillTableWriter(TableWriter):
             ),
         )
 
+    @property
+    def heroic_skills_columns(self):
+        return (
+            self.base_columns[0],
+            self.base_columns[1],
+        )
+
     def level_up_columns(self, add_point_handler: Callable):
         return (
             self.base_columns[0],
@@ -150,6 +157,64 @@ class SkillTableWriter(TableWriter):
 
     def _add_description(self, item, idx=None):
         pass
+
+
+class HeroicSkillTableWriter(TableWriter):
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="heroic_skill",
+                width=0.2,
+                process=lambda s, idx=None: st.write(s.localized_name(self.loc)),
+            ),
+            ColumnConfig(
+                name="requirements",
+                width=0.7,
+                process=self._process_requirements,
+            ),
+            ColumnConfig(
+                name="select",
+                width=0.15,
+                process=self._skill_selector,
+            ),
+        )
+
+    def _process_requirements(self, skill: HeroicSkill, idx=None):
+        requirements_string = ""
+        if skill.required_class:
+            if len(skill.required_class) == 1:
+                required_class_name = skill.required_class[0].localized_name(self.loc)
+                requirements_string = self.loc.heroic_skill_one_mastery_requirement.format(class_name=required_class_name)
+                if skill.required_skill:
+                    required_skill_name = skill.required_skill.localized_name(self.loc)
+                    requirements_string = requirements_string[:-1]
+                    requirements_string += self.loc.heroic_skill_skill_requirement.format(skill_name=required_skill_name)
+            else:
+                required_classes_names = [c.localized_name(self.loc) for c in skill.required_class]
+                requirements_string = self.loc.heroic_skill_several_mastery_requirement.format(
+                    classes=join_with_or(required_classes_names)
+                )
+        st.write(requirements_string)
+
+
+    def _skill_selector(self, skill: HeroicSkill, idx=None):
+        st.session_state.selected_hero_skills = st.session_state.get("selected_hero_skills", [])
+        if st.checkbox("add skill",
+                       value=(skill in st.session_state.selected_hero_skills),
+                       label_visibility="hidden",
+                       key=f"{skill.name}-toggle"
+                       ):
+            if skill not in st.session_state.selected_hero_skills:
+                st.session_state.selected_hero_skills.append(skill)
+        else:
+            if skill in st.session_state.selected_hero_skills:
+                st.session_state.selected_hero_skills.remove(skill)
+
+    def _add_description(self, skill: HeroicSkill, idx=None):
+        st.markdown(skill.localized_description(self.loc))
+        st.divider()
+
 
 
 class SpellTableWriter(TableWriter):
@@ -623,7 +688,7 @@ class TherioformTableWriter(TableWriter):
             ColumnConfig(
                 name="therioform",
                 width=0.3,
-                process=lambda t, idx=None: st.write(t.localized_name(self.loc)),
+                process=lambda t, idx=None: st.write(f"_{t.localized_name(self.loc)}_"),
             ),
             ColumnConfig(
                 name="genoclepsis",
@@ -675,6 +740,8 @@ def show_martial(input: CharClass | Character):
     else:
         can_equip = set(chain.from_iterable([x.can_equip_list() for x in input.classes]))
 
+    can_equip = [m[8:] for m in can_equip]
+
     if can_equip:
         can_equip_items = ", ".join(martial[m] for m in can_equip if m in martial)
         st.write(loc.msg_can_equip_martial.format(items=can_equip_items))
@@ -702,3 +769,18 @@ def add_item_as(item: Item):
         st.toast(loc.page_equipment_added.format(name=new_name))
         st.session_state.start_equipment.zenit -= item.cost
         st.rerun()
+
+
+def join_with_or(items):
+    if not items:
+        return ""
+    if len(items) == 1:
+        return items[0]
+    return ", ".join(items[:-1]) + ", or " + items[-1]
+
+def join_with_and(items):
+    if not items:
+        return ""
+    if len(items) == 1:
+        return items[0]
+    return ", ".join(items[:-1]) + ", and " + items[-1]

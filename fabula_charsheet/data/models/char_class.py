@@ -4,24 +4,11 @@ from pydantic import BaseModel
 from typing import TYPE_CHECKING
 
 from .skill import Skill
+from .class_name import ClassName
 
 if TYPE_CHECKING:
     from data.models import LocNamespace, WeaponRange
 
-
-class ClassName(StrEnum):
-    chimerist = auto()
-    spiritist =  auto()
-    rogue = auto()
-    mutant = auto()
-    guardian = auto()
-
-    def localized_name(self, loc: LocNamespace) -> str:
-        key = f"class_{self.name}"
-        try:
-            return getattr(loc, key)
-        except AttributeError:
-            return self.name.capitalize()
 
 class ClassBonus(StrEnum):
     mp = auto()

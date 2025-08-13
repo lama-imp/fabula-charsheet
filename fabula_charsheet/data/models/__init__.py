@@ -28,7 +28,7 @@ from .inventory import (
 )
 from .item import Item
 from .shield import Shield
-from .skill import Skill
+from .skill import Skill, HeroicSkill
 from .spell import (
     Spell,
     SpellTarget,
