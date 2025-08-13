@@ -26,7 +26,7 @@ class Skill(BaseModel):
 class HeroicSkill(BaseModel):
     name: str = ""
     required_class: list[ClassName] = list()
-    required_skill: list[Skill] = list()
+    required_skill: Skill | None = None
     can_add_several_times: bool = False
 
     def localized_name(self, loc: LocNamespace) -> str:

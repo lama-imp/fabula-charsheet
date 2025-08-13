@@ -8,6 +8,7 @@ import yaml
 from pydantic import BaseModel
 
 from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield
+from data.models.skill import HeroicSkill
 
 COMPENDIUM: Compendium | None = None
 
@@ -52,10 +53,24 @@ class Spells:
 
 
 @dataclass(frozen=True)
+class HeroicSkills:
+    heroic_skills: list[HeroicSkill] = field(default_factory=list)
+
+    def get_skill(self, name: str | None) -> HeroicSkill | None:
+        if name is None:
+            return None
+        for skill in self.heroic_skills:
+            if skill.name == name.lower():
+                return deepcopy(skill)
+        return None
+
+
+@dataclass(frozen=True)
 class Compendium:
     equipment: Equipment
     classes: Classes
     spells: Spells
+    heroic_skills: HeroicSkills
 
 
 def get_assets_from_file(file_path: Path, asset_class: type[BaseModel]) -> list[BaseModel]:
@@ -92,11 +107,17 @@ def init(assets_directory: Path) -> None:
     for yaml_file in spells_directory.glob('*.yaml'):
         spells_dict[yaml_file.stem] = get_assets_from_file(yaml_file, Spell)
 
+    heroic_skills_directory = Path(assets_directory, 'skills').resolve(strict=True)
+    heroic_skills_list = []
+    for yaml_file in heroic_skills_directory.glob('*.yaml'):
+        heroic_skills_list.extend(get_assets_from_file(yaml_file, HeroicSkill))
+
     e = Equipment(**equipment_dict)
     c = Compendium(
         equipment=e,
         classes=Classes(classes=classes_list),
         spells=Spells(spells=spells_dict),
+        heroic_skills=HeroicSkills(heroic_skills=heroic_skills_list)
     )
     COMPENDIUM = c
 

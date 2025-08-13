@@ -7,7 +7,7 @@ from pages.controller import CharacterController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter
 from pages.character_view.utils import set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
-    remove_chimerist_spell, add_item, remove_item, unequip_item
+    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill
 from pages.character_view.view_state import ViewState
 
 
@@ -23,6 +23,10 @@ def build(controller: CharacterController):
     @st.dialog(loc.page_view_level_up_dialog_title, width="large")
     def level_up_dialog(controller: CharacterController, loc: LocNamespace):
         level_up(controller, loc)
+
+    @st.dialog(loc.page_view_add_heroic_skill_dialog_title, width="large")
+    def add_heroic_skill_dialog(controller: CharacterController, loc: LocNamespace):
+        add_heroic_skill(controller, loc)
 
     @st.dialog(loc.page_view_add_chimerist_spell_dialog_title)
     def add_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
@@ -78,6 +82,9 @@ def build(controller: CharacterController):
                     st.write("")
                 if st.button(loc.page_view_level_up_button):
                     level_up_dialog(controller, loc)
+                if controller.can_add_heroic_skill():
+                    if st.button(loc.heroic_skill_button):
+                        add_heroic_skill_dialog(controller, loc)
 
             st.markdown(f"##### {loc.page_view_base_attributes}")
             st.write(f"{loc.attr_dexterity}: {loc.dice_prefix}{controller.character.dexterity.base}")

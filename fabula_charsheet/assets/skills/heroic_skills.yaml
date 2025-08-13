@@ -41,7 +41,8 @@
   required_class:
     - wayfarer
   required_skill:
-    - faithful_companion
+    name: faithful_companion
+    max_level: 5
 
 - name: hope
   required_class:
@@ -59,13 +60,15 @@
   required_class:
     - sharpshooter
   required_skill:
-    - warning_shot
+    name: warning_shot
+    max_level: 4
 
 - name: pillage
   required_class:
     - rogue
   required_skill:
-    - soul_steal
+    name: soul_steal
+    max_level: 5
 
 - name: powerful_shot
   required_class:

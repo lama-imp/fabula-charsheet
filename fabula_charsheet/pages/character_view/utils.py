@@ -8,8 +8,9 @@ from pages.character_view.view_state import ViewState
 from pages.controller import CharacterController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill, LocNamespace
-from pages.character_creation.utils import SkillTableWriter
+    Skill, LocNamespace, HeroicSkill
+from pages.character_creation.utils import SkillTableWriter, HeroicSkillTableWriter
+from data import compendium as c
 
 
 def set_view_state(state: ViewState):
@@ -48,7 +49,7 @@ def level_up(controller: CharacterController, loc: LocNamespace):
             selected.discard(skill.name)
 
     sorted_classes = sorted(
-        [c for c in controller.character.classes if c.class_level() < 10],
+        [char_class for char_class in controller.character.classes if char_class.class_level() < 10],
         key=lambda x: x.class_level(),
         reverse=True
     )
@@ -215,3 +216,32 @@ def unequip_item(controller, category: str):
         controller.unequip_item(category)
     except Exception as e:
         st.warning(e, icon="💢")
+
+
+def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
+    mastered_classes = [char_class for char_class in controller.character.classes if char_class.class_level() == 10]
+
+    def heroic_skill_availability(skill: HeroicSkill):
+        if skill in controller.character.heroic_skills:
+            return skill.can_add_several_times
+        if not skill.required_class:
+            return True
+        if set(skill.required_class).intersection(set(char_class.name for char_class in mastered_classes)):
+            if skill.required_skill:
+                return any(
+                    (char_class.get_skill(skill.required_skill.name) or Skill()).current_level > 0
+                    for char_class in controller.character.classes
+                )
+            return True
+        return False
+
+    st.write(loc.msg_add_heroic_skill)
+    writer = HeroicSkillTableWriter(loc)
+    sorted_skills = sorted(c.COMPENDIUM.heroic_skills.heroic_skills, key=lambda x: x.localized_name(loc))
+    writer.write_in_columns([skill for skill in sorted_skills if heroic_skill_availability(skill)])
+
+    if st.button(loc.confirm_button, disabled=(len(st.session_state.selected_hero_skills) != 1)):
+        controller.character.level += 1
+        selected_heroic_skill = st.session_state.selected_hero_skills[0]
+        controller.character.heroic_skills.append(selected_heroic_skill)
+        st.rerun()
