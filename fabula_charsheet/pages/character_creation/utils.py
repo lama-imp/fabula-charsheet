@@ -122,18 +122,6 @@ class SkillTableWriter(TableWriter):
             self.base_columns[1],
         )
 
-    @property
-    def heroic_skills_levelup_columns(self):
-        return (
-            self.base_columns[0],
-            self.base_columns[1],
-            ColumnConfig(
-                name="level",
-                width=0.2,
-                process=self._level_input,
-            ),
-        )
-
     def level_up_columns(self, add_point_handler: Callable):
         return (
             self.base_columns[0],
