@@ -1,0 +1,124 @@
+- name: ambidextrous
+
+- name: extra_hp
+
+- name: extra_ip
+
+- name: extra_mp
+
+- name: extra_spells
+
+- name: adversity
+  required_class:
+    - dark_blade
+
+- name: arcane_echoes
+  required_class:
+    - arcanist
+
+- name: chimeric_mastery
+  required_class:
+    - chimerist
+  can_add_several_times: true
+
+- name: comet
+  required_class:
+    - entropist
+
+- name: deep_pockets
+  required_class:
+    - tinkerer
+
+- name: disarming_rhetoric
+  required_class:
+    - orator
+
+- name: heartbreaker
+  required_class:
+    - dark_blade
+
+- name: heroic_companion
+  required_class:
+    - wayfarer
+  required_skill:
+    - faithful_companion
+
+- name: hope
+  required_class:
+    - spiritist
+
+- name: mathemagic
+  required_class:
+    - loremaster
+
+- name: monkey_grip
+  required_class:
+    - fury
+
+- name: perfect_aim
+  required_class:
+    - sharpshooter
+  required_skill:
+    - warning_shot
+
+- name: pillage
+  required_class:
+    - rogue
+  required_skill:
+    - soul_steal
+
+- name: powerful_shot
+  required_class:
+    - sharpshooter
+
+- name: powerful_spell
+  required_class:
+    - chimerist
+    - elementalist
+    - entropist
+    - spiritist
+
+- name: powerful_strike
+  required_class:
+    - fury
+    - weaponmaster
+
+- name: predictable
+  required_class:
+    - loremaster
+
+- name: rampart
+  required_class:
+    - guardian
+
+- name: repetition
+  required_class:
+    - orator
+
+- name: revelation
+  required_class:
+    - arcanist
+
+- name: status_immunity
+  required_class:
+    - wayfarer
+
+- name: unbreakable
+  required_class:
+    - guardian
+
+- name: upgrade
+  required_class:
+    - tinkerer
+
+- name: tempest_strike
+  required_class:
+    - weaponmaster
+
+- name: vanish
+  required_class:
+    - rogue
+
+- name: volcano
+  required_class:
+    - elementalist

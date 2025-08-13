@@ -115,6 +115,13 @@ class SkillTableWriter(TableWriter):
             ),
         )
 
+    @property
+    def heroic_skills_columns(self):
+        return (
+            self.base_columns[0],
+            self.base_columns[1],
+        )
+
     def level_up_columns(self, add_point_handler: Callable):
         return (
             self.base_columns[0],
@@ -623,7 +630,7 @@ class TherioformTableWriter(TableWriter):
             ColumnConfig(
                 name="therioform",
                 width=0.3,
-                process=lambda t, idx=None: st.write(t.localized_name(self.loc)),
+                process=lambda t, idx=None: st.write(f"_{t.localized_name(self.loc)}_"),
             ),
             ColumnConfig(
                 name="genoclepsis",
@@ -674,6 +681,8 @@ def show_martial(input: CharClass | Character):
         can_equip = input.can_equip_list()
     else:
         can_equip = set(chain.from_iterable([x.can_equip_list() for x in input.classes]))
+
+    can_equip = [m[8:] for m in can_equip]
 
     if can_equip:
         can_equip_items = ", ".join(martial[m] for m in can_equip if m in martial)

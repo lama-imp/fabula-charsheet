@@ -102,17 +102,17 @@ def build(controller: CharacterController):
                     unsafe_allow_html=True,
                 )
                 current_hp = (controller.max_hp() - st.session_state.state_controller.state.minus_hp)
-                st.progress(max((current_hp / controller.max_hp()), 0), text=f"{loc.hp} {current_hp} // {controller.max_hp()}")
+                st.progress(max((current_hp / controller.max_hp()), 0), text=f"{loc.hp} {current_hp} / {controller.max_hp()}")
                 st.write("")
                 st.write("")
 
                 current_mp = (controller.max_mp() - st.session_state.state_controller.state.minus_mp)
-                st.progress(max((current_mp / controller.max_mp()), 0), text=f"{loc.mp} {current_mp} // {controller.max_mp()}")
+                st.progress(max((current_mp / controller.max_mp()), 0), text=f"{loc.mp} {current_mp} / {controller.max_mp()}")
                 st.write("")
                 st.write("")
 
                 current_ip = (controller.max_ip() - st.session_state.state_controller.state.minus_ip)
-                st.progress(max((current_ip / controller.max_ip()), 0), text=f"{loc.ip} {current_ip} // {controller.max_ip()}")
+                st.progress(max((current_ip / controller.max_ip()), 0), text=f"{loc.ip} {current_ip} / {controller.max_ip()}")
             with col2:
                 hp_input = st.number_input("hp_input", min_value=0, label_visibility="hidden", value=10)
                 mp_input = st.number_input("mp_input", min_value=0, label_visibility="hidden", value=10)
@@ -355,6 +355,11 @@ def build(controller: CharacterController):
         for char_class in sorted_classes:
             st.markdown(f"#### {char_class.name.localized_name(loc)}")
             writer.write_in_columns([skill for skill in char_class.skills if skill.current_level > 0])
+        if controller.character.heroic_skills:
+            st.markdown(f"#### {loc.heroic_skills}")
+            writer = SkillTableWriter(loc)
+            writer.columns = writer.heroic_skills_columns
+            writer.write_in_columns(controller.character.heroic_skills)
 
         st.divider()
 
@@ -369,8 +374,8 @@ def build(controller: CharacterController):
                 writer.columns = writer.columns[:-1]
                 chimerist_message = ""
                 if chimerist_condition:
-                    max_n_spells = controller.get_skill_level(ClassName.chimerist, "spell_mimic")
-                    if "chimeric_mastery" in [s.name for s in chimerist_skills]:
+                    max_n_spells = controller.get_skill_level(ClassName.chimerist, "spell_mimic") + 2
+                    if "chimeric_mastery" in [s.name for s in controller.character.heroic_skills]:
                         max_n_spells += 2
                     chimerist_message = loc.page_view_chimerist_spell_count.format(
                         current=len(spell_list),
