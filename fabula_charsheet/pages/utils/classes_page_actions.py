@@ -100,35 +100,6 @@ def add_new_class(
                 else:
                     st.session_state.class_not_ready = False
 
-
-
-                    # st.session_state.selected_spells = list()
-                    #
-                    # def single_spell_selector(self, spell: Spell, idx=None):
-                    #     if st.checkbox("add spell",
-                    #                    value=(spell in st.session_state.selected_spells),
-                    #                    label_visibility="hidden",
-                    #                    key=f"{spell.name}-toggle"
-                    #                    ):
-                    #         if spell not in st.session_state.selected_spells:
-                    #             st.session_state.selected_spells.append(spell)
-                    #     else:
-                    #         if spell in st.session_state.selected_spells:
-                    #             st.session_state.selected_spells.remove(spell)
-                    #
-                    # available_spells = [spell for spell in class_spells if
-                    #                     spell not in character_controller.character.get_spells_by_class(selected_class_name)]
-                    #
-                    # writer = SpellTableWriter(loc)
-                    # writer.columns = writer.add_one_spell_columns(single_spell_selector)
-                    # writer.write_in_columns(available_spells)
-                    #
-                    # if st.button(loc.add_spell_button, disabled=(len(st.session_state.selected_spells) != 1)):
-                    #     spell = list(st.session_state.selected_spells)[0]
-                    #     character_controller.character.spells[selected_class_name] = character_controller.character.spells.get(selected_class_name, [])
-                    #     character_controller.character.spells[selected_class_name].append(spell)
-                    #     st.rerun()
-
     if mode == "creation":
         if st.button(loc.page_class_add_button, disabled=st.session_state.class_not_ready):
             character_controller.add_class(class_controller.char_class)

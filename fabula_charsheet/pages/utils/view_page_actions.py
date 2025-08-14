@@ -26,6 +26,7 @@ def avatar_update(controller: CharacterController, loc: LocNamespace):
 
 def level_up(controller: CharacterController, loc: LocNamespace):
     st.session_state.selected_hero_skills = []
+    st.session_state.class_spells = []
 
     sorted_classes = sorted(
         [char_class for char_class in controller.character.classes if char_class.class_level() < 10],
@@ -44,9 +45,29 @@ def level_up(controller: CharacterController, loc: LocNamespace):
     if controller.can_add_class():
         add_new_class(controller, class_controller, loc, mode="addition")
 
+    if st.session_state.selected_hero_skills:
+        selected_skill: Skill = st.session_state.selected_hero_skills[0]
+
+        if selected_skill.can_add_spell:
+            class_name = c.COMPENDIUM.get_class_name_from_skill(selected_skill)
+            class_spells = c.COMPENDIUM.spells.get_spells(class_name)
+
+            class_spells = [spell for spell in class_spells if
+                            spell not in controller.character.get_spells_by_class(class_name)]
+            max_n_spells = 1
+
+            with st.expander(loc.page_class_select_spells_expander):
+                SpellTableWriter(loc).write_in_columns(class_spells)
+            total_class_spells = len(st.session_state.class_spells)
+
+            if total_class_spells != max_n_spells:
+                st.error(loc.error_class_select_exact_spells.format(
+                    max_n_spells=max_n_spells,
+                    casting_skill=selected_skill.localized_name(loc)
+                ))
+
     if st.button(loc.confirm_button, disabled=(len(st.session_state.selected_hero_skills) != 1)):
         controller.character.level += 1
-        selected_skill: Skill = st.session_state.selected_hero_skills[0]
         selected_class_name = c.COMPENDIUM.get_class_name_from_skill(selected_skill)
         if controller.is_class_added(selected_class_name):
             for char_class in controller.character.classes:
