@@ -373,6 +373,7 @@ class WeaponTableWriter(TableWriter):
     def _add_description(self, item: Weapon, idx=None):
         st.write(
             " ◆ ".join((
+                item.weapon_category.localized_name(self.loc),
                 item.grip_type.localized_name(self.loc),
                 item.range.localized_name(self.loc),
                 item.localized_quality(self.loc),
