@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 import streamlit as st
 
 import config
