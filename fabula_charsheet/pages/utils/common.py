@@ -132,7 +132,7 @@ def add_bond(controller: CharacterController, loc: LocNamespace):
         "affinity": affinity,
     }
 
-    can_add = any(input_dict.get(k) is not None for k in ["respect", "trust", "affinity"]) and (name is not "")
+    can_add = any(input_dict.get(k) is not None for k in ["respect", "trust", "affinity"]) and (name != "")
     if not can_add:
         st.warning(loc.adding_bond_error)
 
