@@ -7,7 +7,7 @@ from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, show_martial, \
     set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
-    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell
+    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond
 from pages.character_view.view_state import ViewState
 
 
@@ -28,25 +28,33 @@ def build(controller: CharacterController):
     def add_heroic_skill_dialog(controller: CharacterController, loc: LocNamespace):
         add_heroic_skill(controller, loc)
 
-    @st.dialog(loc.page_view_add_chimerist_spell_dialog_title)
+    @st.dialog(loc.page_view_add_chimerist_spell_dialog_title, width="large")
     def add_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
         add_chimerist_spell(controller, loc)
 
-    @st.dialog(loc.page_view_add_spell_dialog_title)
+    @st.dialog(loc.page_view_add_spell_dialog_title, width="large")
     def add_spell_dialog(controller: CharacterController, loc: LocNamespace):
         add_spell(controller, loc)
 
-    @st.dialog(loc.page_view_remove_chimerist_spell_dialog_title)
+    @st.dialog(loc.page_view_remove_chimerist_spell_dialog_title, width="large")
     def remove_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
         remove_chimerist_spell(controller, loc)
 
-    @st.dialog(loc.page_view_add_item_dialog_title)
+    @st.dialog(loc.page_view_add_item_dialog_title, width="large")
     def add_item_dialog(controller: CharacterController, loc: LocNamespace):
         add_item(controller, loc)
 
-    @st.dialog(loc.page_view_remove_item_dialog_title)
+    @st.dialog(loc.page_view_remove_item_dialog_title, width="large")
     def remove_item_dialog(controller: CharacterController, loc: LocNamespace):
         remove_item(controller, loc)
+
+    @st.dialog(loc.page_view_add_bond_dialog_title, width="large")
+    def add_bond_dialog(controller: CharacterController, loc: LocNamespace):
+        add_bond(controller, loc)
+
+    @st.dialog(loc.page_view_remove_bond_dialog_title, width="large")
+    def remove_bond_dialog(controller: CharacterController, loc: LocNamespace):
+        remove_bond(controller, loc)
 
     st.title(f"{controller.character.name}")
 
@@ -98,6 +106,16 @@ def build(controller: CharacterController):
             st.write("")
             st.markdown(
                 f"**{loc.hp}**: {controller.max_hp()} | **{loc.mp}**: {controller.max_mp()} | **{loc.ip}**: {controller.max_ip()}")
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.markdown(f"##### {loc.bonds}")
+            with col2:
+                if st.button(loc.add_bond_button):
+                    add_bond_dialog(controller, loc)
+            with col3:
+                if st.button(loc.remove_bond_button):
+                    remove_bond_dialog(controller, loc)
 
 
         with points_col:

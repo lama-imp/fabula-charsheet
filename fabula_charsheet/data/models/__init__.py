@@ -46,3 +46,7 @@ from .language import (
     LangEnum,
     LocNamespace
 )
+from .bonds import (
+    Bond,
+    Emotion
+)

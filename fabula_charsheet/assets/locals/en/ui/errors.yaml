@@ -17,3 +17,4 @@ error_character_file_permission: "You do not have permission to delete this char
 error_character_avatar_permission: "You do not have permission to delete this character avatar."
 page_attributes_sum_error: "Sum of your attributes should be equal to 32."
 error_loading_state: "Unable to load state. Switching to default."
+adding_bond_error: "To add a Bond you must provide a name and select at least one emotion."

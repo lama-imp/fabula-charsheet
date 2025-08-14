@@ -6,6 +6,7 @@ from enum import StrEnum, auto
 
 from pydantic import BaseModel, Field, ConfigDict, conint
 
+from .bonds import Bond
 from .char_class import CharClass, ClassName
 from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
@@ -75,6 +76,7 @@ class Character(BaseModel):
     spells: dict[ClassName, list[Spell]] = dict()
     special: CharSpecial = Field(default_factory=CharSpecial)
     heroic_skills: list[HeroicSkill] = list()
+    bonds: list[Bond] = list()
 
     def set_level(self, level: int, loc: LocNamespace):
         if not 1 <= level <= 60:

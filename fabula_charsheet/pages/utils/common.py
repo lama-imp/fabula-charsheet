@@ -14,9 +14,9 @@ from data.models import (
     Character,
     Shield,
     Item,
-    LocNamespace,
+    LocNamespace, Bond, Emotion,
 )
-from pages.controller import ClassController
+from pages.controller import ClassController, CharacterController
 
 
 def get_avatar_path(char_id: uuid.UUID) -> Path | None:
@@ -109,3 +109,50 @@ def join_with_and(items, loc: LocNamespace):
     if len(items) == 1:
         return items[0]
     return ", ".join(items[:-1]) + loc.and_separator + items[-1]
+
+def add_bond(controller: CharacterController, loc: LocNamespace):
+    with st.expander(loc.bond_explanation):
+        st.write(loc.msg_bond_explanation)
+    name = st.text_input(loc.bond_name)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        respect = st.pills(loc.bond_respect_description, [Emotion.admiration, Emotion.inferiority],
+                           format_func=lambda s: s.localized_name(loc), selection_mode="single")
+    with col2:
+        trust = st.pills(loc.bond_trust_description, [Emotion.loyalty, Emotion.mistrust],
+                           format_func=lambda s: s.localized_name(loc), selection_mode="single")
+    with col3:
+        affinity = st.pills(loc.bond_affinity_description, [Emotion.affection, Emotion.hatred],
+                           format_func=lambda s: s.localized_name(loc), selection_mode="single")
+    input_dict = {
+        "name": name,
+        "respect": respect,
+        "trust": trust,
+        "affinity": affinity,
+    }
+
+    can_add = any(input_dict.get(k) is not None for k in ["respect", "trust", "affinity"]) and (name is not "")
+    if not can_add:
+        st.warning(loc.adding_bond_error)
+
+    if st.button(loc.add_bond_button,
+                 key="add-bond-button",
+                 disabled=not can_add
+    ):
+        new_bond = Bond(
+            **input_dict
+        )
+        controller.character.bonds.append(new_bond)
+        st.rerun()
+
+def remove_bond(controller: CharacterController, loc: LocNamespace):
+    for bond in controller.character.bonds:
+        c1, c2 = st.columns([0.8, 0.2])
+        with c1:
+            st.write(f"**{bond.name}**")
+            st.write(" | ".join(e for e in [bond.respect, bond.trust, bond.affinity] if e is not None))
+        with c2:
+            if st.button(loc.remove_button, key=f"{bond.name}-remove"):
+                controller.character.bonds.remove(bond)
+                st.rerun()

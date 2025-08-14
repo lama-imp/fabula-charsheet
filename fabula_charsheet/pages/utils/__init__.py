@@ -25,6 +25,8 @@ from .common import (
     join_with_or,
     join_with_and,
     add_item_as,
+    add_bond,
+    remove_bond,
 )
 
 from .view_page_actions import (
