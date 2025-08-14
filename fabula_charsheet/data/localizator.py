@@ -20,17 +20,11 @@ def init_localizator(locals_directory: Path):
     if st.session_state.get("localizator"):
         return
 
-    translations = dict()
+    translations = {}
 
-    for lang in LangEnum:
-        lang_dir = Path(locals_directory, lang).resolve(strict=True)
-
-        if not lang_dir.is_dir():
-            raise FileNotFoundError(f"Missing translations directory for {lang.value}")
-
+    def load_translations_from_dir(lang_dir: Path) -> dict:
         merged_translations = {}
         key_origins = {}
-
         for yaml_file in sorted(lang_dir.rglob("*.yaml")):
             with yaml_file.open(encoding="utf8") as f:
                 data = yaml.load(f, Loader=yaml.SafeLoader) or {}
@@ -46,8 +40,28 @@ def init_localizator(locals_directory: Path):
                         )
                     merged_translations[key] = value
                     key_origins[key] = yaml_file
+        return merged_translations
 
-        translations[lang] = merged_translations
+    # Load English first as fallback
+    english_translations = load_translations_from_dir(
+        Path(locals_directory, LangEnum.en).resolve(strict=True)
+    )
+    translations[LangEnum.en] = english_translations
+
+    # Load other languages, fallback to English
+    for lang in LangEnum:
+        if lang == LangEnum.en:
+            continue
+
+        lang_dir = Path(locals_directory, lang).resolve(strict=True)
+        if not lang_dir.is_dir():
+            raise FileNotFoundError(f"Missing translations directory for {lang.value}")
+
+        lang_translations = load_translations_from_dir(lang_dir)
+
+        merged_with_fallback = {**english_translations, **lang_translations}
+
+        translations[lang] = merged_with_fallback
 
     st.session_state.localizator = Localizator(translations)
 
