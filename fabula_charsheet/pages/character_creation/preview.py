@@ -4,7 +4,7 @@ import streamlit as st
 
 import config
 from pages.utils import show_martial, add_new_class, avatar_uploader, edit_identity, edit_attributes, edit_class, \
-    unequip_item, equip_item
+    unequip_item, equip_item, add_bond, remove_bond, BondTableWriter
 from pages.controller import CharacterController, ClassController
 from data.models import CharClass, LocNamespace
 from data import saved_characters as s
@@ -41,6 +41,14 @@ def build(controller: CharacterController):
             loc: LocNamespace
     ):
         edit_class(controller, char_class, loc)
+
+    @st.dialog(loc.page_view_add_bond_dialog_title, width="large")
+    def add_bond_dialog(controller: CharacterController, loc: LocNamespace):
+        add_bond(controller, loc)
+
+    @st.dialog(loc.page_view_remove_bond_dialog_title, width="large")
+    def remove_bond_dialog(controller: CharacterController, loc: LocNamespace):
+        remove_bond(controller, loc)
 
     st.set_page_config(layout="wide")
     st.title(loc.page_character_preview_title)
@@ -107,6 +115,19 @@ def build(controller: CharacterController):
         st.markdown(
             f"**{loc.column_defense}**: {controller.defense()} | **{loc.column_magic_defense}**: {controller.magic_defense()}"
         )
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.markdown(f"##### {loc.bonds}")
+        with c2:
+            if st.button(loc.add_bond_button):
+                add_bond_dialog(controller, loc)
+        with c3:
+            if st.button(loc.remove_bond_button):
+                remove_bond_dialog(controller, loc)
+
+        writer = BondTableWriter(loc)
+        writer.write_in_columns(controller.character.bonds, header=False)
 
     with col2:
         st.markdown(f"#### {loc.page_view_classes}")
