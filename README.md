@@ -10,7 +10,7 @@ Supported classes:
 - Rogue
 - Spiritist
 
-Partial AI-supported Russian translation.
+Partial Russian translation.
 
 ## Requirements:
 
