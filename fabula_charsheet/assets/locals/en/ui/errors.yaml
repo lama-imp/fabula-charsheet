@@ -1,5 +1,5 @@
 error_class_not_found: "No class with name '{class_name}' found to update."
-error_unexpected_class_type: "Unexpected type for class: {class_type)}"
+error_unexpected_class_type: "Unexpected type for class: {class_type}"
 error_invalid_level: "Level {level} should be between 1 and 60."
 error_identity_empty: "Identity should not be empty."
 error_name_empty: "Name should not be empty."

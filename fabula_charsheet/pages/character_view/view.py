@@ -4,10 +4,10 @@ import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
-from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
-    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, show_martial
-from pages.character_view.utils import set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
-    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill
+from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
+    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, show_martial, \
+    set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
+    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell
 from pages.character_view.view_state import ViewState
 
 
@@ -31,6 +31,10 @@ def build(controller: CharacterController):
     @st.dialog(loc.page_view_add_chimerist_spell_dialog_title)
     def add_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
         add_chimerist_spell(controller, loc)
+
+    @st.dialog(loc.page_view_add_spell_dialog_title)
+    def add_spell_dialog(controller: CharacterController, loc: LocNamespace):
+        add_spell(controller, loc)
 
     @st.dialog(loc.page_view_remove_chimerist_spell_dialog_title)
     def remove_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
@@ -341,7 +345,7 @@ def build(controller: CharacterController):
             changes = controller.apply_status(st.session_state.state_controller.state.statuses)
             for attribute, value in changes.items():
                 if value > 0:
-                    st.toast(f"{loc.page_view_status_change.format(attribute=attribute, value=value)}")
+                    st.toast(f"{loc.msg_status_change.format(attribute=attribute, value=value)}")
             if st.button(loc.page_view_refresh_attributes):
                 st.rerun()
 
@@ -374,9 +378,9 @@ def build(controller: CharacterController):
 
     # Spells
     with tab3:
-        for char_class, spell_list in controller.character.spells.items():
+        for class_name, spell_list in controller.character.spells.items():
             chimerist_skills = controller.get_skills(ClassName.chimerist)
-            chimerist_condition = (char_class == ClassName.chimerist
+            chimerist_condition = (class_name == ClassName.chimerist
                                    and "spell_mimic" in [s.name for s in chimerist_skills])
             if spell_list or chimerist_condition:
                 writer = SpellTableWriter(loc)
@@ -393,13 +397,22 @@ def build(controller: CharacterController):
                 c1, c2, c3 = st.columns(3)
                 with c1:
                     st.markdown(f"#### {loc.page_view_class_spells.format(
-                        class_name=char_class.localized_name(loc),
+                        class_name=class_name.localized_name(loc),
                         chimerist_message=chimerist_message
                     )}")
                 with c2:
                     if chimerist_condition:
                         if st.button(loc.learn_chimerist_spell_button, disabled=(len(spell_list) == max_n_spells)):
                             add_chimerist_spell_dialog(controller, loc)
+                    else:
+                        char_class = controller.character.get_class(class_name)
+                        casting_skill = char_class.get_spell_skill()
+                        can_add_spell = False
+                        if casting_skill:
+                            can_add_spell = casting_skill.current_level > len(controller.character.get_spells_by_class(class_name))
+                        if st.button(loc.learn_spell_button, disabled=not can_add_spell):
+                            add_spell_dialog(controller, class_name, loc)
+
                 with c3:
                     if chimerist_condition:
                         if st.button(loc.forget_chimerist_spell_button, disabled=(len(spell_list) < 1)):

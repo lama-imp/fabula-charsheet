@@ -8,7 +8,7 @@ import yaml
 from pydantic import BaseModel
 
 from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield
-from data.models.skill import HeroicSkill
+from data.models.skill import HeroicSkill, Skill
 
 COMPENDIUM: Compendium | None = None
 
@@ -71,6 +71,12 @@ class Compendium:
     classes: Classes
     spells: Spells
     heroic_skills: HeroicSkills
+
+    def get_class_name_from_skill(self, skill: Skill):
+        for char_class in self.classes.classes:
+            if char_class.get_skill(skill.name):
+                return char_class.name
+        return None
 
 
 def get_assets_from_file(file_path: Path, asset_class: type[BaseModel]) -> list[BaseModel]:
