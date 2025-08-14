@@ -24,3 +24,6 @@ column_therioform: "Therioform"
 column_genoclepsis: "Genoclepsis suggestions"
 column_heroic_skill: "Heroic Skill"
 column_requirements: "Requirements"
+
+or_separator: ", or "
+and_separator: ", and "

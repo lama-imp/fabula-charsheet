@@ -5,7 +5,7 @@ from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory,
     WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
 from pages.character_creation.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
-    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter
+    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, show_martial
 from pages.character_view.utils import set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill
 from pages.character_view.view_state import ViewState
@@ -317,6 +317,8 @@ def build(controller: CharacterController):
                         unequip_item(controller, "accessory")
                         st.rerun()
 
+            show_martial(controller.character)
+
 
         with attributes_col:
             st.markdown(f"##### {loc.page_view_current_attributes}")
@@ -406,13 +408,19 @@ def build(controller: CharacterController):
 
     #Equipment
     with tab4:
-        col1, col2 = st.columns([0.2, 0.8])
+        col1, col2, col3 = st.columns([0.2, 0.2, 0.6])
         with col1:
             if st.button(loc.add_item_button):
                 add_item_dialog(controller, loc)
         with col2:
             if st.button(loc.remove_item_button):
                 remove_item_dialog(controller, loc)
+        with col3:
+            st.metric(
+                loc.page_view_remaining_zenit,
+                value=loc.page_view_remaining_zenit_value.format(zenits=controller.character.inventory.zenit),
+                delta=None,
+            )
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
             weapon_writer = WeaponTableWriter(loc)

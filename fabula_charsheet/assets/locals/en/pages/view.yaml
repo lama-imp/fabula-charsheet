@@ -65,3 +65,6 @@ page_view_add_heroic_skill_dialog_title: "Add Heroic Skill"
 heroic_skill_one_mastery_requirement: "You must have mastered the {class_name} Class."
 heroic_skill_skill_requirement: ", and also have the {skill_name} Skill."
 heroic_skill_several_mastery_requirement: "You must have mastered one or more Classes among the following: {classes}."
+
+page_view_remaining_zenit: "You have"
+page_view_remaining_zenit_value: "{zenits} zenits"

@@ -49,7 +49,11 @@ def build(controller: CharacterController):
             st.session_state.start_equipment = Inventory(zenit=500)
             st.rerun()
     with col2:
-        st.metric(loc.page_equipment_remaining_zenit, value=st.session_state.start_equipment.zenit, delta=None, )
+        st.metric(
+            loc.page_equipment_remaining_zenit,
+            value=f"{st.session_state.start_equipment.zenit}",
+            delta=None,
+        )
 
     st.info(loc.page_equipment_edit_warning, icon="🔱")
     st.info(loc.page_equipment_starting_zenit.format(

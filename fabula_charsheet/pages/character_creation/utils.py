@@ -165,12 +165,12 @@ class HeroicSkillTableWriter(TableWriter):
         return (
             ColumnConfig(
                 name="heroic_skill",
-                width=0.2,
+                width=0.3,
                 process=lambda s, idx=None: st.write(s.localized_name(self.loc)),
             ),
             ColumnConfig(
                 name="requirements",
-                width=0.7,
+                width=0.55,
                 process=self._process_requirements,
             ),
             ColumnConfig(
@@ -193,7 +193,7 @@ class HeroicSkillTableWriter(TableWriter):
             else:
                 required_classes_names = [c.localized_name(self.loc) for c in skill.required_class]
                 requirements_string = self.loc.heroic_skill_several_mastery_requirement.format(
-                    classes=join_with_or(required_classes_names)
+                    classes=join_with_or(required_classes_names, self.loc)
                 )
         st.write(requirements_string)
 
@@ -214,7 +214,6 @@ class HeroicSkillTableWriter(TableWriter):
     def _add_description(self, skill: HeroicSkill, idx=None):
         st.markdown(skill.localized_description(self.loc))
         st.divider()
-
 
 
 class SpellTableWriter(TableWriter):
@@ -743,7 +742,7 @@ def show_martial(input: CharClass | Character):
     can_equip = [m[8:] for m in can_equip]
 
     if can_equip:
-        can_equip_items = ", ".join(martial[m] for m in can_equip if m in martial)
+        can_equip_items = join_with_and([martial[m] for m in can_equip if m in martial], loc)
         st.write(loc.msg_can_equip_martial.format(items=can_equip_items))
     else:
         st.write(loc.msg_cannot_equip_martial)
@@ -771,16 +770,16 @@ def add_item_as(item: Item):
         st.rerun()
 
 
-def join_with_or(items):
+def join_with_or(items, loc: LocNamespace):
     if not items:
         return ""
     if len(items) == 1:
         return items[0]
-    return ", ".join(items[:-1]) + ", or " + items[-1]
+    return ", ".join(items[:-1]) + loc.or_separator + items[-1]
 
-def join_with_and(items):
+def join_with_and(items, loc: LocNamespace):
     if not items:
         return ""
     if len(items) == 1:
         return items[0]
-    return ", ".join(items[:-1]) + ", and " + items[-1]
+    return ", ".join(items[:-1]) + loc.and_separator + items[-1]
