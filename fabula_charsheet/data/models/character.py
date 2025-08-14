@@ -128,3 +128,11 @@ class Character(BaseModel):
         for class_spells in self.spells.values():
             spell_list.extend(class_spells)
         return spell_list
+
+    def get_class(self, class_name: str | None) -> CharClass | None:
+        if class_name is None:
+            return None
+        for char_class in self.classes:
+            if char_class.name == class_name.lower():
+                return char_class
+        return None

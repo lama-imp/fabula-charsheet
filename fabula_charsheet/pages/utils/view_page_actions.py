@@ -1,30 +1,14 @@
-import uuid
-from pathlib import Path
+from __future__ import annotations
 
 import streamlit as st
 
-import config
-from pages.character_view.view_state import ViewState
-from pages.controller import CharacterController
+from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
     Skill, LocNamespace, HeroicSkill
-from pages.character_creation.utils import SkillTableWriter, HeroicSkillTableWriter
+from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter
+from .classes_page_actions import add_new_class
 from data import compendium as c
-
-
-def set_view_state(state: ViewState):
-    st.session_state.view_step = state
-    st.rerun()
-
-
-def get_avatar_path(char_id: uuid.UUID) -> Path | None:
-    for ext in ("jpg", "jpeg", "png", "gif"):
-        matches = list(config.SAVED_CHARS_IMG_DIRECTORY.glob(f"*{char_id}.{ext}"))
-        if matches:
-            return matches[0]
-
-    return None
 
 
 def avatar_update(controller: CharacterController, loc: LocNamespace):
@@ -35,36 +19,71 @@ def avatar_update(controller: CharacterController, loc: LocNamespace):
     )
     if uploaded_avatar is not None:
         st.image(uploaded_avatar, width=100)
-    if st.button(loc.page_avatar_use_button, disabled=not uploaded_avatar):
+    if st.button(loc.use_avatar_button, disabled=not uploaded_avatar):
         controller.dump_avatar(uploaded_avatar)
         st.rerun()
 
 
 def level_up(controller: CharacterController, loc: LocNamespace):
-    selected = set()
-    def add_point(skill: Skill, idx=None):
-        if st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden"):
-            selected.add(skill.name)
-        else:
-            selected.discard(skill.name)
+    st.session_state.selected_hero_skills = []
 
     sorted_classes = sorted(
         [char_class for char_class in controller.character.classes if char_class.class_level() < 10],
         key=lambda x: x.class_level(),
         reverse=True
     )
+
     writer = SkillTableWriter(loc)
-    writer.columns = writer.level_up_columns(add_point)
+    writer.columns = writer.level_up_columns
+
     for char_class in sorted_classes:
         st.markdown(f"#### {char_class.name.localized_name(loc)}")
         writer.write_in_columns([skill for skill in char_class.skills if skill.current_level < skill.max_level])
 
-    if st.button(loc.confirm_button, disabled=(len(selected) != 1)):
+    class_controller = ClassController()
+    if controller.can_add_class():
+        add_new_class(controller, class_controller, loc, mode="addition")
+
+    if st.button(loc.confirm_button, disabled=(len(st.session_state.selected_hero_skills) != 1)):
         controller.character.level += 1
-        selected_skill_name = list(selected)[0]
-        for char_class in controller.character.classes:
-            if char_class.get_skill(selected_skill_name):
-                char_class.levelup_skill(selected_skill_name)
+        selected_skill: Skill = st.session_state.selected_hero_skills[0]
+        selected_class_name = c.COMPENDIUM.get_class_name_from_skill(selected_skill)
+        if controller.is_class_added(selected_class_name):
+            for char_class in controller.character.classes:
+                if char_class.get_skill(selected_skill):
+                    char_class.levelup_skill(selected_skill)
+        else:
+            controller.add_class(class_controller.char_class)
+        if selected_skill.can_add_spell:
+            controller.character.spells[selected_class_name] = st.session_state.class_spells
+        st.rerun()
+
+
+def add_spell(controller: CharacterController, class_name: ClassName, loc: LocNamespace):
+    selected_spells = set()
+    def single_spell_selector(self, spell: Spell, idx=None):
+        if st.checkbox("add spell",
+                       value=(spell in selected_spells),
+                       label_visibility="hidden",
+                       key=f"{spell.name}-toggle"
+                       ):
+            if spell not in selected_spells:
+                selected_spells.add(spell)
+        else:
+            if spell in selected_spells:
+                selected_spells.discard(spell)
+
+    class_spells = c.COMPENDIUM.spells.get_spells(class_name)
+    available_spells = [spell for spell in class_spells if spell not in controller.character.get_spells_by_class(class_name)]
+
+    writer = SpellTableWriter(loc)
+    writer.columns = writer.add_one_spell_columns(single_spell_selector)
+    writer.write_in_columns(available_spells)
+
+    if st.button(loc.add_spell_button, disabled=(len(selected_spells) != 1)):
+        spell = list(selected_spells)[0]
+        controller.character.spells[class_name] = controller.character.spells.get(class_name, [])
+        controller.character.spells[class_name].append(spell)
         st.rerun()
 
 
@@ -87,11 +106,11 @@ def add_chimerist_spell(controller: CharacterController, loc: LocNamespace):
                 **input_dict
             )
             controller.add_spell(new_spell, ClassName.chimerist)
-            st.toast(loc.page_view_spell_added.format(spell_name=input_dict['name']))
+            st.toast(loc.msg_spell_added.format(spell_name=input_dict['name']))
             st.rerun()
         except Exception as e:
             st.error(e)
-            st.warning(loc.page_view_spell_error, icon="🪬")
+            st.warning(loc.error_adding_spell, icon="🪬")
 
 
 def remove_chimerist_spell(controller: CharacterController, loc: LocNamespace):

@@ -1,6 +1,5 @@
 from collections.abc import Iterable, Callable
 from copy import deepcopy
-from itertools import chain
 from typing import Optional
 
 import streamlit as st
@@ -12,16 +11,14 @@ from data.models import (
     Weapon,
     Armor,
     AttributeName,
-    CharClass,
-    Character,
     Shield,
     Accessory,
     Therioform,
     Item,
-    LocNamespace, HeroicSkill,
+    LocNamespace,
+    HeroicSkill,
 )
-from pages.controller import ClassController
-from .creation_state import CreationState
+from .common import add_item_as, join_with_or
 
 
 class ColumnConfig(BaseModel):
@@ -32,7 +29,7 @@ class ColumnConfig(BaseModel):
 class TableWriter:
     columns = None
 
-    def __init__(self, loc):
+    def __init__(self, loc: LocNamespace):
         self.loc = loc
         if self.columns is None:
             if hasattr(self, "base_columns"):
@@ -122,14 +119,27 @@ class SkillTableWriter(TableWriter):
             self.base_columns[1],
         )
 
-    def level_up_columns(self, add_point_handler: Callable):
+    @property
+    def level_up_columns(self):
         return (
             self.base_columns[0],
             self.base_columns[1],
             ColumnConfig(
                 name="level",
                 width=0.2,
-                process=add_point_handler
+                process=add_point
+            ),
+        )
+
+    @property
+    def level_up_new_class_columns(self):
+        return (
+            self.base_columns[0],
+            self.base_columns[1],
+            ColumnConfig(
+                name="level",
+                width=0.2,
+                process=self._level_input_for_levelup
             ),
         )
 
@@ -154,6 +164,19 @@ class SkillTableWriter(TableWriter):
                 )
             )
         skill.current_level = level
+
+    @staticmethod
+    def _level_input_for_levelup(skill: Skill, idx=None):
+        st.session_state.selected_hero_skills = st.session_state.get("selected_hero_skills", [])
+        level = st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden")
+        if level and skill not in st.session_state.selected_hero_skills:
+                st.session_state.selected_hero_skills.append(skill)
+                skill.current_level += 1
+        else:
+            if skill in st.session_state.selected_hero_skills:
+                st.session_state.selected_hero_skills.remove(skill)
+                skill.current_level -= 1
+        skill.current_level = int(level)
 
     def _add_description(self, item, idx=None):
         pass
@@ -247,6 +270,16 @@ class SpellTableWriter(TableWriter):
             ),
         )
 
+    def add_one_spell_columns(self, single_spell_selector: Callable):
+        columns = list(self.base_columns)
+        last_col = columns[-1]
+        columns[-1] = ColumnConfig(
+            name=last_col.name,
+            width=last_col.width,
+            process=single_spell_selector,
+        )
+        return tuple(columns)
+
     def _add_description(self, spell: Spell, idx=None):
         st.markdown(spell.localized_description(self.loc))
         st.divider()
@@ -264,6 +297,7 @@ class SpellTableWriter(TableWriter):
         st.write(spell.duration.localized_name(self.loc))
 
     def spell_selector(self, spell: Spell, idx=None):
+        st.session_state.class_spells = st.session_state.get("class_spells", [])
         if st.checkbox("add spell",
                        value=(spell in st.session_state.class_spells),
                        label_visibility="hidden",
@@ -700,86 +734,11 @@ class TherioformTableWriter(TableWriter):
         st.write(therioform.localized_description(self.loc))
 
 
-def set_creation_state(state: CreationState):
-    st.session_state.creation_step = state
-    st.rerun()
-
-
-def if_show_spells(casting_skill: Skill):
-    if casting_skill and casting_skill.current_level > 0:
-        return True
-    return False
-
-def list_skills(class_controller: ClassController, can_add_skill_number: int):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
-    with st.container(border=True):
-        st.subheader(loc.msg_skills_points_remaining.format(count=can_add_skill_number))
-        st.write(loc.msg_skills_selected)
-        for skill in class_controller.char_class.skills:
-            if skill.current_level > 0:
-                show_skill(skill)
-
-def show_skill(skill: Skill):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
-    st.markdown(f"**{skill.localized_name(loc)}** - level {skill.current_level}")
-
-def show_martial(input: CharClass | Character):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
-    martial_keys = [
-        "melee",
-        "ranged",
-        "armor",
-        "shields",
-    ]
-
-    martial = {key: getattr(loc, key) for key in martial_keys}
-
-    if isinstance(input, CharClass):
-        can_equip = input.can_equip_list()
+def add_point(skill: Skill, idx=None):
+    st.session_state.selected_hero_skills = st.session_state.get("selected_hero_skills", [])
+    if st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden"):
+        if skill not in st.session_state.selected_hero_skills:
+            st.session_state.selected_hero_skills.append(skill)
     else:
-        can_equip = set(chain.from_iterable([x.can_equip_list() for x in input.classes]))
-
-    can_equip = [m[8:] for m in can_equip]
-
-    if can_equip:
-        can_equip_items = join_with_and([martial[m] for m in can_equip if m in martial], loc)
-        st.write(loc.msg_can_equip_martial.format(items=can_equip_items))
-    else:
-        st.write(loc.msg_cannot_equip_martial)
-
-
-def add_item_as(item: Item):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
-    new_name = st.text_input(loc.page_equipment_write_new_name)
-    button_label = loc.page_equipment_add_item_as_button.format(name=new_name)
-
-    if st.button(button_label, disabled= not new_name):
-        item = deepcopy(item)
-        item.name = new_name
-        if isinstance(item, Armor):
-            st.session_state.start_equipment.backpack.armors.append(item)
-        elif isinstance(item, Weapon):
-            st.session_state.start_equipment.backpack.weapons.append(item)
-        elif isinstance(item, Shield):
-            st.session_state.start_equipment.backpack.shields.append(item)
-        else:
-            st.error(loc.page_equipment_unknown_item_type)
-            return
-        st.toast(loc.page_equipment_added.format(name=new_name))
-        st.session_state.start_equipment.zenit -= item.cost
-        st.rerun()
-
-
-def join_with_or(items, loc: LocNamespace):
-    if not items:
-        return ""
-    if len(items) == 1:
-        return items[0]
-    return ", ".join(items[:-1]) + loc.or_separator + items[-1]
-
-def join_with_and(items, loc: LocNamespace):
-    if not items:
-        return ""
-    if len(items) == 1:
-        return items[0]
-    return ", ".join(items[:-1]) + loc.and_separator + items[-1]
+        if skill in st.session_state.selected_hero_skills:
+            st.session_state.selected_hero_skills.remove(skill)

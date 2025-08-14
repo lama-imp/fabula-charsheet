@@ -60,7 +60,7 @@ class CharClass(BaseModel):
         ]
 
     def can_equip_weapon(self, weapon_range: WeaponRange) -> bool:
-        if weapon_range == "meledd" and self.martial_melee:
+        if weapon_range == "melee" and self.martial_melee:
             return True
         if weapon_range == "ranged" and self.martial_ranged:
             return True
@@ -86,7 +86,7 @@ class CharClass(BaseModel):
     def levelup_skill(self, new_skill_name: str):
         for skill in self.skills:
             if skill.name == new_skill_name:
-                skill.current_level +=1
+                skill.current_level += 1
 
     def get_skill_level(self, skill_name: str) -> int | None:
         for skill in self.skills:

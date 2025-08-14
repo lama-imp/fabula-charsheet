@@ -3,12 +3,10 @@ import random
 import streamlit as st
 
 from .creation_state import CreationState
-from .utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial, ShieldTableWriter
+from pages.utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial, ShieldTableWriter
 from pages.controller import CharacterController
 from data.models import Inventory, LocNamespace
 from data import compendium as c
-
-
 
 
 def build(controller: CharacterController):
