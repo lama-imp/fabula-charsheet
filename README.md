@@ -1,5 +1,17 @@
 # Fabula Ultima Interactive Character Sheet
 
+Character creation and view.
+
+Supported classes:
+
+- Chimerist
+- Guardian
+- Mutant
+- Rogue
+- Spiritist
+
+Partial AI-supported Russian translation.
+
 ## Requirements:
 
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) – Python package and project manager
@@ -19,14 +31,4 @@ Run the app with `uv`:
 ```
 
 The app window will open in your default browser.
-
-## Development
-
-To add a new class:
-
-1. Create a file named `<new_class_name>.yaml` in the [`classes`](fabula_charsheet/assets/classes) directory.  
-   Use the structure defined in the [`CharClass`](fabula_charsheet/data/models/char_class.py) model.
-
-2. If name of the class is not in `ClassName` enumeration in [`char_class.py`](fabula_charsheet/data/models/char_class.py), add it.
-
 
