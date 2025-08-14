@@ -13,7 +13,8 @@ from .table_writer import (
     ShieldTableWriter,
     AccessoryTableWriter,
     ItemTableWriter,
-    TherioformTableWriter
+    TherioformTableWriter,
+    BondTableWriter,
 )
 
 from .common import (

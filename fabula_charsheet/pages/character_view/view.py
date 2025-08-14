@@ -5,8 +5,8 @@ from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory,
     WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
-    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, show_martial, \
-    set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
+    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
+    show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond
 from pages.character_view.view_state import ViewState
 
@@ -33,8 +33,12 @@ def build(controller: CharacterController):
         add_chimerist_spell(controller, loc)
 
     @st.dialog(loc.page_view_add_spell_dialog_title, width="large")
-    def add_spell_dialog(controller: CharacterController, loc: LocNamespace):
-        add_spell(controller, loc)
+    def add_spell_dialog(
+            controller: CharacterController,
+            class_name: ClassName,
+            loc: LocNamespace
+    ):
+        add_spell(controller, class_name, loc)
 
     @st.dialog(loc.page_view_remove_chimerist_spell_dialog_title, width="large")
     def remove_chimerist_spell_dialog(controller: CharacterController, loc: LocNamespace):
@@ -116,6 +120,9 @@ def build(controller: CharacterController):
             with col3:
                 if st.button(loc.remove_bond_button):
                     remove_bond_dialog(controller, loc)
+
+            writer = BondTableWriter(loc)
+            writer.write_in_columns(controller.character.bonds, header=False)
 
 
         with points_col:
@@ -246,7 +253,7 @@ def build(controller: CharacterController):
                     st.write(accuracy_str)
                 with c3:
                     st.markdown(f"_{loc.column_damage}_")
-                    st.write(f"【{loc.hr} + {weapon.bonus_damage}】 {weapon.damage_type.localized_name(loc)}")
+                    st.markdown(f"{loc.hr} + {weapon.bonus_damage}\n\n{weapon.damage_type.localized_name(loc)}")
                 with c4:
                     if st.button(
                             "",

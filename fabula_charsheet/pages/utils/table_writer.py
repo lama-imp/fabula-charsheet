@@ -16,7 +16,7 @@ from data.models import (
     Therioform,
     Item,
     LocNamespace,
-    HeroicSkill,
+    HeroicSkill, Bond,
 )
 from .common import add_item_as, join_with_or
 
@@ -733,6 +733,32 @@ class TherioformTableWriter(TableWriter):
 
     def _add_description(self, therioform: Therioform, idx=None):
         st.write(therioform.localized_description(self.loc))
+
+
+class BondTableWriter(TableWriter):
+
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="bond",
+                width=0.35,
+                process=lambda b, idx=None: st.write(f"_{b.name}_"),
+            ),
+            ColumnConfig(
+                name="bond_strength",
+                width=0.65,
+                process=self._process_bond,
+            ),
+        )
+
+    def _process_bond(self, bond: Bond, idx=None):
+        for emotion in [bond.respect, bond.trust, bond.affinity]:
+            if emotion:
+                st.write(emotion.localized_name(self.loc))
+
+    def _add_description(self, bond: Bond, idx=None):
+        pass
 
 
 def add_point(skill: Skill, idx=None):
