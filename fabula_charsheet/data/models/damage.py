@@ -17,6 +17,7 @@ class DamageType(StrEnum):
     dark = auto()
     light = auto()
     poison = auto()
+    no_type = auto()
 
     def localized_name(self, loc: LocNamespace) -> str:
         key = f"damage_{self.name}"

@@ -3,12 +3,10 @@ import random
 import streamlit as st
 
 from .creation_state import CreationState
-from .utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial, ShieldTableWriter
+from pages.utils import set_creation_state, WeaponTableWriter, ArmorTableWriter, show_martial, ShieldTableWriter
 from pages.controller import CharacterController
 from data.models import Inventory, LocNamespace
 from data import compendium as c
-
-
 
 
 def build(controller: CharacterController):
@@ -49,7 +47,11 @@ def build(controller: CharacterController):
             st.session_state.start_equipment = Inventory(zenit=500)
             st.rerun()
     with col2:
-        st.metric(loc.page_equipment_remaining_zenit, value=st.session_state.start_equipment.zenit, delta=None, )
+        st.metric(
+            loc.page_equipment_remaining_zenit,
+            value=f"{st.session_state.start_equipment.zenit}",
+            delta=None,
+        )
 
     st.info(loc.page_equipment_edit_warning, icon="🔱")
     st.info(loc.page_equipment_starting_zenit.format(

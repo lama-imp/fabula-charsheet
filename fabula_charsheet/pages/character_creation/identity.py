@@ -1,7 +1,7 @@
 import streamlit as st
 
 from .creation_state import CreationState
-from .utils import set_creation_state
+from pages.utils import set_creation_state
 from pages.controller import CharacterController
 from data.models import CharacterTheme, LocNamespace
 

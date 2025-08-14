@@ -1,5 +1,5 @@
 error_class_not_found: "No class with name '{class_name}' found to update."
-error_unexpected_class_type: "Unexpected type for class: {class_type)}"
+error_unexpected_class_type: "Unexpected type for class: {class_type}"
 error_invalid_level: "Level {level} should be between 1 and 60."
 error_identity_empty: "Identity should not be empty."
 error_name_empty: "Name should not be empty."
@@ -17,3 +17,4 @@ error_character_file_permission: "You do not have permission to delete this char
 error_character_avatar_permission: "You do not have permission to delete this character avatar."
 page_attributes_sum_error: "Sum of your attributes should be equal to 32."
 error_loading_state: "Unable to load state. Switching to default."
+adding_bond_error: "To add a Bond you must provide a name and select at least one emotion."
