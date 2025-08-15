@@ -16,7 +16,7 @@ from data.models import (
     Therioform,
     Item,
     LocNamespace,
-    HeroicSkill, Bond,
+    HeroicSkill, Bond, ChimeristSpell,
 )
 from .common import add_item_as, join_with_or
 
@@ -270,6 +270,17 @@ class SpellTableWriter(TableWriter):
             ),
         )
 
+    @property
+    def chimerist_columns(self):
+        return (
+            *self.base_columns[:-1],
+            ColumnConfig(
+                name="species",
+                width=0.15,
+                process=self._process_species,
+            ),
+        )
+
     def add_one_spell_columns(self, single_spell_selector: Callable):
         columns = list(self.base_columns)
         last_col = columns[-1]
@@ -308,6 +319,9 @@ class SpellTableWriter(TableWriter):
         else:
             if spell in st.session_state.class_spells:
                 st.session_state.class_spells.remove(spell)
+
+    def _process_species(self, spell: ChimeristSpell, idx=None):
+        st.write(spell.species.localized_name(self.loc))
 
 
 class WeaponTableWriter(TableWriter):

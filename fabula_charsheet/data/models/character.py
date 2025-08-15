@@ -11,10 +11,11 @@ from .char_class import CharClass, ClassName
 from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
 from .skill import HeroicSkill
-from .spell import Spell
+from .spell import Spell, ChimeristSpell
 
 if TYPE_CHECKING:
     from data.models import LocNamespace
+
 
 class CharacterTheme(StrEnum):
     ambition = auto()
@@ -73,7 +74,7 @@ class Character(BaseModel):
     insight: Insight = Field(default_factory=Insight)
     willpower: Willpower = Field(default_factory=Willpower)
     inventory: Inventory = Field(default_factory=Inventory)
-    spells: dict[ClassName, list[Spell]] = dict()
+    spells: dict[ClassName, list[Spell | ChimeristSpell]] = dict()
     special: CharSpecial = Field(default_factory=CharSpecial)
     heroic_skills: list[HeroicSkill] = list()
     bonds: list[Bond] = list()
