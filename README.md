@@ -4,11 +4,14 @@ Character creation and view.
 
 Supported classes:
 
+Full support:
 - Chimerist
-- Guardian
 - Mutant
 - Rogue
 - Spiritist
+
+Partial support:
+- Other core classes (no abilities effects, no specials like Arcanist's Arcana or Tinkerer's inventions)
 
 Partial Russian translation.
 
