@@ -13,7 +13,7 @@ Full support:
 Partial support:
 - Other core classes (no abilities effects, no specials like Arcanist's Arcana or Tinkerer's inventions)
 
-Partial Russian translation.
+Partial Russian translation (thanks to [Katayando](https://github.com/Katayando)).
 
 ## Requirements:
 
