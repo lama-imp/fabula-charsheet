@@ -7,7 +7,8 @@ from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
-    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond
+    remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
+    increase_attribute
 from pages.character_view.view_state import ViewState
 
 
@@ -60,6 +61,10 @@ def build(controller: CharacterController):
     def remove_bond_dialog(controller: CharacterController, loc: LocNamespace):
         remove_bond(controller, loc)
 
+    @st.dialog(loc.page_view_increase_attribute_dialog_title, width="small")
+    def increase_attribute_dialog(controller: CharacterController, loc: LocNamespace):
+        increase_attribute(controller, loc)
+
     st.title(f"{controller.character.name}")
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -101,6 +106,9 @@ def build(controller: CharacterController):
                 if controller.can_add_heroic_skill():
                     if st.button(loc.heroic_skill_button):
                         add_heroic_skill_dialog(controller, loc)
+                if controller.character.level == 20 or controller.character.level == 40:
+                    if st.button(loc.increase_attribute_button):
+                        increase_attribute_dialog(controller, loc)
 
             st.markdown(f"##### {loc.page_view_base_attributes}")
             st.write(f"{loc.attr_dexterity}: {loc.dice_prefix}{controller.character.dexterity.base}")
@@ -442,6 +450,8 @@ def build(controller: CharacterController):
                     if chimerist_condition:
                         if st.button(loc.forget_chimerist_spell_button, disabled=(len(spell_list) < 1)):
                             remove_chimerist_spell_dialog(controller, loc)
+                if class_name == ClassName.chimerist:
+                    writer.columns = writer.chimerist_columns
                 writer.write_in_columns(spell_list)
 
     #Equipment

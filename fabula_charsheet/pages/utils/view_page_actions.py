@@ -5,7 +5,7 @@ import streamlit as st
 from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill, LocNamespace, HeroicSkill
+    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell
 from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter
 from .classes_page_actions import add_new_class
 from data import compendium as c
@@ -71,8 +71,8 @@ def level_up(controller: CharacterController, loc: LocNamespace):
         selected_class_name = c.COMPENDIUM.get_class_name_from_skill(selected_skill)
         if controller.is_class_added(selected_class_name):
             for char_class in controller.character.classes:
-                if char_class.get_skill(selected_skill):
-                    char_class.levelup_skill(selected_skill)
+                if char_class.get_skill(selected_skill.name):
+                    char_class.levelup_skill(selected_skill.name)
         else:
             controller.add_class(class_controller.char_class)
         if selected_skill.can_add_spell:
@@ -118,12 +118,13 @@ def add_chimerist_spell(controller: CharacterController, loc: LocNamespace):
         "target": st.pills(loc.page_view_spell_target, [t for t in SpellTarget], format_func=lambda s: s.localized_name(loc), selection_mode="single"),
         "duration": st.pills(loc.page_view_spell_duration, [t for t in SpellDuration], format_func=lambda s: s.localized_name(loc), selection_mode="single"),
         "damage_type": st.pills(loc.page_view_spell_damage_type, [t for t in DamageType], format_func=lambda s: s.localized_name(loc), selection_mode="single"),
+        "species": st.pills(loc.page_view_spell_species, [t for t in Species], format_func=lambda s: s.localized_name(loc), selection_mode="single"),
         "char_class": ClassName.chimerist,
     }
 
     if st.button(loc.add_spell_button):
         try:
-            new_spell = Spell(
+            new_spell = ChimeristSpell(
                 **input_dict
             )
             controller.add_spell(new_spell, ClassName.chimerist)
@@ -285,3 +286,28 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
         selected_heroic_skill = st.session_state.selected_hero_skills[0]
         controller.character.heroic_skills.append(selected_heroic_skill)
         st.rerun()
+
+
+def increase_attribute(controller: CharacterController, loc: LocNamespace):
+    st.markdown(loc.msg_increase_attribute)
+    attributes = [
+        controller.character.dexterity,
+        controller.character.might,
+        controller.character.insight,
+        controller.character.willpower,
+    ]
+
+    for attribute in attributes:
+        if attribute.base < 12:
+            with st.container():
+                col1, col2, col3 = st.columns([0.2, 0.5, 0.3])
+                with col2:
+                    s = f"**{attribute.name.localized_name(loc)}**: {loc.dice_prefix}{attribute.base} :material/keyboard_double_arrow_right: {loc.dice_prefix}{attribute.base + 2}"
+                    st.markdown(s)
+                with col3:
+                    if st.button(
+                            ":material/add_task:",
+                            key=attribute.name,
+                    ):
+                        attribute.base += 2
+                        st.rerun()

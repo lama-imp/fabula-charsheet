@@ -38,7 +38,8 @@ from .view_page_actions import (
     add_spell,
     add_chimerist_spell,
     remove_chimerist_spell,
-    add_heroic_skill
+    add_heroic_skill,
+    increase_attribute,
 )
 
 from .classes_page_actions import (
