@@ -1,47 +1,79 @@
 spell_acceleration: "Acceleration"
 spell_acceleration_description: >
-  You bend the fabric of time. Until this spell ends, the target gains the ability to perform a single additional action during each of their turns. Once the target has performed a total of two additional actions granted by this spell, this spell ends.
+  You bend the fabric of time.  
+  Until this ends, the **target** gains the ability to perform a single additional **action** during each of their turns.  
+  Once the **target** has performed a total of two additional **actions** granted by this, it ends.
 
 spell_anomaly: "Anomaly"
 spell_anomaly_description: >
-  You alter the very nature of your target. Until this spell ends, if the target would suffer damage of a type they Absorb or are Immune to, they are instead treated as if they were Vulnerable to that damage type. Once that happens, this spell ends.
+  You alter the very nature of your **target**.  
+  Until this spell ends, if the **target** would suffer damage of a **damage type** they **Absorb** or are **Immune** to, they are instead treated as if they were **Vulnerable** to that **damage type**.  
+  Once that happens, this ends.
 
 spell_dark_weapon: "Dark Weapon"
 spell_dark_weapon_description: >
-  You imbue a weapon with dark energy. Until this spell ends, all damage dealt by the weapon becomes of the dark type. If you have that weapon equipped while you cast this spell, you may perform a free attack with it as part of the same action. This spell can only be cast on a weapon equipped by a willing creature.
+  You imbue a **weapon** with **dark energy**.  
+  Until this spell ends, all damage dealt by the **weapon** becomes of the **dark** damage type.  
+  If you have that **weapon** equipped while you cast it, you may perform a free **attack** with it as part of the same **action**.  
+  
+  This can only be cast on a **weapon** equipped by a willing **creature**.
 
 spell_dispel: "Dispel"
 spell_dispel_description: >
-  You release a wave of negative energy and cleanse all magic from a creature. If the target is affected by one or more spells with a duration of Scene, they are no longer affected by any of those spells instead.
+  You release a wave of negative energy and cleanse all magic from a **creature**.  
+  If the **target** is affected by one or more **spells** with a **duration of Scene**, they are no longer affected by any of those **spells**.
 
 spell_divination: "Divination"
 spell_divination_description: >
-  You glimpse briefly into the future. Until this spell ends, after a creature you can see performs a Check, if it was not a fumble nor a critical success, you may force that creature to reroll both dice. Once you have forced two rerolls this way, this spell ends.
+  You glimpse briefly into the future.  
+  Until this ends, after a **creature** you can see performs a **Check**, if it was not a **fumble** nor a **critical success**, you may force that **creature** to reroll both dice.  
+  Once you have forced two rerolls this way, it ends.
 
 spell_drain_spirit: "Drain Spirit"
 spell_drain_spirit_description: >
-  You consume a creature's psyche. The target loses【HR + 15】Mind Points. Then, you recover an amount of Mind Points equal to half the Mind Points loss they suffered (if the loss was reduced to 0 in some way, you recover none).
+  You consume a **creature's psyche**.  
+  The **target** loses【HR + 15】**Mind Points**.  
+  Then, you recover an amount of **Mind Points** equal to half the **Mind Points** loss they suffered (if the loss was reduced to 0 in some way, you recover none).
 
 spell_drain_vigor: "Drain Vigor"
 spell_drain_vigor_description: >
-  You steal another creature's life force. The target suffers【HR + 15】dark damage. Then, you recover an amount of Hit Points equal to half the Hit Points loss they suffered (if the loss was reduced to 0 in some way, you recover none).
+  You steal another **creature's life force**.  
+  The **target** suffers【HR + 15】**dark damage**.  
+  Then, you recover an amount of **Hit Points** equal to half the **Hit Points** loss they suffered (if the loss was reduced to 0 in some way, you recover none).
 
 spell_gamble: "Gamble"
 spell_gamble_description: >
-  You summon a vortex of chaotic energy. Roll your current Willpower die once for every 10 Mind Points spent while casting this spell, then keep the single die you prefer: the number on that die determines the effects of this spell.
+  You summon a vortex of **chaotic energy**.  
+  Roll your current **Willpower** die once for every 10 **Mind Points** spent while casting it, then keep the single die you prefer: the number on that die determines the effects.
+  
+  - "**1** You lose half of your current **Hit Points** and half of your current **Mind Points**."
+  - "**2-3** Each creature present on the scene, including yourself, suffers **poisoned**."
+  - "**4-6** Each creature present on the scene, including yourself, suffers **slow**."
+  - "**7-8** Choose up to three creatures you can see: each of them recovers **50 Hit Points** and also recovers from all **status effects**."
+  - "**9+** Choose any number of creatures you can see: each of them suffers **30 damage**.  
+    The **damage type** is determined randomly by rolling a **d6**:  
+    1. **air**  2. **bolt**  3. **dark**  4. **earth**  5. **fire**  6. **poison**"
+
 
 spell_mirror: "Mirror"
 spell_mirror_description: >
-  You twist the laws of magic. Until this spell ends, if an offensive (⚡) spell is cast on the target, the creature who cast that offensive spell will be targeted in their stead (any other targets of the offensive spell will be targeted as normal). Once that happens, this spell ends.
+  You twist the laws of magic.  
+  Until this spell ends, if an offensive (⚡) spell is cast on the **target**, the **creature** who cast that offensive spell will be targeted in their stead (any other **targets** of the offensive spell will be targeted as normal).  
+  Once that happens, it ends.
 
 spell_omega: "Omega"
 spell_omega_description: >
-  You invoke doom on your foe, turning strength into frailty. The target loses an amount of Hit Points equal to【20 + half the target's level】.
+  You invoke doom on your foe, turning strength into frailty.  
+  The **target** loses an amount of **Hit Points** equal to【20 + half the **target**'s level】.
 
 spell_stop: "Stop"
 spell_stop_description: >
-  You trap a foe inside a circle of altered time and space. The target will perform one fewer action on their next turn (to a minimum of 0 actions).
+  You trap a foe inside a circle of altered time and space.  
+  The **target** will perform one fewer **action** on their next turn (to a minimum of 0 **actions**).
 
 spell_umbra: "Umbra"
 spell_umbra_description: >
-  A storm of dark energy turns matter into ash. Each target hit by this spell suffers【HR + 15】dark damage. Opportunity: Each target hit by this spell suffers weak.
+  A storm of dark energy turns matter into ash.  
+  Each **target** hit suffers【HR + 15】**dark damage**.  
+  
+  **Opportunity**: Each **target** hit suffers **weak**.

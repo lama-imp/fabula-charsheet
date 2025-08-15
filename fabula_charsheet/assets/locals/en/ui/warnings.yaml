@@ -1,4 +1,4 @@
 warn_edit_equipment_lost: "You will not be able to edit your starting equipment on the next step."
-warn_more_skill_points_needed: "You need to put {points} more points into skills."
-warn_exact_skill_points_needed: "You need to put exactly {level} points to your skills."
+warn_more_skill_points_needed: "You need to put **{points}** more points into skills."
+warn_exact_skill_points_needed: "You need to put exactly **{level}** points to your skills."
 warn_confirm_delete_character: "Are you sure you want to completely delete this character?"

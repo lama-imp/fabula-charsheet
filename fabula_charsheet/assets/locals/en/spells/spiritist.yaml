@@ -4,7 +4,7 @@ spell_aura: "Aura"
 spell_aura_description: >
   You project your soul outside your body and direct it to surround the targets,
   shielding them from dangerous magic. Until this spell ends, each target may treat their
-  Magic Defense as being equal to 12 against any effects that target it (they are still free
+  **Magic Defense** as being equal to **12** against any effects that target it (they are still free
   to use their normal Defense score if higher than 12).
 
 spell_awaken: "Awaken"
@@ -16,13 +16,13 @@ spell_awaken_description: >
 spell_barrier: "Barrier"
 spell_barrier_description: >
   You project your soul outside your body and weave it into a barrier to protect the targets from attacks.
-  Until this spell ends, each target may treat their Defense as being equal to 12 against any effects that
+  Until this spell ends, each target may treat their **Defense** as being equal to **12** against any effects that
   target it (they are still free to use their normal Defense score if higher than 12).
 
 spell_cleanse: "Cleanse"
 spell_cleanse_description: >
   You strengthen and purify the soul energy coursing through your companions. Each target recovers
-  from all status effects.
+  from all **status effects**.
 
 spell_enrage: "Enrage"
 spell_enrage_description: >
@@ -50,7 +50,7 @@ spell_lux_description: >
 spell_mercy: "Mercy"
 spell_mercy_description: >
   You strengthen the heart of a creature against suffering and despair. Until this spell ends, if
-  the target would be reduced to 0 Hit Points, they are instead left standing with exactly 1 Hit Point.
+  the target would be reduced to **0 Hit Points**, they are instead left standing with exactly **1 Hit Point**.
   Once that happens, this spell ends.
 
 spell_reinforce: "Reinforce"

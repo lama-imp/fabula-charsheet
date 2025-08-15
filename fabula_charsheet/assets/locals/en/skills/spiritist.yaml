@@ -1,28 +1,33 @@
 skill_healing_power: "Healing Power"
 skill_healing_power_description: |
-  When you cast a spell that targets one or more allies, if you have an arcane weapon equipped, you may have each of those allies recover an amount of Hit Points equal to 【SL, multiplied by the number of Bonds you have】.
-  This healing is separate from any healing caused by the effects of the spell.
+  When you cast a spell that targets one or more allies,  
+  if you have an **arcane** weapon equipped, you may have each of those allies recover an amount of **Hit Points** equal to 【SL, multiplied by the number of **Bonds** you have】.  
+
+  This healing is separate from any healing caused by the effects of the **spell**.
 
 skill_ritual_spiritism: "Ritual Spiritism"
 skill_ritual_spiritism_description: |
-  You may perform Rituals whose effects fall within the Spiritism discipline.
-  Spiritism Rituals use【INS + WLP】for the Magic Check.
+  You may perform **Rituals** whose effects fall within the **Spiritism** discipline.  
+  **Spiritism Rituals** use 【INS + WLP】 for the **Magic Check**.
 
 skill_spiritual_magic: "Spiritual Magic"
 skill_spiritual_magic_description: >
-  Each time you acquire this Skill, learn one Spiritist spell (add a point here to see available spells).
-  Offensive (⚡) Spiritist spells use【INS + WLP】for the Magic Check.
+  Each time you acquire this skill, learn one **Spiritist spell**.  
+  Offensive (⚡) **Spiritist spells** use 【INS + WLP】 for the **Magic Check**.
 
 skill_support_magic: "Support Magic"
 skill_support_magic_description: |
-  When you cast a spell that targets one or more allies, if you have an arcane weapon equipped,
-  you may choose one of those allies you have a Bond towards. If you do, that ally gains a bonus
-  to the next Check they perform during the current scene; this bonus is equal to the strength
-  of your Bond towards them.
+  When you cast a spell that targets one or more allies,  
+  if you have an **arcane** weapon equipped, you may choose one of those allies you have a **Bond** towards.  
+
+  If you do, that ally gains a bonus to the next **Check** they perform during the current scene;  
+  this bonus is equal to the strength of your **Bond** towards them.
 
 skill_vismagus: "Vismagus"
 skill_vismagus_description: |
-  When you cast a spell, if you don't have enough Mind Points to pay for its total cost,
-  you may choose to spend twice as many Hit Points instead. You cannot use this Skill if doing
-  so would reduce you to 0 Hit Points. If a spell cast this way would cause you to recover Hit Points,
-  you instead recover no Hit Points (the spell functions normally on any other target).
+  When you cast a spell, if you don't have enough **Mind Points** to pay for its total cost,  
+  you may choose to spend twice as many **Hit Points** instead.  
+
+  You cannot use this skill if doing so would reduce you to 0 **Hit Points**.  
+  If a spell cast this way would cause you to recover **Hit Points**, you instead recover no **Hit Points**  
+  (the spell functions normally on any other target).

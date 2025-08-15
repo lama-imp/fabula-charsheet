@@ -7,14 +7,11 @@ martial_armor: false
 martial_shields: false
 rituals: []
 skills:
-  - name: mutant_unarmed_mastery
+  - name: akromorphosis
     max_level: 5
 
   - name: biophagy
     max_level: 4
-
-  - name: akromorphosis
-    max_level: 5
 
   - name: ecdysis
     max_level: 3
