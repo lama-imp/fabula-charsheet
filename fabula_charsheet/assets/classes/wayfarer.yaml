@@ -1,0 +1,13 @@
+name: wayfarer
+class_bonus: ip
+bonus_value: 2
+skills:
+  - name: faithful_companion
+    max_level: 5
+  - name: resourceful
+    max_level: 4
+  - name: tavern_talk
+    max_level: 3
+  - name: treasure_hunter
+    max_level: 2
+  - name: well_traveled

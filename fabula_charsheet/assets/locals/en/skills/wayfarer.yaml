@@ -1,0 +1,21 @@
+skill_faithful_companion: "Faithful Companion"
+skill_faithful_companion_description: >
+  Together with your group, create a level 5 beast, construct, elemental or plant creature that becomes your companion. This creature has no Initiative score and does not level up, can have a maximum of two basic attacks, gains a bonus equal to【SL】to Accuracy Checks and Magic Checks, and their maximum Hit Points are equal to【(SL, multiplied by the companion's base Might die size) + half your level】.
+  Your companion doesn't get an independent turn during conflicts, but you can use an action to have them perform an action (once per turn). If your companion is affected by any turn-related effects, these are based on your turn.
+  Your companion joins and leaves scenes when you do, and gains your same benefits for rests. If reduced to 0 HP, your companion flees the scene and rejoins you at the start of the next scene in which you are present, with current HP equal to their Crisis score.
+
+skill_resourceful: "Resourceful"
+skill_resourceful_description: >
+  You recover【SL】Inventory Points after each travel roll.
+
+skill_tavern_talk: "Tavern Talk"
+skill_tavern_talk_description: >
+  When you rest inside an inn or tavern, you may ask the Game Master up to【SL】questions about your surroundings and the people who live here; the Game Master will answer truthfully and you describe how you gathered the information.
+
+skill_treasure_hunter: "Treasure Hunter"
+skill_treasure_hunter_description: >
+  When your group journeys on the world map, you will make a discovery on a roll of【SL + 1】or lower on the travel roll (instead of only on a 1).
+
+skill_well_traveled: "Well-Traveled"
+skill_well_traveled_description: >
+  You reduce the die rolled for your travel rolls by one size (to a minimum of d6). If multiple characters have this Skill, the effects are not cumulative.

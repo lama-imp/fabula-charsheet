@@ -1,0 +1,13 @@
+name: weaponmaster
+class_bonus: hp
+bonus_value: 5
+martial_melee: true
+martial_shields: true
+skills:
+  - name: bladestorm
+  - name: bone_crusher
+    max_level: 4
+  - name: breach
+  - name: counterattack
+  - name: melee_weapon_mastery
+    max_level: 4

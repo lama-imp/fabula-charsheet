@@ -1,0 +1,13 @@
+name: tinkerer
+class_bonus: ip
+bonus_value: 2
+skills:
+  - name: emergency_item
+  - name: gadgets
+    max_level: 5
+  - name: potion_rain
+    max_level: 2
+  - name: secret_formula
+    max_level: 5
+  - name: visionary
+    max_level: 5
