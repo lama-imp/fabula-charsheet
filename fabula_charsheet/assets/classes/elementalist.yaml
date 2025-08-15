@@ -7,6 +7,8 @@ skills:
   - name: cataclysm
     max_level: 3
   - name: elemental_magic
+    max_level: 10
+    can_add_spell: true
   - name: magical_artillery
     max_level: 3
   - name: ritual_elementalism

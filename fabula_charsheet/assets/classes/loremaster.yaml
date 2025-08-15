@@ -1,0 +1,12 @@
+name: loremaster
+class_bonus: mp
+bonus_value: 5
+skills:
+  - name: flash_of_insight
+    max_level: 3
+  - name: focused
+    max_level: 5
+  - name: knowledge_is_power
+  - name: quick_assessment
+    max_level: 6
+  - name: trained_memory

@@ -8,6 +8,7 @@ skills:
     max_level: 5
   - name: entropic_magic
     max_level: 10
+    can_add_spell: true
   - name: lucky_seven
   - name: ritual_entropism
   - name: stolen_time
