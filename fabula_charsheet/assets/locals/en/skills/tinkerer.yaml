@@ -17,7 +17,7 @@ skill_gadgets_description: >
 skill_potion_rain: "Potion Rain"
 skill_potion_rain_description: >
   When you create a **potion** that restores a single creature's Hit Points and/or Mind Points,  
-  you may have it affect up to **【SL】**additional creatures.  
+  you may have it affect up to **【SL】** additional creatures.  
 
   If you do, the **potion** only restores half the normal amount of Hit Points and Mind Points to each creature.
 
@@ -27,11 +27,11 @@ skill_secret_formula_description: >
   each restored amount is increased by **【SL × 5】**.  
 
   When you create an **elemental shard**, **potion**, or **magisphere** that deals damage,  
-  that item deals **【SL】**extra damage.
+  that item deals **【SL】** extra damage.
 
 skill_visionary: "Visionary"
 skill_visionary_description: >
-  When you work on a **Project**, up to **【SL × 100】**zenit of material costs are automatically paid;  
+  When you work on a **Project**, up to **【SL × 100】** zenit of material costs are automatically paid;  
   additionally, you generate an additional **【SL】progress** every day.  
 
   If multiple characters with this skill work on the same **Project**, the effects will be cumulative.

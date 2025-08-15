@@ -13,14 +13,14 @@ skill_akromorphosis_description: >
 skill_biophagy: "Biophagy"
 skill_biophagy_description: >
   After one of your attacks or offensive spells causes one or more enemies to lose Hit Points,  
-  if you are in **Crisis**, you may recover **【SL × 5】 **Hit Points.
+  if you are in **Crisis**, you may recover **【SL × 5】 ** Hit Points.
 
 skill_ecdysis: "Ecdysis"
 skill_ecdysis_description: >
   After you lose Hit Points due to damage, if that damage had a type other than **physical**,  
-  you may spend **10 **Hit Points to gain **Resistance** to that damage type until you use this skill again.  
+  you may spend **10** Hit Points to gain **Resistance** to that damage type until you use this skill again.  
 
-  You cannot use this skill if doing so would reduce you to **0 HP**.
+  You cannot use this skill if doing so would reduce you to 0 HP.
 
 skill_genoclepsis: "Genoclepsis"
 skill_genoclepsis_description: >

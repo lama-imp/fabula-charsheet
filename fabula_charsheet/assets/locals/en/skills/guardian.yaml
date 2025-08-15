@@ -6,7 +6,7 @@ skill_bodyguard_description: >
 skill_defensive_mastery: "Defensive Mastery"
 skill_defensive_mastery_description: >
   As long as you have a **shield** or a **martial armor** equipped,  
-  all damage you suffer is reduced by**【SL】**(applied before damage **Affinities**).
+  all damage you suffer is reduced by **【SL】** (applied before damage **Affinities**).
 
 skill_dual_shieldbearer: "Dual Shieldbearer"
 skill_dual_shieldbearer_description: >
@@ -17,7 +17,7 @@ skill_dual_shieldbearer_description: >
 
 skill_fortress: "Fortress"
 skill_fortress_description: >
-  Permanently increase your maximum Hit Points by**【SL × 3】**.
+  Permanently increase your maximum Hit Points by **【SL × 3】**.
 
 skill_protect: "Protect"
 skill_protect_description: >

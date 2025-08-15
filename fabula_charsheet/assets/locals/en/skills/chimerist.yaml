@@ -2,7 +2,7 @@ skill_consume: "Consume"
 skill_consume_description: >
   After you deal damage to one or more creatures with a spell,  
   if you have an **arcane**, **dagger**, or **flail** weapon equipped,  
-  you recover**【SL × 2】**Mind Points.
+  you recover **【SL × 2】** Mind Points.
 
 skill_feral_speech: "Feral Speech"
 skill_feral_speech_description: >
@@ -18,7 +18,7 @@ skill_ritual_chimerism: "Ritual Chimerism"
 skill_ritual_chimerism_description: |
   You may perform Rituals whose effects fall within the **Chimerism** discipline.  
 
-  When you acquire this skill, choose【**INS + WLP**】or【**MIG + WLP**】.  
+  When you acquire this skill, choose **【INS + WLP】** or **【MIG + WLP】**.  
   From now on, your Chimerism Rituals will use the chosen **Attributes** for the Magic Check.
 
 skill_spell_mimic: "Spell Mimic"
@@ -27,10 +27,10 @@ skill_spell_mimic_description: |
   you may immediately choose to learn that spell as a Chimerist spell of your own:  
   if you do, record the Species of the creature you learned it from.  
 
-  When you first acquire this skill, choose【**INS + WLP**】or【**MIG + WLP**】.  
+  When you first acquire this skill, choose **【INS + WLP】** or **【MIG + WLP】**.  
   From now on, your offensive (⚡) Chimerist spells will use the chosen Attributes for the Magic Check,  
   regardless of the Attributes used by the creature you learned the spell from.  
 
-  You may have up to**【SL + 2】different Chimerist spells** memorized this way.  
+  You may have up to **【SL + 2】different Chimerist spells** memorized this way.  
   If you want to memorize a new Chimerist spell but are already at your limit,  
   you must **forget** one of your old spells and replace it with the new spell.

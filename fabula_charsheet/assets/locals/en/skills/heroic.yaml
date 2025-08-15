@@ -3,27 +3,27 @@ heroic_skills: "Heroic Skills"
 skill_adversity: "ADVERSITY"
 skill_adversity_description: >
   As long as you are suffering from one or more status effects, you gain a +1 bonus on all Checks for every status effect you are suffering from,  
-  and you deal 2 extra damage for every status effect you are suffering from (be it with attacks, spells, **Arcana**, items or any other method).
+  and you deal 2 extra damage for every status effect you are suffering from (be it with attacks, spells, Arcana, items or any other method).
 
 skill_ambidextrous: "AMBIDEXTROUS"
 skill_ambidextrous_description: >
   You may apply the benefits of **two-weapon fighting** to weapons belonging to different categories,  
-  even if one is a melee weapon and the other is a ranged weapon (such as a dagger and a firearm, for instance).
+  even if one is a **melee** weapon and the other is a **ranged** weapon (such as a **dagger** and a **firearm**, for instance).
 
 skill_arcane_echoes: "ARCANE ECHOES"
 skill_arcane_echoes_description: >
-  When you successfully perform a Check to fill or erase one or more sections of a **Clock**,  
+  When you successfully perform a Check to fill or erase one or more sections of a Clock,  
   if the domains of one or more **Arcana** you have bound are applicable to the Check in question,  
   you may fill or erase an additional section of that Clock.  
-  The **Game Master** has final say on whether a given domain applies or not.
+  The Game Master has final say on whether a given domain applies or not.
 
 skill_chimeric_mastery: "CHIMERIC MASTERY"
 skill_chimeric_mastery_description: >
   Choose two creature **Species** among **construct**, **demon**, **elemental**, and **undead**.  
   You can now use **Spell Mimic** to learn spells from creatures of the chosen Species.  
 
-  This **Heroic Skill** may be acquired up to twice, each time selecting two Species from the list above.  
-  Whenever you acquire this Skill, you also increase your upper limit for memorized **Chimerist** spells by 2.
+  This Heroic Skill may be acquired up to twice, each time selecting two Species from the list above.  
+  Whenever you acquire this Skill, you also increase your upper limit for memorized **Chimerist** spells by **2**.
 
 skill_comet: "COMET"
 skill_comet_description: >
@@ -44,31 +44,31 @@ skill_comet_description: >
 
 skill_deep_pockets: "DEEP POCKETS"
 skill_deep_pockets_description: >
-  When you spend **Inventory Points**, you spend 1 less Inventory Point (minimum 1).
+  When you spend Inventory Points, you spend **1 less** Inventory Point (minimum 1).
 
 skill_disarming_rhetoric: "DISARMING RHETORIC"
 skill_disarming_rhetoric_description: >
   During a conflict scene, you may use an action and choose a soldier-rank creature that can hear and understand you  
-  (the **Game Master** must tell you who is a valid target).  
+  (the Game Master must tell you who is a valid target).  
 
-  If that creature is shaken or in **Crisis**, you may spend an amount of **Mind Points** equal to 【20 + half that creature's level】  
+  If that creature is shaken or in **Crisis**, you may spend an amount of Mind Points equal to  **【20 + half that creature's level】**
   to have them peacefully leave the conflict.  
 
   Describe how you convince them to desist.
 
 skill_extra_hp: "EXTRA HP"
 skill_extra_hp_description: >
-  Permanently increase your maximum **Hit Points** by 10.  
+  Permanently increase your maximum Hit Points by 10.  
 
   The amount of additional HP increases to 20 if you are level 40 or higher.
 
 skill_extra_ip: "EXTRA IP"
 skill_extra_ip_description: >
-  Permanently increase your maximum **Inventory Points** by 4.
+  Permanently increase your maximum Inventory Points by 4.
 
 skill_extra_mp: "EXTRA MP"
 skill_extra_mp_description: >
-  Permanently increase your maximum **Mind Points** by 10.  
+  Permanently increase your maximum Mind Points by 10.  
 
   The amount of additional MP increases to 20 if you are level 40 or higher.
 
@@ -81,22 +81,23 @@ skill_extra_spells_description: >
 skill_heartbreaker: "HEARTBREAKER"
 skill_heartbreaker_description: >
   When you hit a creature with an attack, if that attack only targeted that creature and you have a **Bond** towards them,  
-  you may choose to spend half of your current **Hit Points**, rounded down.  
+  you may choose to spend half of your current Hit Points, rounded down.  
 
-  If you do, the attack deals extra damage equal to 【10 multiplied by the strength of your Bond towards the target】.  
+  If you do, the attack deals extra damage equal to  **【10 multiplied by the strength of your Bond towards the target】**.  
   You may use this Skill only on your turn during a conflict, and only once per turn.
 
 skill_heroic_companion: "HEROIC COMPANION"
 skill_heroic_companion_description: >
   Your bond with your companion grows stronger. You gain the following benefits:  
 
-  The companion's maximum **Hit Points** increase by 10.  
+  The companion's maximum Hit Points increase by 10.  
 
   Choose one of the companion's **Attributes**: **Dexterity**, **Insight**, **Might**, or **Willpower**.  
   The chosen Attribute is permanently increased by one die size (up to a maximum size of d12).  
 
-  The companion gains an additional Skill. When you reach level 40, or if you have already reached it, the companion gains an additional Skill.  
-  Make sure to discuss your Skill choices with the **Game Master** and the other Players.
+  The companion gains an additional Skill.
+  When you reach level 40, or if you have already reached it, the companion gains an additional Skill.  
+  Make sure to discuss your Skill choices with the Game Master and the other Players.
 
 skill_hope: "HOPE"
 skill_hope_description: >
@@ -109,7 +110,7 @@ skill_hope_description: >
   You rekindle the flames of courage and hope within a defeated hero.  
 
   Choose a Player Character who surrendered but is still present on the scene: that Player Character immediately regains consciousness  
-  and recovers an amount of **Hit Points** equal to their **Crisis** score.  
+  and recovers an amount of Hit Points equal to their **Crisis** score.  
 
   Note that this spell will not undo the consequences of the character's surrender and is of no use if the character left the scene as part of their surrender —  
   such as if they were captured and dragged away, or if they were trapped in a parallel dimension, and so on.  
@@ -126,30 +127,30 @@ skill_mathemagic_description: >
   The spell now targets all creatures present on the scene whose current Attribute die size matches your choice, regardless of whether they are friends or foes  
   (you might even end up targeting yourself).  
 
-  The effects of the spell are fully applied to every target. If the spell is an offensive (r) spell, it follows the normal rules:  
-  you perform a single **Magic Check** and confront it with the **Magic Defense** of each target to determine who is hit by the spell.
+  The effects of the spell are fully applied to every target. If the spell is an offensive (⚡) spell, it follows the normal rules:  
+  you perform a single Magic Check and confront it with the Magic Defense of each target to determine who is hit by the spell.
 
 skill_monkey_grip: "MONKEY GRIP"
 skill_monkey_grip_description: >
   You may equip two-handed weapons belonging to the **flail**, **heavy**, **spear**, or **sword** Categories in a single hand slot.  
 
-  This allows you, for instance, to enjoy the benefits of **two-weapon fighting** (page 69) while wielding a pair of two-handed weapons,  
+  This allows you, for instance, to enjoy the benefits of **two-weapon fighting** while wielding a pair of two-handed weapons,  
   or to equip a two-handed weapon in your main hand slot and a shield in your off-hand slot.
 
 skill_perfect_aim: "PERFECT AIM"
 skill_perfect_aim_description: >
   When you hit one or more creatures with a ranged attack and choose to deal no damage in order to gain the benefits of the **Warning Shot** Skill,  
   you may choose two options instead of one (for instance, you could inflict both **shaken** and **slow** on each creature,  
-  or inflict a status effect on each creature while also lowering their **Mind Points**).
+  or inflict a status effect on each creature while also lowering their Mind Points).
 
 skill_pillage: "PILLAGE"
 skill_pillage_description: >
   When you use the **Soul Steal** Skill, you may target any number of creatures at the same time  
-  (you perform a single Check and compare it to the **Magic Defense** of each creature you are attempting to steal from).
+  (you perform a single Check and compare it to the Magic Defense of each creature you are attempting to steal from).
 
 skill_powerful_shot: "POWERFUL SHOT"
 skill_powerful_shot_description: >
-  When you hit one or more creatures with a ranged attack, that attack deals 5 extra damage to each creature.  
+  When you hit one or more creatures with a **ranged attack**, that attack deals 5 extra damage to each creature.  
 
   The amount of extra damage increases to 10 if you are level 40 or higher.
 
@@ -161,17 +162,18 @@ skill_powerful_spell_description: >
 
 skill_powerful_strike: "POWERFUL STRIKE"
 skill_powerful_strike_description: >
-  When you hit one or more creatures with a melee attack, that attack deals 5 extra damage to each creature.  
+  When you hit one or more creatures with a **melee** attack, that attack deals 5 extra damage to each creature.  
 
   The amount of extra damage increases to 10 if you are level 40 or higher.
 
 skill_predictable: "PREDICTABLE!"
 skill_predictable_description: >
-  During a conflict, you may use an action and spend 20 **Mind Points** to anticipate the upcoming moves of a creature you can see,  
+  During a conflict, you may use an action and spend 20 Mind Points to anticipate the upcoming moves of a creature you can see,  
   as long as you know two or more of that creature's **Traits**.  
 
   If you do so, choose one type of action among the following: **Attack**, **Guard**, **Objective**, **Spell**, or **Skill**.  
-  Until the start of your next turn, the creature must spend 20 Mind Points whenever they wish to perform that action. If they can't, they must perform a different action.
+  Until the start of your next turn, the creature must spend 20 Mind Points whenever they wish to perform that action.
+  If they can't, they must perform a different action.
 
 skill_rampart: "RAMPART"
 skill_rampart_description: >
@@ -185,7 +187,7 @@ skill_repetition_description: >
   One per turn during a conflict, after you use the **Condemn** Skill or the **Encourage** Skill,  
   you may immediately perform that same Skill again (on the same target or a different one).  
 
-  You must still pay the **Mind Point** cost for the second use of the Skill.
+  You must still pay the Mind Point cost for the second use of the Skill.
 
 skill_revelation: "REVELATION"
 skill_revelation_description: >
@@ -203,8 +205,8 @@ skill_status_immunity_description: >
 skill_tempest_strike: "TEMPEST STRIKE"
 skill_tempest_strike_description: >
   When you perform a melee attack with the **multi** property,  
-  if you choose to target only one creature, the attack deals 5 extra damage if the attack had multi (2),  
-  or 10 extra damage if the attack had multi (3 or higher).
+  if you choose to target only one creature, the attack deals 5 extra damage if the attack had **multi (2)**,  
+  or 10 extra damage if the attack had **multi (3 or higher)**.
 
 skill_unbreakable: "UNBREAKABLE"
 skill_unbreakable_description: >
@@ -216,11 +218,11 @@ skill_upgrade_description: >
   Once per rest, you may choose one option: add a **Quality** to a single weapon, armor, or shield that doesn't have one;  
   or replace the current Quality of a single weapon, armor, or shield with a different Quality.  
 
-  When you use this Skill, you must select a Quality from the default list for that item type as long as the cost modifier associated with that ability is +1000 zenit or lower.  
+  When you use this Skill, you must select a Quality from the default list for that item type as long as the cost
+  modifier associated with that ability is +1000 zenit or lower.  
   Then, you must spend an amount of zenit equal to twice the cost modifier of the chosen ability.  
 
   The modified item will be ready at the end of the rest; you may only modify one item per rest.  
-  The default list of weapon abilities can be found on page 269, while the default list of armor and shield abilities can be found on page 280.
 
 skill_vanish: "VANISH"
 skill_vanish_description: >

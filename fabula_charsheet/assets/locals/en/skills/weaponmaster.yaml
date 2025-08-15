@@ -10,7 +10,7 @@ skill_bone_crusher_description: >
   If you do, choose one option:  
   - inflict **dazed** on each target hit by the attack;  
   - inflict **weak** on each target hit by the attack;  
-  - each target hit by the attack loses**【SL × 10】**Mind Points.  
+  - each target hit by the attack loses **【SL × 10】** Mind Points.  
   Describe your maneuver!
 
 skill_breach: "Breach"
@@ -20,7 +20,7 @@ skill_breach_description: >
   If the attack is successful, it deals no damage and you choose one option:  
   - destroy one **shield** equipped by the target;  
   - destroy the target's equipped **armor**;  
-  - whenever the target suffers damage from a source before the start of your next turn, that source deals**【SL × 2】**extra damage to them.
+  - whenever the target suffers damage from a source before the start of your next turn, that source deals **【SL × 2】** extra damage to them.
 
 skill_counterattack: "Counterattack"
 skill_counterattack_description: >
@@ -33,4 +33,4 @@ skill_counterattack_description: >
 
 skill_melee_weapon_mastery: "Melee Weapon Mastery"
 skill_melee_weapon_mastery_description: >
-  You gain a bonus equal to**【SL】**to all **Accuracy Checks** with **melee weapons**.
+  You gain a bonus equal to **【SL】** to all **Accuracy Checks** with **melee weapons**.

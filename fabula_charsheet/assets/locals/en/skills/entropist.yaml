@@ -1,12 +1,12 @@
 skill_absorb_mp: "Absorb MP"
 skill_absorb_mp_description: >
-  After you suffer damage, you may immediately recover**【SL × 2】**Mind Points.
+  After you suffer damage, you may immediately recover **【SL × 2】** Mind Points.
 
 skill_entropic_magic: "Entropic Magic"
 skill_entropic_magic_description: >
   Each time you acquire this skill, learn one Entropist spell.  
 
-  Offensive (⚡) Entropist spells use**【INS + WLP】**for the Magic Check.
+  Offensive (⚡) Entropist spells use **【INS + WLP】** for the Magic Check.
 
 skill_lucky_seven: "Lucky Seven"
 skill_lucky_seven_description: >
@@ -22,12 +22,12 @@ skill_ritual_entropism: "Ritual Entropism"
 skill_ritual_entropism_description: >
   You may perform Rituals whose effects fall within the **Entropism** discipline.  
 
-  Entropism Rituals use【INS + WLP】for the Magic Check.
+  Entropism Rituals use **【INS + WLP】** for the Magic Check.
 
 skill_stolen_time: "Stolen Time"
 skill_stolen_time_description: >
   During a conflict, you may use an action to interfere with the flow of time  
-  by spending up to**【SL × 5】**Mind Points.  
+  by spending up to **【SL × 5】** Mind Points.  
 
   For every **5** Mind Points you spend this way, choose one option:  
   - one creature you can see suffers **slow**;  

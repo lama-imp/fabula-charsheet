@@ -27,7 +27,7 @@ skill_see_you_later_description: >
 skill_soul_steal: "Soul Steal"
 skill_soul_steal_description: |
   You may use an action to perform a **【DEX + WLP】** Check against the Magic Defense of a creature you can see.  
-  If you succeed and the target is a **soldier**, you recover **【SL】 **Inventory Point;  
+  If you succeed and the target is a **soldier**, you recover **【SL】** Inventory Point;  
   if they are an **elite** or **champion**, the GM gives you the target’s **soul treasure**,
   an item worth zenit **equal to or lower than 【the target's level × 30, or × 50 if they are a Villain】**.  
 

@@ -17,7 +17,7 @@ skill_hawkeye: "Hawkeye"
 skill_hawkeye_description: >
   When you perform the **Guard** action, if you choose not to provide cover to another creature,  
   you may choose one option:  
-  - the next **ranged** attack you perform before the end of the current scene will deal **【SL × 2】**extra damage;  
+  - the next **ranged** attack you perform before the end of the current scene will deal **【SL × 2】** extra damage;  
   - or you may immediately perform a **free attack** with a **bow** or **firearm** you have equipped,  
     treating your **High Roll (HR)** as 0 when calculating damage dealt by this attack.
 
@@ -33,6 +33,6 @@ skill_warning_shot_description: >
   If you do, choose one option:  
   - inflict **shaken** on each target hit by the attack;  
   - inflict **slow** on each target hit by the attack;  
-  - or each target hit by the attack loses **【SL × 10】**Mind Points.  
+  - or each target hit by the attack loses **【SL × 10】** Mind Points.  
 
   Describe your maneuver!
