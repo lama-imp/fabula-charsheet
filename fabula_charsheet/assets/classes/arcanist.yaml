@@ -1,0 +1,14 @@
+name: arcanist
+class_bonus: mp
+bonus_value: 5
+rituals:
+  - ritualism
+skills:
+  - name: arcane_circle
+    max_level: 4
+  - name: arcane_regeneration
+    max_level: 2
+  - name: bind_and_summon
+  - name: emergency_arcanum
+    max_level: 6
+  - name: ritual_arcanism
