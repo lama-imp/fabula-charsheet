@@ -24,6 +24,7 @@ column_therioform: "Териоформа"
 column_genoclepsis: "Предложения по Геноклепсису"
 column_heroic_skill: "Героическое умение"
 column_requirements: "Требования"
+column_species: "Вид"
 
 or_separator: " или "
 and_separator: " и "

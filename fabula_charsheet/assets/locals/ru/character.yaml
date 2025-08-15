@@ -1,3 +1,4 @@
+# Attributes
 attr_dexterity: "Ловкость"
 attr_might: "Мощь"
 attr_insight: "Проницательность"
@@ -8,22 +9,28 @@ attr_might_alias: "МОЩ"
 attr_insight_alias: "ПРО"
 attr_willpower_alias: "ВОЛ"
 
+# ClassBonus
 mp: "ПР"
 hp: "ПЗ"
 ip: "ПС"
 
+# Other
 defense: "Защита"
 magic_defense: "Маг. защита"
 initiative: "Инициатива"
 
+# Dice
 dice_prefix: "к"
 
+# Rituals
 ritual_ritualism: "Ритуализм"
 ritual_spiritism: "Спиритизм"
 ritual_chimerism: "Химеризм"
 ritual_elementalism: "Элементизм"
 ritual_entropism: "Энтропизм"
+ritual_arcanism: "Арканизм"
 
+# Character themes
 theme_ambition: "Амбиции"
 theme_anger: "Гнев"
 theme_belonging: "Принадлежность"

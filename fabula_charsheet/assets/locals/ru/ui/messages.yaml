@@ -1,7 +1,7 @@
 msg_equipped_item: "Экипировано: {item_name}"
 msg_skills_points_remaining: "Вы можете добавить ещё {count} очков в умения."
 msg_skills_selected: "Вы выбрали следующие умения:"
-msg_can_equip_martial: "Ваш персонаж может экипировать боевые {items}."
+msg_can_equip_martial: "Ваш персонаж может экипировать боевые предметы: {items}."
 msg_cannot_equip_martial: "Ваш персонаж не может экипировать боевые предметы."
 msg_create_new_name: "Создать новое имя"
 msg_write_new_name: "Введите новое имя здесь"
@@ -12,3 +12,4 @@ msg_spell_added: "Заклинание {spell_name} добавлено в ваш
 msg_status_change: "{attribute} меньше на {value}!"
 msg_upload_avatar: "Загрузить ваш аватар"
 msg_add_heroic_skill: "Выберите Геройское Умение из списка ниже."
+msg_increase_attribute: "Выберите один из ваших Атрибутов, чтобы увеличить его базовый размер кубика на один шаг, до максимума d12."

@@ -7,7 +7,29 @@ emotion_affection: "Affection"
 emotion_hatred: "Hatred"
 
 # Bonds UI
-msg_bond_explanation: "Each Bond may feature up to three emotions from the following six:\n\n**Admiration** — You believe you have much to learn from this person and deeply respect them for their efforts and achievements.\n\n**Inferiority** — You envy this person or feel like you would be powerless against them. Their very presence frustrates you, acting as a reminder of your failures.\n\n**Loyalty** — This person has won your trust, or you believe in their ideals. You are ready to endanger yourself to help or protect them.\n\n**Mistrust** — You don't believe the words of this person and doubt their intentions.\n\n**Affection** — You have tender feelings for this person, be they a love interest, a dear friend, or a member of your family.\n\n**Hatred** — You can scarcely control yourself in the presence of this person, and would do anything to see them broken and defeated.\n\nThe six emotions are combined into three pairings, and the same Bond may only be connected to one emotion from each pairing:\n- Admiration or inferiority\n- Loyalty or mistrust\n- Affection or hatred\n\nFor each emotion in a Bond, the strength of that Bond is increased by one (up to a maximum of 3 if you have one from each pairing)."
+msg_bond_explanation: |
+  Each Bond may feature up to three emotions from the following six:
+  
+  **Admiration** — You believe you have much to learn from this person and deeply respect them for their efforts and achievements.
+  
+  **Inferiority** — You envy this person or feel like you would be powerless against them.
+  Their very presence frustrates you, acting as a reminder of your failures.
+  
+  **Loyalty** — This person has won your trust, or you believe in their ideals.
+  You are ready to endanger yourself to help or protect them.
+  
+  **Mistrust** — You don't believe the words of this person and doubt their intentions.
+  
+  **Affection** — You have tender feelings for this person, be they a love interest, a dear friend, or a member of your family.
+  
+  **Hatred** — You can scarcely control yourself in the presence of this person, and would do anything to see them broken and defeated.
+  
+  The six emotions are combined into three pairings, and the same Bond may only be connected to one emotion from each pairing:
+  - Admiration or inferiority
+  - Loyalty or mistrust
+  - Affection or hatred
+  
+  For each emotion in a Bond, the strength of that Bond is increased by one (up to a maximum of 3 if you have one from each pairing).
 bond_name: "Bond towards"
 bond_respect_description: "Admiration or Inferiority"
 bond_trust_description: "Loyalty or Mistrust"
