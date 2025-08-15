@@ -62,5 +62,4 @@ class ChimeristSpell(Spell):
     description: str
 
     def localized_description(self, loc: LocNamespace) -> str:
-        key = f"spell_{self.name}_description"
-        return getattr(loc, key, self.description)
+        return self.description
