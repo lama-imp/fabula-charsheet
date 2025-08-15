@@ -1,0 +1,72 @@
+- name: aura
+  is_offensive: false
+  mp_cost: 5
+  target: up_to_three
+  duration: scene
+
+- name: awaken
+  is_offensive: false
+  mp_cost: 20
+  target: one_creature
+  duration: scene
+
+- name: barrier
+  is_offensive: false
+  mp_cost: 5
+  target: up_to_three
+  duration: scene
+
+- name: cleanse
+  is_offensive: false
+  mp_cost: 5
+  target: up_to_three
+  duration: scene
+
+- name: enrage
+  is_offensive: true
+  mp_cost: 10
+  target: one_creature
+  duration: instantaneous
+
+- name: hallucination
+  is_offensive: true
+  mp_cost: 5
+  target: up_to_three
+  duration: instantaneous
+
+- name: heal
+  is_offensive: false
+  mp_cost: 10
+  target: up_to_three
+  duration: instantaneous
+
+- name: lux
+  is_offensive: true
+  mp_cost: 10
+  target: up_to_three
+  duration: instantaneous
+  damage_type: light
+
+- name: mercy
+  is_offensive: false
+  mp_cost: 20
+  target: one_creature
+  duration: scene
+
+- name: reinforce
+  is_offensive: false
+  mp_cost: 5
+  target: up_to_three
+  duration: scene
+
+- name: soul weapon
+  is_offensive: false
+  mp_cost: 10
+  target: weapon
+  duration: scene
+
+- name: torpor
+  is_offensive: true
+  mp_cost: 5
+  target: up_to_three
+  duration: instantaneous

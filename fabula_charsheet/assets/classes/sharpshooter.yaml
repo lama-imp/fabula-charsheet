@@ -1,0 +1,14 @@
+name: sharpshooter
+class_bonus: hp
+bonus_value: 5
+martial_ranged: true
+martial_shields: true
+skills:
+  - name: barrage
+  - name: crossfire
+  - name: hawkeye
+    max_level: 5
+  - name: ranged_weapon_mastery
+    max_level: 4
+  - name: warning_shot
+    max_level: 4

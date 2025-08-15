@@ -33,6 +33,7 @@ from .spell import (
     Spell,
     SpellTarget,
     SpellDuration,
+    ChimeristSpell,
 )
 from .state import CharState
 from .status import Status
@@ -50,3 +51,4 @@ from .bonds import (
     Bond,
     Emotion
 )
+from .species import Species

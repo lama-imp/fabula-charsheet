@@ -1,0 +1,14 @@
+name: dark_blade
+class_bonus: hp
+bonus_value: 5
+martial_melee: true
+martial_armor: true
+skills:
+  - name: agony
+    max_level: 5
+  - name: dark_blood
+  - name: heart_of_darkness
+  - name: painful_lesson
+    max_level: 3
+  - name: shadow_strike
+    max_level: 5

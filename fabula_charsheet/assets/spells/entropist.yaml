@@ -1,0 +1,80 @@
+- name: acceleration
+  mp_cost: 20
+  target: one_creature
+  duration: scene
+  char_class: entropist
+
+- name: anomaly
+  is_offensive: true
+  mp_cost: 20
+  target: one_creature
+  duration: scene
+  char_class: entropist
+
+- name: dark_weapon
+  mp_cost: 10
+  target: weapon
+  duration: scene
+  char_class: entropist
+
+- name: dispel
+  mp_cost: 10
+  target: one_creature
+  duration: instantaneous
+  char_class: entropist
+
+- name: divination
+  mp_cost: 10
+  target: self
+  duration: scene
+  char_class: entropist
+
+- name: drain_spirit
+  is_offensive: true
+  mp_cost: 5
+  target: one_creature
+  duration: instantaneous
+  damage_type: dark
+  char_class: entropist
+
+- name: drain_vigor
+  is_offensive: true
+  mp_cost: 10
+  target: one_creature
+  duration: instantaneous
+  damage_type: dark
+  char_class: entropist
+
+- name: gamble
+  mp_cost: 20
+  target: special
+  duration: instantaneous
+  char_class: entropist
+
+- name: mirror
+  mp_cost: 10
+  target: one_creature
+  duration: scene
+  char_class: entropist
+
+- name: omega
+  is_offensive: true
+  mp_cost: 20
+  target: one_creature
+  duration: instantaneous
+  char_class: entropist
+
+- name: stop
+  is_offensive: true
+  mp_cost: 10
+  target: one_creature
+  duration: instantaneous
+  char_class: entropist
+
+- name: umbra
+  is_offensive: true
+  mp_cost: 10
+  target: up_to_three
+  duration: instantaneous
+  damage_type: dark
+  char_class: entropist

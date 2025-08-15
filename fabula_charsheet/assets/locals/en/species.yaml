@@ -1,0 +1,8 @@
+species_beast: "Beast"
+species_construct: "Construct"
+species_demon: "Demon"
+species_elemental: "Elemental"
+species_humanoid: "Humanoid"
+species_monster: "Monster"
+species_plant: "Plant"
+species_undead: "Undead"

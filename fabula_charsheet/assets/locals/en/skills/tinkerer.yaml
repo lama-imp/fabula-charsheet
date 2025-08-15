@@ -1,0 +1,21 @@
+skill_emergency_item: "Emergency Item"
+skill_emergency_item_description: >
+  Once per conflict scene, if you are in Crisis, you may perform an additional action on your turn. This action must be the Inventory action.
+
+skill_gadgets: "Gadgets"
+skill_gadgets_description: >
+  When you first acquire this Skill, choose a gadget type: alchemy, infusions or magitech. You gain its basic benefits.
+  Whenever you take this Skill again, choose one option: you gain the basic benefits of a new gadget type; or you gain the advanced benefits of a gadget type whose basic benefits you already obtained; or you gain the superior benefits of a gadget type whose advanced benefits you already obtained.
+
+skill_potion_rain: "Potion Rain"
+skill_potion_rain_description: >
+  When you create a potion that restores a single creature's HP and/or MP, you may have it affect up to【SL】additional creatures. If you do, the potion only restores half the normal amount of HP and MP to each creature.
+
+skill_secret_formula: "Secret Formula"
+skill_secret_formula_description: >
+  When you create a potion or magisphere whose effects restore HP and/or MP, each restored amount is increased by【SL × 5】.
+  When you create an elemental shard, potion or magisphere that deals damage, that item deals【SL】extra damage.
+
+skill_visionary: "Visionary"
+skill_visionary_description: >
+  When you work on a Project, up to【SL × 100】zenit of material costs are automatically paid; additionally, you generate an additional【SL】progress every day. If multiple characters with this Skill work on the same Project, the effects will be cumulative.

@@ -1,0 +1,15 @@
+name: fury
+class_bonus: hp
+bonus_value: 5
+martial_melee: true
+martial_armor: true
+skills:
+  - name: adrenaline
+    max_level: 5
+  - name: frenzy
+  - name: indomitable_spirit
+    max_level: 4
+  - name: provoke
+    max_level: 5
+  - name: withstand
+    max_level: 5

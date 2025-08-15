@@ -1,0 +1,13 @@
+name: orator
+class_bonus: mp
+bonus_value: 5
+skills:
+  - name: condemn
+    max_level: 4
+  - name: encourage
+    max_level: 6
+  - name: my_trust_in_you
+    max_level: 2
+  - name: persuasive
+    max_level: 2
+  - name: unexpected_ally

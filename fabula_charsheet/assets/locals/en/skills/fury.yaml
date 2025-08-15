@@ -1,0 +1,22 @@
+skill_adrenaline: "Adrenaline"
+skill_adrenaline_description: >
+  As long as you are in Crisis, you deal【SL × 2】extra damage (be it with attacks, spells, Arcana, items or any other method).
+
+skill_frenzy: "Frenzy"
+skill_frenzy_description: >
+  Your Accuracy Checks with brawling, dagger, flail and thrown weapons trigger a critical success if both dice show the same number (and the Check is not a fumble).
+
+skill_indomitable_spirit: "Indomitable Spirit"
+skill_indomitable_spirit_description: >
+  When you spend one or more Fabula Points, you get an additional benefit — choose one option: you recover【SL × 5】Hit Points; or you recover【SL × 5】Mind Points; or you recover from a single status effect of your choice.
+
+skill_provoke: "Provoke"
+skill_provoke_description: >
+  You may use an action and spend 5 Mind Points to perform an Opposed【MIG + WLP】Check against a creature you can see — describe how you taunt them!
+  If you succeed, the target suffers enraged and is compelled to focus their attention on you (their attacks and offensive spells must include you among the targets if possible). 
+  This compulsion ends if you fall unconscious or leave the scene, if the creature is no longer enraged, or if they are successfully provoked by someone else.
+  You gain a bonus equal to【SL】to your【MIG + WLP】Checks for this Skill.
+
+skill_withstand: "Withstand"
+skill_withstand_description: >
+  When you perform the Guard action, if you choose not to provide cover to another creature, you recover Hit Points equal to【SL, multiplied by the highest strength among your Bonds】and choose Might or Willpower: you treat the chosen Attribute as being one die size higher (up to a maximum of d12) until the end of your next turn.

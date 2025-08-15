@@ -37,13 +37,17 @@ class Attribute(BaseModel):
     current: int = 8
 
 class Dexterity(Attribute):
+    name: AttributeName = AttributeName.dexterity
     pass
 
 class Might(Attribute):
+    name: AttributeName = AttributeName.might
     pass
 
 class Insight(Attribute):
+    name: AttributeName = AttributeName.insight
     pass
 
 class Willpower(Attribute):
+    name: AttributeName = AttributeName.willpower
     pass
