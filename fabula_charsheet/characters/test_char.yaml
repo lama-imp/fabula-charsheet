@@ -17,48 +17,22 @@ classes:
   rituals: []
   skills:
   - name: bodyguard
-    description: 'If you perform the Guard action and choose to provide cover to another
-      creature, that creature gains Resistance to all damage types until the start
-      of your next turn.
-
-      '
     current_level: 0
     max_level: 1
     can_add_spell: false
-  - name: defensive mastery
-    description: 'As long as you have a shield or a martial armor equipped, all damage
-      you suffer is reduced by【SL】(applied before damage Affinities).
-
-      '
+  - name: defensive_mastery
     current_level: 1
     max_level: 5
     can_add_spell: false
-  - name: dual shieldbearer
-    description: 'You may now equip a shield in your main hand slot. As long as you
-      have two shields equipped, you gain the benefits of both items and may treat
-      them as combined  two-handed melee brawling weapon.
-
-      '
+  - name: dual_shieldbearer
     current_level: 1
     max_level: 1
     can_add_spell: false
   - name: fortress
-    description: 'Permanently increase your maximum Hit Points by【SL × 3】.
-
-      '
     current_level: 0
     max_level: 5
     can_add_spell: false
   - name: protect
-    description: 'When another creature is threatened by an attack, spell or other
-      danger, you may take their place (any Checks that are part of the danger will
-      be performed against you; you may declare the use of this Skill before or after
-      the Checks have been made). If the danger already affected you, it affects you
-      twice (resolve both instances separately); you also cannot protect multiple
-      creatures from the same danger. If you use this Skill during a conflict, you
-      cannot use it again until the start of your next turn.
-
-      '
     current_level: 0
     max_level: 1
     can_add_spell: false
@@ -75,66 +49,23 @@ classes:
   - !!python/object/apply:data.models.char_class.Ritual
     - ritualism
   skills:
-  - name: healing power
-    description: 'When you cast a spell that targets one or more allies, if you have
-      an arcane weapon equipped, you may have each of those allies recover an amount
-      of Hit Points equal to 【SL, multiplied by the number of Bonds you have】.
-
-      This healing is separate from any healing caused by the effects of the spell.
-
-      '
+  - name: healing_power
     current_level: 0
     max_level: 2
     can_add_spell: false
-  - name: ritual spiritism
-    description: 'You may perform Rituals whose effects fall within the Spiritism
-      discipline.
-
-      Spiritism Rituals use【INS + WLP】for the Magic Check.
-
-      '
+  - name: ritual_spiritism
     current_level: 0
     max_level: 1
     can_add_spell: false
-  - name: spiritual magic
-    description: 'Each time you acquire this Skill, learn one Spiritist spell (add
-      a point here to see available spells). Offensive (⚡) Spiritist spells use【INS
-      + WLP】for the Magic Check.
-
-      '
+  - name: spiritual_magic
     current_level: 3
     max_level: 10
     can_add_spell: true
-  - name: support magic
-    description: 'When you cast a spell that targets one or more allies, if you have
-      an arcane weapon equipped,
-
-      you may choose one of those allies you have a Bond towards. If you do, that
-      ally gains a bonus
-
-      to the next Check they perform during the current scene; this bonus is equal
-      to the strength
-
-      of your Bond towards them.
-
-      '
+  - name: support_magic
     current_level: 0
     max_level: 1
     can_add_spell: false
   - name: vismagus
-    description: 'When you cast a spell, if you don''t have enough Mind Points to
-      pay for its total cost,
-
-      you may choose to spend twice as many Hit Points instead. You cannot use this
-      Skill if doing
-
-      so would reduce you to 0 Hit Points. If a spell cast this way would cause you
-      to recover Hit Points,
-
-      you instead recover no Hit Points (the spell functions normally on any other
-      target).
-
-      '
     current_level: 0
     max_level: 1
     can_add_spell: false
@@ -154,9 +85,9 @@ inventory:
   zenit: 130
   equipped:
     armor:
-      name: runic plate
+      name: runic_plate
       cost: 250
-      quality: No Quality
+      quality: no_quality
       martial: true
       defense: 11
       magic_defense: !!python/object/apply:data.models.attributes.AttributeName
@@ -167,18 +98,18 @@ inventory:
     weapon: []
     accessory: null
     shield:
-      name: runic shield
+      name: runic_shield
       cost: 150
-      quality: No Quality
+      quality: no_quality
       martial: true
       bonus_defense: 2
       bonus_magic_defense: 2
       bonus_initiative: 0
   backpack:
     armors:
-    - name: runic plate
+    - name: runic_plate
       cost: 250
-      quality: No Quality
+      quality: no_quality
       martial: true
       defense: 11
       magic_defense: !!python/object/apply:data.models.attributes.AttributeName
@@ -188,9 +119,9 @@ inventory:
       bonus_initiative: -3
     weapons: []
     shields:
-    - name: runic shield
+    - name: runic_shield
       cost: 150
-      quality: No Quality
+      quality: no_quality
       martial: true
       bonus_defense: 2
       bonus_magic_defense: 2
@@ -201,12 +132,6 @@ spells:
   guardian: []
   spiritist:
   - name: heal
-    description: 'You invigorate your companions, soothing their pain and healing
-      their fatigue. Each target recovers **40** Hit Points. This amount increases
-      to **50** Hit Points if you are **level 20 or higher**, or to **60** Hit Points
-      if you are **level 40 or higher**.
-
-      '
     is_offensive: false
     mp_cost: 10
     target: !!python/object/apply:data.models.spell.SpellTarget
@@ -216,11 +141,6 @@ spells:
     damage_type: null
     char_class: null
   - name: lux
-    description: 'You focus your inner energy into a barrage of blinding soul rays.
-      Each target hit by this spell suffers【HR + 15】**light** damage.
-
-
-      **Opportunity**: Each target hit by this spell suffers **dazed**.'
     is_offensive: true
     mp_cost: 10
     target: !!python/object/apply:data.models.spell.SpellTarget
@@ -231,11 +151,6 @@ spells:
     - light
     char_class: null
   - name: enrage
-    description: 'You cause a creature to lose any semblance of temper and act brazenly.
-      The target suffers **enraged** and cannot perform the **Guard** or **Spell**
-      actions during their next turn.
-
-      '
     is_offensive: true
     mp_cost: 10
     target: !!python/object/apply:data.models.spell.SpellTarget
