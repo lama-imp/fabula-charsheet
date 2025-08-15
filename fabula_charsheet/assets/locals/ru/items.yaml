@@ -46,6 +46,7 @@ item_greatsword: "Двуручный меч"
 item_rapier: "Рапира"
 item_improvised_ranged: "Импровизированное (дальнего боя)"
 item_shuriken: "Сюрикен"
+item_unarmed_strike: "Удар без оружия"
 
 unarmed_strike: "Удар без оружия"
 unarmed_strike_quality: "Автоматически экипируется, когда оба слота для рук пусты."

@@ -240,7 +240,7 @@ def build(controller: CharacterController):
             if not equipped_weapon:
                 equipped_weapon = [
                     Weapon(
-                        name=loc.unarmed_strike,
+                        name="unarmed_strike",
                         cost=0,
                         quality=loc.unarmed_strike_quality,
                         martial=False,
@@ -268,7 +268,7 @@ def build(controller: CharacterController):
                             icon=":material/arrow_downward:",
                             key=f"{weapon.name}-{i}-unequip",
                             help=loc.page_view_unequip_help,
-                            disabled=(weapon.name == "unarmed strike")
+                            disabled=(weapon.name == "unarmed_strike")
                         ):
                         unequip_item(controller, "weapon")
                         st.rerun()

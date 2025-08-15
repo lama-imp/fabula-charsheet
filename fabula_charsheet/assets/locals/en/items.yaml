@@ -46,6 +46,7 @@ item_greatsword: "Greatsword"
 item_rapier: "Rapier"
 item_improvised_ranged: "Improvised (Ranged)"
 item_shuriken: "Shuriken"
+item_unarmed_strike: "Unarmed Strike"
 
 unarmed_strike: "Unarmed Strike"
 unarmed_strike_quality: "Automatically equipped in each empty hand slot"
