@@ -28,6 +28,7 @@ class Ritual(StrEnum):
     chimerism = auto()
     elementalism = auto()
     entropism = auto()
+    arcanism = auto()
 
     def localized_name(self, loc: LocNamespace) -> str:
         key = f"ritual_{self.name}"

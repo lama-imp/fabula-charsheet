@@ -207,19 +207,19 @@ def build(controller: CharacterController):
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button(loc.page_view_health_potion, disabled=(current_ip < 3)):
+                if st.button(loc.page_view_health_potion, disabled=(current_ip < 3), use_container_width=True):
                     st.session_state.state_controller.state.minus_hp = max(0, st.session_state.state_controller.state.minus_hp - 50)
                     st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
                                                                      st.session_state.state_controller.state.minus_ip + 3)
                     st.rerun()
             with col2:
-                if st.button(loc.page_view_mana_potion, disabled=(current_ip < 3)):
+                if st.button(loc.page_view_mana_potion, disabled=(current_ip < 3), use_container_width=True):
                     st.session_state.state_controller.state.minus_mp = max(0, st.session_state.state_controller.state.minus_mp - 50)
                     st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
                                                                      st.session_state.state_controller.state.minus_ip + 3)
                     st.rerun()
             with col3:
-                if st.button(loc.page_view_magic_tent, disabled=(current_ip < 4)):
+                if st.button(loc.page_view_magic_tent, disabled=(current_ip < 4), use_container_width=True):
                     st.session_state.state_controller.state.minus_hp = 0
                     st.session_state.state_controller.state.minus_mp = 0
                     st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
