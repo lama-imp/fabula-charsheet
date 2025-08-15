@@ -1,0 +1,14 @@
+name: entropist
+class_bonus: mp
+bonus_value: 5
+rituals:
+  - ritualism
+skills:
+  - name: absorb_mp
+    max_level: 5
+  - name: entropic_magic
+    max_level: 10
+  - name: lucky_seven
+  - name: ritual_entropism
+  - name: stolen_time
+    max_level: 4
