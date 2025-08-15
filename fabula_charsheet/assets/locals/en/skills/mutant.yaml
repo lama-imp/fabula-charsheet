@@ -1,8 +1,8 @@
 skill_akromorphosis: "Akromorphosis"
 skill_akromorphosis_description: >
-  Your **unarmed strikes** deal 【6 + (SL × 2)】 extra damage, and you gain a bonus equal to 【SL】 to your **Accuracy Checks** with them.  
+  Your **unarmed strikes** deal **【6 + (SL × 2)】** extra damage, and you gain a bonus equal to **【SL】** to your Accuracy Checks with them.  
 
-  At the start of your turn during a conflict, you may choose a **weapon Category** other than **brawling**.  
+  At the start of your turn during a conflict, you may choose a weapon **Category** other than **brawling**.  
   If you do, your **unarmed strikes** now belong to the chosen **Category**.  
 
   If you choose **bow**, **firearm**, or **thrown**, they become **ranged weapons** instead of **melee**.  
@@ -12,27 +12,27 @@ skill_akromorphosis_description: >
 
 skill_biophagy: "Biophagy"
 skill_biophagy_description: >
-  After one of your attacks or **offensive spells** causes one or more enemies to lose **Hit Points**,  
-  if you are in **Crisis**, you may recover 【SL × 5】 **Hit Points**.
+  After one of your attacks or offensive spells causes one or more enemies to lose Hit Points,  
+  if you are in **Crisis**, you may recover **【SL × 5】 **Hit Points.
 
 skill_ecdysis: "Ecdysis"
 skill_ecdysis_description: >
-  After you lose **Hit Points** due to damage, if that damage had a type other than **physical**,  
-  you may spend 10 **Hit Points** to gain **Resistance** to that **damage type** until you use this skill again.  
+  After you lose Hit Points due to damage, if that damage had a type other than **physical**,  
+  you may spend **10 **Hit Points to gain **Resistance** to that damage type until you use this skill again.  
 
   You cannot use this skill if doing so would reduce you to **0 HP**.
 
 skill_genoclepsis: "Genoclepsis"
 skill_genoclepsis_description: >
-  When you deal damage to one or more **NPCs**, you learn their **Species**,  
-  and the **GM** chooses 【SL】 **therioforms** appropriate to those **NPCs**.  
+  When you deal damage to one or more NPCs, you learn their **Species**,  
+  and the GM chooses **【SL】 therioforms** appropriate to those NPCs.  
 
-  If you have acquired the **Theriomorphosis** skill, you may immediately pay its **HP** cost and use it  
+  If you have acquired the **Theriomorphosis** skill, you may **immediately** pay its HP cost and use it  
   to manifest those **therioforms** (even if they are not among those you have learned).
 
 skill_theriomorphosis: "Theriomorphosis"
 skill_theriomorphosis_description: |
   Each time you acquire this skill, you learn a **therioform**.
   
-  You may use an **action** and spend one third of your current **Hit Points** (rounded down) to manifest the effects  
+  You may use an action and spend **one third** of your current Hit Points (rounded down) to manifest the effects  
   of up to two **therioforms** from those you have learned.

@@ -6,26 +6,26 @@ skill_bodyguard_description: >
 skill_defensive_mastery: "Defensive Mastery"
 skill_defensive_mastery_description: >
   As long as you have a **shield** or a **martial armor** equipped,  
-  all damage you suffer is reduced by【SL】(applied before damage **Affinities**).
+  all damage you suffer is reduced by**【SL】**(applied before damage **Affinities**).
 
 skill_dual_shieldbearer: "Dual Shieldbearer"
 skill_dual_shieldbearer_description: >
-  You may now equip a **shield** in your main hand slot.  
+  You may now equip a **shield** in your **main hand** slot.  
 
   As long as you have two **shields** equipped, you gain the benefits of both items  
   and may treat them as a combined two-handed melee **brawling** weapon.
 
 skill_fortress: "Fortress"
 skill_fortress_description: >
-  Permanently increase your maximum Hit Points by【SL × 3】.
+  Permanently increase your maximum Hit Points by**【SL × 3】**.
 
 skill_protect: "Protect"
 skill_protect_description: >
-  When another creature is threatened by an attack, spell or other danger,  
+  When another creature is threatened by an **attack**, **spell** or other **danger**,  
   you may take their place (any Checks that are part of the danger will be performed against you;  
-  you may declare the use of this Skill before or after the Checks have been made).  
+  you may declare the use of this Skill **before or after** the Checks have been made).  
 
-  If the danger already affected you, it affects you twice (resolve both instances separately);  
+  If the danger already affected you, it affects you **twice** (resolve both instances separately);  
   you also cannot protect multiple creatures from the same danger.  
 
   If you use this Skill during a conflict, you cannot use it again until the start of your next turn.

@@ -1,39 +1,39 @@
 skill_absorb_mp: "Absorb MP"
 skill_absorb_mp_description: >
-  After you suffer **damage**, you may immediately recover【SL × 2】**Mind Points**.
+  After you suffer damage, you may immediately recover**【SL × 2】**Mind Points.
 
 skill_entropic_magic: "Entropic Magic"
 skill_entropic_magic_description: >
-  Each time you acquire this skill, learn one **Entropist spell**.  
+  Each time you acquire this skill, learn one Entropist spell.  
 
-  **Offensive (⚡) Entropist spells** use【INS + WLP】for the **Magic Check**.
+  Offensive (⚡) Entropist spells use**【INS + WLP】**for the Magic Check.
 
 skill_lucky_seven: "Lucky Seven"
 skill_lucky_seven_description: >
-  You have a lucky number; at the beginning of each **session**, that number is **7**.  
+  You have a lucky number; at the beginning of each session, that number is **7**.  
 
-  Once per **scene** after you perform a **Check**,  
+  Once per scene after you perform a Check,  
   you may replace the value shown on one of the dice you rolled with your lucky number  
   (even if this would give an impossible result, such as a value of **7** on a **d6**).  
 
-  If you do, the replaced value becomes your new lucky number.
+  If you do, the replaced value becomes your **new** lucky number.
 
 skill_ritual_entropism: "Ritual Entropism"
 skill_ritual_entropism_description: >
-  You may perform **Rituals** whose effects fall within the **Entropism** discipline.  
+  You may perform Rituals whose effects fall within the **Entropism** discipline.  
 
-  **Entropism Rituals** use【INS + WLP】for the **Magic Check**.
+  Entropism Rituals use【INS + WLP】for the Magic Check.
 
 skill_stolen_time: "Stolen Time"
 skill_stolen_time_description: >
-  During a conflict, you may use an **action** to interfere with the flow of time  
-  by spending up to【SL × 5】**Mind Points**.  
+  During a conflict, you may use an action to interfere with the flow of time  
+  by spending up to**【SL × 5】**Mind Points.  
 
-  For every **5 Mind Points** you spend this way, choose one option:  
+  For every **5** Mind Points you spend this way, choose one option:  
   - one creature you can see suffers **slow**;  
   - one creature you can see recovers from **slow**;  
   - one creature you can see may immediately perform the **Equipment action** for free;  
   - or choose one ally you can see who has yet to take a turn during this round:  
-    that **ally** may take their turn immediately after yours during this round.  
+    that ally may take their turn immediately after yours during this round.  
 
   Each option can only be chosen once per use of this skill.

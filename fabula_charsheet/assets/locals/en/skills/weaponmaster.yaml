@@ -1,35 +1,36 @@
 skill_bladestorm: "Bladestorm"
 skill_bladestorm_description: >
-  When you perform a **melee attack**, you may spend 10 **Mind Points** to choose one option:  
+  When you perform a **melee** attack, you may spend 10 Mind Points to choose one option:  
   the attack gains **multi (2)**; or you increase the attack's **multi** property by one, up to a maximum of **multi (3)**.
 
 skill_bone_crusher: "Bone Crusher"
 skill_bone_crusher_description: >
-  When you hit one or more targets with a **melee attack** that would deal damage,  
+  When you hit one or more targets with a **melee** attack that would deal damage,  
   you may have the attack deal no damage.  
   If you do, choose one option:  
   - inflict **dazed** on each target hit by the attack;  
   - inflict **weak** on each target hit by the attack;  
-  - each target hit by the attack loses【SL × 10】**Mind Points**.  
+  - each target hit by the attack loses**【SL × 10】**Mind Points.  
   Describe your maneuver!
 
 skill_breach: "Breach"
 skill_breach_description: >
-  You may use an action and spend 5 **Mind Points** to perform a free attack with a **melee weapon** you have equipped.  
-  This attack must target a single **creature**.  
+  You may use an action and spend 5 Mind Points to perform a **free attack** with a **melee** weapon you have equipped.  
+  This attack must target a **single creature**.  
   If the attack is successful, it deals no damage and you choose one option:  
   - destroy one **shield** equipped by the target;  
   - destroy the target's equipped **armor**;  
-  - whenever the target suffers damage from a source before the start of your next turn, that source deals【SL × 2】extra damage to them.
+  - whenever the target suffers damage from a source before the start of your next turn, that source deals**【SL × 2】**extra damage to them.
 
 skill_counterattack: "Counterattack"
 skill_counterattack_description: >
-  After an enemy hits or misses you with a **melee attack**,  
-  if the Result of their **Accuracy Check** was an even number,  
-  you may perform a free attack against that enemy (after their attack has been fully resolved).  
-  This attack must be a **melee attack** and must have that enemy as its only target;  
+  After an enemy hits or misses you with a **melee** attack,  
+  if the Result of their Accuracy Check was an even number,  
+  you may perform a **free attack** against that enemy (after their attack has been fully resolved).  
+  
+  This attack must be a **melee** attack and must have that enemy as its **only** target;  
   treat your **High Roll (HR)** as 0 when calculating damage dealt by this attack.
 
 skill_melee_weapon_mastery: "Melee Weapon Mastery"
 skill_melee_weapon_mastery_description: >
-  You gain a bonus equal to【SL】to all **Accuracy Checks** with **melee weapons**.
+  You gain a bonus equal to**【SL】**to all **Accuracy Checks** with **melee weapons**.

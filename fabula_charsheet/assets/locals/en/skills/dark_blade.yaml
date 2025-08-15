@@ -1,8 +1,8 @@
 skill_agony: "Agony"
 skill_agony_description: >
-  After you deal **damage** to one or more **creatures**,  
-  if you have a **Bond** towards at least one of those **creatures**,  
-  you may recover【SL × 2】**Hit Points (HP)** and【SL × 2】**Mind Points (MP)**.
+  After you deal damage to one or more creatures,  
+  if you have a **Bond** towards at least one of those creatures,  
+  you may recover**【SL × 2】**Hit Points and**【SL × 2】**Mind Points.
 
 skill_dark_blood: "Dark Blood"
 skill_dark_blood_description: >
@@ -10,30 +10,30 @@ skill_dark_blood_description: >
 
 skill_heart_of_darkness: "Heart of Darkness"
 skill_heart_of_darkness_description: >
-  Once per **Scene**, upon entering **Crisis**,  
-  you may choose a specific **creature** you can see that you don't have a **Bond** towards.  
-  If you do, create a **Bond of hatred** towards that **creature**.
+  Once per Scene, upon entering **Crisis**,  
+  you may choose a specific creature you can see that you don't have a **Bond** towards.  
+  If you do, create a **Bond of hatred** towards that creature.
 
 skill_painful_lesson: "Painful Lesson"
 skill_painful_lesson_description: >
-  After another **creature** causes you to lose **Hit Points**  
-  (with an **attack**, a **spell**, or any other method),  
-  you may immediately perform the **Study** action on that **creature** for free.  
+  After another creature causes you to lose Hit Points  
+  (with an attack, a spell, or any other method),  
+  you may immediately perform the **Study** action on that creature for free.  
 
-  If you do, gain a bonus equal to【SL】to your **Check**.  
+  If you do, gain a bonus equal to**【SL】**to your Check.  
 
-  *Remember: you can study the same aspect of a **creature** only once.*
+  *Remember: you can study the same aspect of a creature only once.*
 
 skill_shadow_strike: "Shadow Strike"
 skill_shadow_strike_description: >
-  You have learned to channel your **vital force** into your **attacks**.  
+  You have learned to channel your vital force into your attacks.  
 
-  You may use an **action** to perform a **Shadow Strike**:  
-  roll your current **Might die** and lose an amount of **Hit Points** equal to【the number rolled on your Might die】.  
+  You may use an action to perform a **Shadow Strike**:  
+  roll your current **Might** die and lose an amount of Hit Points equal to**【the number rolled on your Might die】**.  
 
   If this didn't reduce your **Hit Points** to 0,  
-  you may perform a **free attack** with a **weapon** you have equipped:  
-  if this **attack** hits one or more **targets**, it deals extra **damage** equal to【SL + the number rolled on your Might die】.  
+  you may perform a **free attack** with a weapon you have equipped:  
+  if this attack hits one or more **targets**, it deals extra damage equal to**【SL + the number rolled on your Might die】**.  
 
   However, all **damage** dealt by this **attack** becomes **dark**,  
   and its **damage type** cannot be changed.
