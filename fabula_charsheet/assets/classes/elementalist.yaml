@@ -1,0 +1,14 @@
+name: elementalist
+class_bonus: mp
+bonus_value: 5
+rituals:
+  - ritualism
+skills:
+  - name: cataclysm
+    max_level: 3
+  - name: elemental_magic
+  - name: magical_artillery
+    max_level: 3
+  - name: ritual_elementalism
+  - name: spellblade
+    max_level: 4
