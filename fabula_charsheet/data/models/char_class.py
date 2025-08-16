@@ -22,6 +22,13 @@ class ClassBonus(StrEnum):
         except AttributeError:
             return self.name.capitalize()
 
+    def localized_full_name(self, loc: LocNamespace):
+        key = f"{self.name}_full"
+        try:
+            return getattr(loc, key)
+        except AttributeError:
+            return self.name.capitalize()
+
 class Ritual(StrEnum):
     ritualism = auto()
     spiritism = auto()
@@ -39,7 +46,7 @@ class Ritual(StrEnum):
 
 class CharClass(BaseModel):
     name: ClassName | None = None
-    class_bonus: ClassBonus | None = None
+    class_bonus: ClassBonus | list[ClassBonus] | None = None
     bonus_value: int = 0
     martial_melee: bool = False
     martial_ranged: bool = False
