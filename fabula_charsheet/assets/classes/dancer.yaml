@@ -1,0 +1,14 @@
+name: dancer
+class_bonus:
+  - mp
+  - hp
+bonus_value: 5
+skills:
+  - name: dance
+    max_level: 10
+  - name: follow_my_lead
+  - name: frenetic_footwork
+    max_level: 2
+  - name: quick_change
+  - name: wardancer
+    max_level: 5

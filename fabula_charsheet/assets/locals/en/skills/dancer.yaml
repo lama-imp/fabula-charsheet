@@ -1,0 +1,38 @@
+skill_dance: "Dance"
+skill_dance_description: >
+  Each time you take this Skill, you learn a **dance**.  
+  
+  
+  
+  On your turn during a conflict scene, if you have no **martial armor** equipped, you may spend **10** Mind Points to **perform a dance** you have learned.  
+  This doesn’t require an action, but it can only be done **before or after** an action, and only once per turn.  
+  If you already performed a **different dance** during your previous turn in this scene, the cost of the **new dance** is reduced to **5** Mind Points. 
+  
+  
+  
+  Some **dances** are **instantaneous** and resolve immediately, while others have effects that last **until the start of your next turn**.  
+
+skill_follow_my_lead: "Follow My Lead"
+skill_follow_my_lead_description: >
+  When you perform a **dance** with a **duration** of “Until the start of your next turn”, you may spend **10** additional Mind Points.  
+  
+  
+  
+  If you do, choose one ally you can see towards whom you have a Bond of **affection**: apply the benefits of the **dance** to that ally as well as yourself  
+  (the benefits still last until the start of **your** next turn).  
+
+skill_frenetic_footwork: "Frenetic Footwork"
+skill_frenetic_footwork_description: >
+  After you perform a **dance** with a duration of “Until the start of your next turn”,  
+  you gain a bonus equal to **【SL × 2】** to all Opposed Checks that rely on **acrobatics**, **coordination**
+  or **speed** until the start of your next turn.  
+
+skill_quick_change: "Quick-Change"
+skill_quick_change_description: >
+  After you perform a **dance**, you may perform the **Equipment** action for free.  
+
+skill_wardancer: "Wardancer"
+skill_wardancer_description: |
+  After you perform a **dance**, your attacks with **brawling**, **dagger**, **flail** and **thrown** weapons deal **【SL】** extra damage until the start of your next turn.  
+  
+  If you have an **arcane** weapon equipped, offensive spells (⚡) you cast also deal **【SL】** extra damage until the start of your next turn.  

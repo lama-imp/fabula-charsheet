@@ -23,6 +23,7 @@ class ClassName(StrEnum):
     tinkerer = auto()
     wayfarer = auto()
     weaponmaster = auto()
+    dancer = auto()
 
     def localized_name(self, loc: LocNamespace) -> str:
         key = f"class_{self.name}"
