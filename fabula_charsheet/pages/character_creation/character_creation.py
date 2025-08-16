@@ -11,7 +11,7 @@ icon = ":material/add_circle:"
 
 def build():
     loc = st.session_state.localizator.get(st.session_state.language)
-    st.session_state.creation_step = st.session_state.get("creation_step", CreationState.preview)
+    st.session_state.creation_step = st.session_state.get("creation_step", CreationState.identity)
     st.session_state.creation_controller = st.session_state.get("creation_controller", CharacterController(loc))
 
     match st.session_state.creation_step:
