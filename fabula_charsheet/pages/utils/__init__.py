@@ -15,6 +15,7 @@ from .table_writer import (
     ItemTableWriter,
     TherioformTableWriter,
     BondTableWriter,
+    DanceTableWriter,
 )
 
 from .common import (
@@ -40,6 +41,8 @@ from .view_page_actions import (
     remove_chimerist_spell,
     add_heroic_skill,
     increase_attribute,
+    add_therioform,
+    add_dance,
 )
 
 from .classes_page_actions import (
