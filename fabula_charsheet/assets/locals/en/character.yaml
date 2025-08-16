@@ -13,6 +13,9 @@ attr_willpower_alias: "WLP"
 mp: "MP"
 hp: "HP"
 ip: "IP"
+mp_full: "Mind Points"
+hp_full: "Health Points"
+ip_full: "Inventory Points"
 
 # Other
 defense: "Defense"

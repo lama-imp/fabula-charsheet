@@ -4,11 +4,11 @@ import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
-from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, \
+from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
-    increase_attribute
+    increase_attribute, add_therioform, add_dance
 from pages.character_view.view_state import ViewState
 
 
@@ -64,6 +64,14 @@ def build(controller: CharacterController):
     @st.dialog(loc.page_view_increase_attribute_dialog_title, width="small")
     def increase_attribute_dialog(controller: CharacterController, loc: LocNamespace):
         increase_attribute(controller, loc)
+
+    @st.dialog(loc.page_view_add_therioform_dialog_title, width="large")
+    def add_therioform_dialog(controller: CharacterController, loc: LocNamespace):
+        add_therioform(controller, loc)
+
+    @st.dialog(loc.page_view_add_dance_dialog_title, width="large")
+    def add_dance_dialog(controller: CharacterController, loc: LocNamespace):
+        add_dance(controller, loc)
 
     st.title(f"{controller.character.name}")
 
@@ -489,15 +497,30 @@ def build(controller: CharacterController):
 
     # Special
     with tab5:
-        if controller.is_class_added(ClassName.mutant) and controller.has_skill("theriomorphosis"):
-            therioforms = controller.character.special.get_special("therioforms")
-            added_therioforms = [t for t in therioforms if t.added]
-            st.markdown(f"##### {loc.page_view_therioforms}")
-            TherioformTableWriter(loc).write_in_columns(added_therioforms)
-            if len(added_therioforms) < controller.get_skill_level(ClassName.mutant, "theriomorphosis"):
-                if st.button(loc.page_view_add_therioform):
-                    pass
         st.divider()
+        if controller.is_class_added(ClassName.mutant) and controller.has_skill("theriomorphosis"):
+            added_therioforms = [t for t in controller.character.special.therioforms]
+            col1, col2 = st.columns([0.25, 0.75])
+            with col1:
+                st.markdown(f"##### {loc.page_view_therioforms}")
+            with col2:
+                if len(added_therioforms) < controller.get_skill_level(ClassName.mutant, "theriomorphosis"):
+                    if st.button(loc.add_therioform_button):
+                        add_therioform_dialog(controller, loc)
+            TherioformTableWriter(loc).write_in_columns(added_therioforms)
+            st.divider()
+
+        if controller.is_class_added(ClassName.dancer) and controller.has_skill("dance"):
+            added_dances = [t for t in controller.character.special.dances]
+            col1, col2 = st.columns([0.25, 0.75])
+            with col1:
+                st.markdown(f"##### {loc.page_view_dances}")
+            with col2:
+                if len(added_dances) < controller.get_skill_level(ClassName.dancer, "dance"):
+                    if st.button(loc.add_dance_button):
+                        add_dance_dialog(controller, loc)
+            DanceTableWriter(loc).write_in_columns(added_dances)
+            st.divider()
 
     col1, col2 = st.columns([0.2, 0.8])
     with col1:

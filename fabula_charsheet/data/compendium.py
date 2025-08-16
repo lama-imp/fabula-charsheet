@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
-from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield
+from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield, Therioform, Dance
 from data.models.skill import HeroicSkill, Skill
 
 COMPENDIUM: Compendium | None = None
@@ -71,6 +71,8 @@ class Compendium:
     classes: Classes
     spells: Spells
     heroic_skills: HeroicSkills
+    therioforms: list[Therioform] = field(default_factory=list)
+    dances: list[Dance] = field(default_factory=list)
 
     def get_class_name_from_skill(self, skill: Skill):
         for char_class in self.classes.classes:
@@ -118,12 +120,22 @@ def init(assets_directory: Path) -> None:
     for yaml_file in heroic_skills_directory.glob('*.yaml'):
         heroic_skills_list.extend(get_assets_from_file(yaml_file, HeroicSkill))
 
+    special_directory = Path(assets_directory, 'special').resolve(strict=True)
+    special_dict = {}
+    for yaml_file in special_directory.glob('*.yaml'):
+        item_mapping = {
+            "therioforms": Therioform,
+            "dances": Dance,
+        }
+        special_dict[yaml_file.stem] = get_assets_from_file(yaml_file, item_mapping[yaml_file.stem])
+
     e = Equipment(**equipment_dict)
     c = Compendium(
         equipment=e,
         classes=Classes(classes=classes_list),
         spells=Spells(spells=spells_dict),
-        heroic_skills=HeroicSkills(heroic_skills=heroic_skills_list)
+        heroic_skills=HeroicSkills(heroic_skills=heroic_skills_list),
+        **special_dict,
     )
     COMPENDIUM = c
 

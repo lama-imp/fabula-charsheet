@@ -1,0 +1,41 @@
+- name: angel
+  duration: next_turn
+
+- name: banshee
+
+- name: bat
+  duration: next_turn
+
+- name: golem
+  duration: next_turn
+
+- name: griffin
+  duration: next_turn
+
+- name: hydra
+  duration: next_turn
+
+- name: kraken
+
+- name: lion
+
+- name: maenad
+
+- name: myrmidon
+  duration: next_turn
+
+- name: nightmare
+
+- name: ouroboros
+
+- name: peacock
+
+- name: phoenix
+  duration: next_turn
+
+- name: satyr
+
+- name: unicorn
+
+- name: yeti
+  duration: next_turn

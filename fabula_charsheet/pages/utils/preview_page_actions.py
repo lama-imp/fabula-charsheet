@@ -64,10 +64,10 @@ def edit_identity(controller: CharacterController, loc: LocNamespace):
     )
     if st.button("Update"):
         try:
-            controller.character.set_name(character_name)
-            controller.character.set_identity(identity)
-            controller.character.set_origin(origin)
-            controller.character.set_theme(theme)
+            controller.character.set_name(character_name, loc)
+            controller.character.set_identity(identity, loc)
+            controller.character.set_origin(origin, loc)
+            controller.character.set_theme(theme, loc)
             st.rerun()
         except Exception as e:
             st.warning(e, icon="🤌")

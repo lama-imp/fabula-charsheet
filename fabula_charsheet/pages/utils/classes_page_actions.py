@@ -4,7 +4,7 @@ from typing import Literal
 
 import streamlit as st
 
-from data.models import LocNamespace, Spell
+from data.models import LocNamespace, ClassBonus
 from .table_writer import SkillTableWriter, SpellTableWriter
 from .common import if_show_spells, list_skills, show_martial
 from pages.controller import CharacterController, ClassController
@@ -42,12 +42,9 @@ def add_new_class(
         if character_controller.is_class_added(selected_class):
             st.error(loc.page_class_already_added_error)
         else:
-            class_bonus = selected_class.class_bonus
-            bonus_message = loc.page_class_bonus_message.format(
-                class_bonus=class_bonus.localized_name(loc),
-                bonus_value=selected_class.bonus_value
-            )
-            st.markdown(bonus_message)
+            class_controller.char_class = selected_class
+
+            show_bonus(class_controller, loc)
 
             show_martial(selected_class)
 
@@ -55,7 +52,6 @@ def add_new_class(
                 rituals_str = ', '.join(r.localized_name(loc) for r in selected_class.rituals)
                 st.write(loc.page_class_rituals_info.format(rituals=rituals_str))
 
-            class_controller.char_class = selected_class
             casting_skill = class_controller.char_class.get_spell_skill()
 
             with st.expander(loc.page_class_choose_skills_expander):
@@ -118,3 +114,26 @@ def remove_class(character_controller: CharacterController, loc: LocNamespace):
             if st.button(loc.page_class_remove_button, key=f"{char_class.name}-remove"):
                 character_controller.character.classes.remove(char_class)
                 st.rerun()
+
+
+def show_bonus(class_controller: ClassController, loc: LocNamespace):
+    if isinstance(class_controller.char_class.class_bonus, list):
+        class_bonus = st.pills(
+            loc.msg_select_bonus,
+            [b for b in class_controller.char_class.class_bonus],
+            format_func=lambda b: b.localized_full_name(loc),
+        )
+        class_controller.char_class.class_bonus = class_bonus
+        if class_bonus:
+            bonus_message = loc.page_class_bonus_message.format(
+                class_bonus=class_bonus.localized_name(loc),
+                bonus_value=class_controller.char_class.bonus_value
+            )
+            st.markdown(bonus_message)
+    elif isinstance(class_controller.char_class.class_bonus, ClassBonus):
+        class_bonus = class_controller.char_class.class_bonus
+        bonus_message = loc.page_class_bonus_message.format(
+            class_bonus=class_bonus.localized_name(loc),
+            bonus_value=class_controller.char_class.bonus_value
+        )
+        st.markdown(bonus_message)

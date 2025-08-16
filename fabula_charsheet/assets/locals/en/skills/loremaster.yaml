@@ -4,34 +4,36 @@ skill_flash_of_insight_description: >
   this includes using the **Study** action during a conflict — you may ask the Game Master up to 
   **【SL】** questions concerning the subject of your investigation.  
 
+
+
   You may ask these questions immediately or save them for later; whenever you ask one of these questions,
   the Game Master will answer truthfully and you will describe your character's deductive process.  
+
+
 
   This skill may only be used once on the same creature, item, or location.
 
 skill_focused: "Focused"
-skill_focused_description: >
-  Permanently increase your maximum Mind Points by **【SL × 3】**.  
+skill_focused_description: |
+  Permanently increase your maximum Mind Points by **【SL&nbsp;×&nbsp;3】**.  
 
-  When you perform an Open Check using **【INS + INS】**, you gain a bonus equal to **【SL】** on that Check
-  (this **only** applies to Open Checks).
+  When you perform an Open Check using **【INS + INS】**, you gain a bonus equal to **【SL】** on that Check (this **only** applies to Open Checks).
 
 skill_knowledge_is_power: "Knowledge is Power"
 skill_knowledge_is_power_description: >
   When you perform an Accuracy Check, you may replace **one** of the Attribute dice with **Insight**
-  (such as **【INS + INS】** for a pistol or **【INS + MIG】** for a waraxe).
+  (such as **【INS&nbsp;+&nbsp;INS】** for a pistol or **【INS&nbsp;+&nbsp;MIG】** for a waraxe).
 
 skill_quick_assessment: "Quick Assessment"
-skill_quick_assessment_description: >
-  At the start of a conflict, you may spend up to **【SL × 5】 ** Mind Points.  
+skill_quick_assessment_description: |
+  At the start of a conflict, you may spend up to **【SL&nbsp;×&nbsp;5】 ** Mind Points.  
 
   For every** 5 **Mind Points you spend this way, choose one option:  
   • Choose a creature you can see and the Game Master reveals one of their **Traits**.  
   • Name a damage type and choose a creature you can see, and the Game Master reveals that creature's **Affinity** towards that damage type.
 
 skill_trained_memory: "Trained Memory"
-skill_trained_memory_description: >
+skill_trained_memory_description: |
   You may perfectly recall the details of any scene you have visited within the past week.  
 
-  You can "go back in time" within your mind in order to examine and investigate such scenes again — your
-  **Flash of Insight** skill will apply to these memories as well.
+  You can "go back in time" within your mind in order to examine and investigate such scenes again — your **Flash of Insight** skill will apply to these memories as well.

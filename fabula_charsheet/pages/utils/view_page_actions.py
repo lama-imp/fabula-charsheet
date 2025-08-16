@@ -5,8 +5,9 @@ import streamlit as st
 from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell
-from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter
+    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform
+from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter, TherioformTableWriter, \
+    DanceTableWriter
 from .classes_page_actions import add_new_class
 from data import compendium as c
 
@@ -311,3 +312,56 @@ def increase_attribute(controller: CharacterController, loc: LocNamespace):
                     ):
                         attribute.base += 2
                         st.rerun()
+
+
+def add_therioform(controller: CharacterController, loc: LocNamespace):
+    selected_therioform = list()
+    def single_selector(therioform: Therioform, idx=None):
+        if st.checkbox("add therioform",
+                       value=(therioform in selected_therioform),
+                       label_visibility="hidden",
+                       key=f"{therioform.name}-toggle"
+                       ):
+            if therioform not in selected_therioform:
+                selected_therioform.append(therioform)
+        else:
+            if therioform in selected_therioform:
+                selected_therioform.remove(therioform)
+
+    sorted_therioforms = sorted(c.COMPENDIUM.therioforms, key=lambda x: x.localized_name(loc))
+    available_therioforms = [t for t in sorted_therioforms if t not in controller.character.special.therioforms]
+
+    writer = TherioformTableWriter(loc)
+    writer.columns = writer.add_one_therioform_columns(single_selector)
+    writer.write_in_columns(available_therioforms, description=False)
+
+    if st.button(loc.add_spell_button, disabled=(len(selected_therioform) != 1)):
+        therioform = selected_therioform[0]
+        controller.character.special.therioforms.append(therioform)
+        st.rerun()
+
+def add_dance(controller: CharacterController, loc: LocNamespace):
+    selected_dance = list()
+    def single_selector(therioform: Therioform, idx=None):
+        if st.checkbox("add therioform",
+                       value=(therioform in selected_dance),
+                       label_visibility="hidden",
+                       key=f"{therioform.name}-toggle"
+                       ):
+            if therioform not in selected_dance:
+                selected_dance.append(therioform)
+        else:
+            if therioform in selected_dance:
+                selected_dance.remove(therioform)
+
+    sorted_dances = sorted(c.COMPENDIUM.dances, key=lambda x: x.localized_name(loc))
+    available_dances = [t for t in sorted_dances if t not in controller.character.special.dances]
+
+    writer = DanceTableWriter(loc)
+    writer.columns = writer.add_one_dance_columns(single_selector)
+    writer.write_in_columns(available_dances, description=False)
+
+    if st.button(loc.add_spell_button, disabled=(len(selected_dance) != 1)):
+        dance = selected_dance[0]
+        controller.character.special.dances.append(dance)
+        st.rerun()

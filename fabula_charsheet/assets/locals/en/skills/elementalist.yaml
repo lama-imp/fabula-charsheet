@@ -2,38 +2,44 @@ skill_cataclysm: "Cataclysm"
 skill_cataclysm_description: >
   When you cast an **instantaneous** spell,  
   if you have an **arcane** weapon equipped,  
-  you may **increase the spell's total MP cost** by up to**【SL × 10】**Mind Points.  
+  you may **increase the spell's total MP cost** by up to **【SL&nbsp;×&nbsp;10】** Mind Points.  
+
+
 
   If you do so, and the spell deals damage to one or more creatures,  
-  it will deal **5 extra damage** to each creature for every **10 Mind Points**  
-  by which you increased its total **MP cost**.
+  it will deal **5 extra damage** to each creature for every **10** Mind Points  
+  by which you increased its total MP cost.
 
 skill_elemental_magic: "Elemental Magic"
-skill_elemental_magic_description: >
-  Each time you acquire this skill, learn one **Elementalist spell**.  
+skill_elemental_magic_description: |
+  Each time you acquire this skill, learn one Elementalist spell.  
 
-  Offensive (⚡) Elementalist spells use**【INS + WLP】**for the Magic Check.
+  Offensive (⚡) Elementalist spells use **【INS&nbsp;+&nbsp;WLP】** for the Magic Check.
 
 skill_magical_artillery: "Magical Artillery"
 skill_magical_artillery_description: >
   When you cast an offensive (⚡) spell,  
   if you have an **arcane** weapon equipped,  
-  you gain a bonus to your Magic Check equal to**【SL × 2】**.
+  you gain a bonus to your Magic Check equal to **【SL&nbsp;×&nbsp;2】**.
 
 skill_ritual_elementalism: "Ritual Elementalism"
-skill_ritual_elementalism_description: >
+skill_ritual_elementalism_description: |
   You may perform Rituals whose effects fall within the **Elementalism** discipline.  
 
-  Elementalism Rituals use**【INS + WLP】**for the Magic Check.
+  Elementalism Rituals use **【INS&nbsp;+&nbsp;WLP】** for the Magic Check.
 
 skill_spellblade: "Spellblade"
 skill_spellblade_description: >
   When you cast an **offensive (⚡) spell** targeting a **single creature**,  
-  if the spell has a **total Mind Point cost of【SL × 10】or lower**  
+  if the spell has a **total Mind Point cost of【SL&nbsp;×&nbsp;10】or lower**  
   and you have one or more **bow**, **brawling**, **dagger**, **flail**, **spear**, or **sword** weapons equipped,  
   you may choose one of those weapons.  
 
+
+
   If you do, your Magic Check for the spell will use the chosen weapon's Accuracy Check formula.  
 
+
+
   For instance,  
-  the Magic Check for an Elementalist spell cast through a **bronze sword** will be**【DEX + MIG】+1 **instead of**【INS + WLP】**.
+  the Magic Check for an Elementalist spell cast through a **bronze sword** will be**【DEX&nbsp;+&nbsp;MIG】+&nbsp1 **instead of**【INS&nbsp;+&nbsp;WLP】**.

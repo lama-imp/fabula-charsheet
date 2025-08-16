@@ -16,7 +16,7 @@ from data.models import (
     Therioform,
     Item,
     LocNamespace,
-    HeroicSkill, Bond, ChimeristSpell,
+    HeroicSkill, Bond, ChimeristSpell, Dance,
 )
 from .common import add_item_as, join_with_or
 
@@ -40,7 +40,8 @@ class TableWriter:
     def write_in_columns(
             self,
             data: Iterable,
-            header: bool = True
+            header: bool = True,
+            description: bool = True,
     ):
         if header:
             self._write_header()
@@ -53,7 +54,8 @@ class TableWriter:
                 with cell:
                     column_config.process(item, item_idx)
 
-            self._add_description(item, item_idx)
+            if description:
+                self._add_description(item, item_idx)
 
     def _write_header(self):
         for cell, column_name in zip(
@@ -86,12 +88,12 @@ class SkillTableWriter(TableWriter):
             ColumnConfig(
                 name="skill",
                 width=0.2,
-                process=lambda s, idx=None: st.write(s.localized_name(self.loc)),
+                process=lambda s, idx=None: st.markdown(s.localized_name(self.loc)),
             ),
             ColumnConfig(
                 name="description",
                 width=0.7,
-                process=lambda s, idx=None: st.write(s.localized_description(self.loc)),
+                process=lambda s, idx=None: st.markdown(s.localized_description(self.loc)),
             ),
             ColumnConfig(
                 name="level",
@@ -108,7 +110,7 @@ class SkillTableWriter(TableWriter):
             ColumnConfig(
                 name="level",
                 width=0.2,
-                process=lambda s, idx=None: st.write(str(s.current_level))
+                process=lambda s, idx=None: st.markdown(str(s.current_level))
             ),
         )
 
@@ -189,7 +191,7 @@ class HeroicSkillTableWriter(TableWriter):
             ColumnConfig(
                 name="heroic_skill",
                 width=0.3,
-                process=lambda s, idx=None: st.write(s.localized_name(self.loc)),
+                process=lambda s, idx=None: st.markdown(s.localized_name(self.loc)),
             ),
             ColumnConfig(
                 name="requirements",
@@ -218,7 +220,7 @@ class HeroicSkillTableWriter(TableWriter):
                 requirements_string = self.loc.heroic_skill_several_mastery_requirement.format(
                     classes=join_with_or(required_classes_names, self.loc)
                 )
-        st.write(requirements_string)
+        st.markdown(requirements_string)
 
 
     def _skill_selector(self, skill: HeroicSkill, idx=None):
@@ -296,16 +298,16 @@ class SpellTableWriter(TableWriter):
         st.divider()
 
     def write_spell_name(self, spell: Spell, idx=None):
-        st.write(f"{spell.localized_name(self.loc)}{'⚡' if spell.is_offensive else ''}")
+        st.markdown(f"{spell.localized_name(self.loc)}{'⚡' if spell.is_offensive else ''}")
 
     def write_mp_cost(self, spell: Spell, idx=None):
-        st.write(f"{spell.mp_cost}{f' x {self.loc.spell_target_marker}' if spell.target == 'up_to_three' else ''}")
+        st.markdown(f"{spell.mp_cost}{f' x {self.loc.spell_target_marker}' if spell.target == 'up_to_three' else ''}")
 
     def write_target(self, spell: Spell, idx=None):
-        st.write(spell.target.localized_name(self.loc))
+        st.markdown(spell.target.localized_name(self.loc))
 
     def write_duration(self, spell: Spell, idx=None):
-        st.write(spell.duration.localized_name(self.loc))
+        st.markdown(spell.duration.localized_name(self.loc))
 
     def spell_selector(self, spell: Spell, idx=None):
         st.session_state.class_spells = st.session_state.get("class_spells", [])
@@ -321,7 +323,7 @@ class SpellTableWriter(TableWriter):
                 st.session_state.class_spells.remove(spell)
 
     def _process_species(self, spell: ChimeristSpell, idx=None):
-        st.write(spell.species.localized_name(self.loc))
+        st.markdown(spell.species.localized_name(self.loc))
 
 
 class WeaponTableWriter(TableWriter):
@@ -369,23 +371,23 @@ class WeaponTableWriter(TableWriter):
     def _process_weapon(self, s, idx=None):
         key = f"item_{s.name}"
         weapon_name = getattr(self.loc, key, s.name.title())
-        st.write(f"{weapon_name} {'♦️' if s.martial else ''}")
+        st.markdown(f"{weapon_name} {'♦️' if s.martial else ''}")
 
     def _process_cost(self, s, idx=None):
         currency = getattr(self.loc, "zenit_short", "z")
-        st.write(f"{s.cost} {currency}")
+        st.markdown(f"{s.cost} {currency}")
 
     def _process_accuracy(self, s, idx=None):
-        st.write(s.format_accuracy(self.loc))
+        st.markdown(s.format_accuracy(self.loc))
 
     def _process_damage(self, s, idx=None):
         hr_label = getattr(self.loc, "hr", "HR")
         damage_key = f"damage_{s.damage_type}"
         damage_type = getattr(self.loc, damage_key, s.damage_type)
-        st.write(f"【{hr_label} + {s.bonus_damage}】 {damage_type}")
+        st.markdown(f"【{hr_label}&nbsp;+&nbsp;{s.bonus_damage}】 {damage_type}")
 
     def _add_description(self, item: Weapon, idx=None):
-        st.write(
+        st.markdown(
             " ◆ ".join((
                 item.weapon_category.localized_name(self.loc),
                 item.grip_type.localized_name(self.loc),
@@ -461,7 +463,7 @@ class ArmorTableWriter(TableWriter):
             ColumnConfig(
                 name="initiative",
                 width=0.15,
-                process=lambda s, idx=None: st.write(str(s.bonus_initiative)),
+                process=lambda s, idx=None: st.markdown(str(s.bonus_initiative)),
             ),
             ColumnConfig(
                 name="add",
@@ -484,14 +486,14 @@ class ArmorTableWriter(TableWriter):
     def _process_armor(self, s, idx=None):
         key = f"item_{s.name}"
         armor_name = getattr(self.loc, key, s.name.title())
-        st.write(f"{armor_name} {'♦️' if s.martial else ''}")
+        st.markdown(f"{armor_name} {'♦️' if s.martial else ''}")
 
     def _process_cost(self, s, idx=None):
         currency = getattr(self.loc, "zenit_short", "z")
-        st.write(f"{s.cost} {currency}")
+        st.markdown(f"{s.cost} {currency}")
 
     def _add_description(self, item: Armor, idx=None):
-        st.write(item.localized_quality(self.loc))
+        st.markdown(item.localized_quality(self.loc))
         st.divider()
 
     def _add_armor(self, armor: Armor, idx=None):
@@ -513,16 +515,16 @@ class ArmorTableWriter(TableWriter):
     def _write_defense(self, item: Armor, idx=None):
         def_bonus = f" + {item.bonus_defense}" if item.bonus_defense > 0 else ""
         if isinstance(item.defense, AttributeName):
-            st.write(f"{AttributeName.to_alias(item.defense, self.loc)}{def_bonus}")
+            st.markdown(f"{AttributeName.to_alias(item.defense, self.loc)}{def_bonus}")
         else:
-            st.write(f"{str(item.defense)}{def_bonus}")
+            st.markdown(f"{str(item.defense)}{def_bonus}")
 
     def _write_magic_defense(self, item: Armor, idx=None):
         def_bonus = f" + {item.bonus_magic_defense}" if item.bonus_magic_defense > 0 else ""
         if isinstance(item.magic_defense, AttributeName):
-            st.write(f"{AttributeName.to_alias(item.magic_defense, self.loc)}{def_bonus}")
+            st.markdown(f"{AttributeName.to_alias(item.magic_defense, self.loc)}{def_bonus}")
         else:
-            st.write(f"{str(item.magic_defense)}{def_bonus}")
+            st.markdown(f"{str(item.magic_defense)}{def_bonus}")
 
     def equip(self, item: Armor, idx: int | None = None):
         cannot_equip = False
@@ -575,7 +577,7 @@ class ShieldTableWriter(TableWriter):
             ColumnConfig(
                 name="initiative",
                 width=0.15,
-                process=lambda s, idx=None: st.write(str(s.bonus_initiative)),
+                process=lambda s, idx=None: st.markdown(str(s.bonus_initiative)),
             ),
             ColumnConfig(
                 name="add",
@@ -598,14 +600,14 @@ class ShieldTableWriter(TableWriter):
     def _process_shield(self, s, idx=None):
         key = f"item_{s.name}"
         shield_name = getattr(self.loc, key, s.name.title())
-        st.write(f"{shield_name} {'♦️' if s.martial else ''}")
+        st.markdown(f"{shield_name} {'♦️' if s.martial else ''}")
 
     def _process_cost(self, s, idx=None):
         currency = getattr(self.loc, "zenit_short", "z")
-        st.write(f"{s.cost} {currency}")
+        st.markdown(f"{s.cost} {currency}")
 
     def _add_description(self, item: Shield, idx=None):
-        st.write(item.localized_quality(self.loc))
+        st.markdown(item.localized_quality(self.loc))
         st.divider()
 
     def _add_shield(self, shield: Shield, idx=None):
@@ -625,10 +627,10 @@ class ShieldTableWriter(TableWriter):
             self._add_item_as(shield)
 
     def _write_defense(self, item: Shield, idx=None):
-        st.write(f"+{item.bonus_defense}")
+        st.markdown(f"+{item.bonus_defense}")
 
     def _write_magic_defense(self, item: Shield, idx=None):
-        st.write(f"+{item.bonus_magic_defense}")
+        st.markdown(f"+{item.bonus_magic_defense}")
 
     def equip(self, item: Shield, idx=None):
         cannot_equip = False
@@ -671,7 +673,7 @@ class AccessoryTableWriter(TableWriter):
             ColumnConfig(
                 name="quality",
                 width=0.155,
-                process=lambda s, idx=None: st.write(s.localized_quality(self.loc)),
+                process=lambda s, idx=None: st.markdown(s.localized_quality(self.loc)),
             ),
             ColumnConfig(
                 name="equip",
@@ -683,11 +685,11 @@ class AccessoryTableWriter(TableWriter):
     def _process_name(self, s, idx=None):
         key = f"item_{s.name}"
         item_name = getattr(self.loc, key, s.name.title())
-        st.write(item_name)
+        st.markdown(item_name)
 
     def _process_cost(self, s, idx=None):
         currency = getattr(self.loc, "zenit_short", "z")
-        st.write(f"{s.cost} {currency}")
+        st.markdown(f"{s.cost} {currency}")
 
     def _add_description(self, item: Accessory, idx=None):
         st.divider()
@@ -711,17 +713,17 @@ class ItemTableWriter(TableWriter):
             ColumnConfig(
                 name="items",
                 width=0.2,
-                process=lambda s, idx=None: st.write(s.name.title()),
+                process=lambda s, idx=None: st.markdown(s.name.title()),
             ),
             ColumnConfig(
                 name="cost",
                 width=0.15,
-                process=lambda s, idx=None: st.write(f"{s.cost} z"),
+                process=lambda s, idx=None: st.markdown(f"{s.cost} z"),
             ),
             ColumnConfig(
                 name="quality",
                 width=0.155,
-                process=lambda s, idx=None: st.write(f"{s.quality}"),
+                process=lambda s, idx=None: st.markdown(f"{s.quality}"),
             ),
         )
 
@@ -746,7 +748,57 @@ class TherioformTableWriter(TableWriter):
         )
 
     def _add_description(self, therioform: Therioform, idx=None):
-        st.write(therioform.localized_description(self.loc))
+        st.markdown(therioform.localized_description(self.loc))
+
+    def add_one_therioform_columns(self, single_selector: Callable):
+        return (
+            self.base_columns[0],
+            ColumnConfig(
+                name="description",
+                width=0.6,
+                process=self._add_description,
+            ),
+            ColumnConfig(
+                name="select",
+                width=0.1,
+                process=single_selector,
+            ),
+        )
+
+
+class DanceTableWriter(TableWriter):
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="dance",
+                width=0.2,
+                process=lambda d, idx=None: st.markdown(f"_{d.localized_name(self.loc)}_"),
+            ),
+            ColumnConfig(
+                name="duration",
+                width=0.2,
+                process=lambda d, idx=None: st.markdown(d.duration.localized_name(self.loc)),
+            ),
+            ColumnConfig(
+                name="description",
+                width=0.6,
+                process=lambda d, idx=None: st.markdown(d.localized_description(self.loc)),
+            ),
+        )
+
+    def add_one_dance_columns(self, single_selector: Callable):
+        return (
+            *self.columns,
+            ColumnConfig(
+                name="select",
+                width=0.1,
+                process=single_selector,
+            ),
+        )
+
+    def _add_description(self, dance: Dance, idx=None):
+        pass
 
 
 class BondTableWriter(TableWriter):
@@ -757,7 +809,7 @@ class BondTableWriter(TableWriter):
             ColumnConfig(
                 name="bond",
                 width=0.35,
-                process=lambda b, idx=None: st.write(f"_{b.name}_"),
+                process=lambda b, idx=None: st.markdown(f"_{b.name}_"),
             ),
             ColumnConfig(
                 name="bond_strength",
@@ -769,7 +821,7 @@ class BondTableWriter(TableWriter):
     def _process_bond(self, bond: Bond, idx=None):
         for emotion in [bond.respect, bond.trust, bond.affinity]:
             if emotion:
-                st.write(emotion.localized_name(self.loc))
+                st.markdown(emotion.localized_name(self.loc))
 
     def _add_description(self, bond: Bond, idx=None):
         pass
