@@ -12,6 +12,7 @@ from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
 from .skill import HeroicSkill
 from .spell import Spell, ChimeristSpell
+from .therioform import Therioform
 
 if TYPE_CHECKING:
     from data.models import LocNamespace
@@ -35,22 +36,6 @@ class CharacterTheme(StrEnum):
 
 class InvalidCharacterField(Exception):
     pass
-
-class Therioform(BaseModel):
-    name: str = ""
-    added: bool = False
-
-    def localized_name(self, loc: LocNamespace) -> str:
-        key = f"therioform_{self.name}"
-        return getattr(loc, key, self.name.capitalize())
-
-    def localized_description(self, loc: LocNamespace) -> str:
-        key = f"therioform_{self.name}_description"
-        return getattr(loc, key, f"[Missing description for {self.name}]")
-
-    def localized_creatures(self, loc: LocNamespace) -> str:
-        key = f"therioform_{self.name}_creatures"
-        return getattr(loc, key, f"[Missing creatures for {self.name}]")
 
 
 class CharSpecial(BaseModel):

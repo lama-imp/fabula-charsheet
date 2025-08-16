@@ -17,7 +17,6 @@ from .char_class import (
 from .character import (
     Character,
     CharSpecial,
-    Therioform,
     CharacterTheme,
 )
 from .damage import DamageType
@@ -52,3 +51,4 @@ from .bonds import (
     Emotion
 )
 from .species import Species
+from .therioform import Therioform
