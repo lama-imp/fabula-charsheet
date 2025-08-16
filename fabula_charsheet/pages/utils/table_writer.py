@@ -16,7 +16,7 @@ from data.models import (
     Therioform,
     Item,
     LocNamespace,
-    HeroicSkill, Bond, ChimeristSpell,
+    HeroicSkill, Bond, ChimeristSpell, Dance,
 )
 from .common import add_item_as, join_with_or
 
@@ -40,7 +40,8 @@ class TableWriter:
     def write_in_columns(
             self,
             data: Iterable,
-            header: bool = True
+            header: bool = True,
+            description: bool = True,
     ):
         if header:
             self._write_header()
@@ -53,7 +54,8 @@ class TableWriter:
                 with cell:
                     column_config.process(item, item_idx)
 
-            self._add_description(item, item_idx)
+            if description:
+                self._add_description(item, item_idx)
 
     def _write_header(self):
         for cell, column_name in zip(
@@ -736,17 +738,67 @@ class TherioformTableWriter(TableWriter):
             ColumnConfig(
                 name="therioform",
                 width=0.3,
-                process=lambda t, idx=None: st.markdown(f"_{t.localized_name(self.loc)}_"),
+                process=lambda t, idx=None: st.write(f"_{t.localized_name(self.loc)}_"),
             ),
             ColumnConfig(
                 name="genoclepsis",
                 width=0.7,
-                process=lambda t, idx=None: st.markdown(t.localized_creatures(self.loc)),
+                process=lambda t, idx=None: st.write(t.localized_creatures(self.loc)),
             ),
         )
 
     def _add_description(self, therioform: Therioform, idx=None):
         st.markdown(therioform.localized_description(self.loc))
+
+    def add_one_therioform_columns(self, single_selector: Callable):
+        return (
+            self.base_columns[0],
+            ColumnConfig(
+                name="description",
+                width=0.6,
+                process=self._add_description,
+            ),
+            ColumnConfig(
+                name="select",
+                width=0.1,
+                process=single_selector,
+            ),
+        )
+
+
+class DanceTableWriter(TableWriter):
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="dance",
+                width=0.2,
+                process=lambda d, idx=None: st.markdown(f"_{d.localized_name(self.loc)}_"),
+            ),
+            ColumnConfig(
+                name="duration",
+                width=0.2,
+                process=lambda d, idx=None: st.markdown(d.duration.localized_name(self.loc)),
+            ),
+            ColumnConfig(
+                name="description",
+                width=0.6,
+                process=lambda d, idx=None: st.markdown(d.localized_description(self.loc)),
+            ),
+        )
+
+    def add_one_dance_columns(self, single_selector: Callable):
+        return (
+            *self.columns,
+            ColumnConfig(
+                name="select",
+                width=0.1,
+                process=single_selector,
+            ),
+        )
+
+    def _add_description(self, dance: Dance, idx=None):
+        pass
 
 
 class BondTableWriter(TableWriter):
