@@ -141,5 +141,5 @@ def init(assets_directory: Path) -> None:
 
 
 if __name__ == "__main__":
-    init(Path("/Users/macbook/Imp/fabula_charsheet/fabula_charsheet/assets"))
+    init(Path("fabula_charsheet/assets"))
     print(COMPENDIUM)
