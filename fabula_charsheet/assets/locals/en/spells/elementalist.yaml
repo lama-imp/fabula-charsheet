@@ -10,40 +10,43 @@ spell_elemental_weapon_description: >
   Choose a **damage type**: **air**, **lightning**, **earth**, **fire**, or **ice**.  
   Until this **spell** ends, all damage dealt by the **weapon** becomes of the chosen **damage type**.  
   If you have that **weapon** equipped while you cast this **spell**, you may perform a free **attack** with it as part of the same action.  
+  
   This spell can only be cast on a **weapon** equipped by a willing **creature**.
 
 spell_flare: "Flare"
 spell_flare_description: >
   You channel a single ray of fire towards your foe, its temperature so high that it will pierce through most defenses.  
-  The **target** suffers【HR + 25】**fire damage**.  
+  The target suffers **【HR&nbsp;+&nbsp;25】fire damage**.  
+  
   Damage dealt by this spell ignores **Resistances**.
 
 spell_fulgur: "Fulgur"
 spell_fulgur_description: >
   You weave electricity into a wave of crackling bolts.  
-  Each **target** hit by this spell suffers【HR + 15】**lightning damage**.  
+  Each target hit by this spell suffers **【HR&nbsp;+&nbsp;15】lightning damage**.  
   
-  **Opportunity**: Each **target** hit by this **spell** suffers **dazed**.
+  **Opportunity**: Each target hit by this spell suffers **dazed**.
 
 spell_glacies: "Glacies"
 spell_glacies_description: >
   You coat your foes under a thick layer of frost.  
-  Each **target** hit by this spell suffers【HR + 15】**ice damage**.  
+  Each target hit by this spell suffers **【HR&nbsp;+&nbsp;15】ice damage**.  
   
-  **Opportunity**: Each **target** hit by this **spell** suffers **slow**.
+  **Opportunity**: Each target hit by this spell suffers **slow**.
 
 spell_iceberg: "Iceberg"
 spell_iceberg_description: >
   A pillar of ice magic envelops your foe, suddenly dropping their body temperature to a critical level.  
-  The **target** suffers【HR + 25】**ice damage**.  
+  The target suffers **【HR&nbsp;+&nbsp;25】ice damage**.  
+  
   Damage dealt by this spell ignores **Resistances**.
 
 spell_ignis: "Ignis"
 spell_ignis_description: >
   You unleash a searing barrage against your foes, conjuring flames out of thin air.  
-  Each **target** hit by this spell suffers【HR + 15】**fire damage**.  
+  Each target hit by this spell suffers **【HR&nbsp;+&nbsp;15】fire damage**.  
   
-  **Opportunity**: Each **target** hit by this **spell** suffers **shaken**.
+  **Opportunity**: Each target hit by this spell suffers **shaken**.
 
 spell_soaring_strike: "Soaring Strike"
 spell_soaring_strike_description: >
@@ -57,22 +60,24 @@ spell_soaring_strike_description: >
 spell_terra: "Terra"
 spell_terra_description: >
   Spires of jagged rock erupt from the ground beneath your foes, closing around them.  
-  Each **target** hit by this spell suffers【HR + 15】**earth damage**.  
+  Each **target** hit by this spell suffers **【HR&nbsp;+&nbsp;15】earth damage**.  
   This spell cannot target **creatures** who are **flying**, **floating**, **falling**, or otherwise in mid-air.  
   
-  **Opportunity**: Each **target** hit by this spell performs one fewer action on their next turn (to a minimum of 0 actions).
+  **Opportunity**: Each target hit by this spell performs one fewer action on their next turn (to a minimum of 0 actions).
 
 spell_thunderbolt: "Thunderbolt"
 spell_thunderbolt_description: >
   You send lightning striking at your foe.  
-  The **target** suffers【HR + 25】**lightning damage**.  
+  The target suffers **【HR&nbsp;+&nbsp;25】lightning damage**.  
+  
   Damage dealt by this spell ignores **Resistances**.
 
 spell_ventus: "Ventus"
 spell_ventus_description: >
   You summon the power of winds against your enemy.  
-  Each **target** hit by this spell suffers【HR + 15】**air damage**.  
-  **Opportunity**: Each **flying target** hit by this spell is forced to land immediately.
+  Each target hit by this spell suffers **【HR + 15】air damage**.  
+  
+  **Opportunity**: Each **flying** target hit by this spell is forced to land immediately.
 
 spell_vortex: "Vortex"
 spell_vortex_description: >

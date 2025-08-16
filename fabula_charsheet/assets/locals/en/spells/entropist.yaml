@@ -21,7 +21,7 @@ spell_dark_weapon_description: >
 spell_dispel: "Dispel"
 spell_dispel_description: >
   You release a wave of negative energy and cleanse all magic from a **creature**.  
-  If the **target** is affected by one or more **spells** with a **duration of Scene**, they are no longer affected by any of those **spells**.
+  If the target is affected by one or more spells with a **duration of Scene**, they are no longer affected by any of those **spells**.
 
 spell_divination: "Divination"
 spell_divination_description: >
@@ -32,17 +32,17 @@ spell_divination_description: >
 spell_drain_spirit: "Drain Spirit"
 spell_drain_spirit_description: >
   You consume a **creature's psyche**.  
-  The **target** loses【HR + 15】**Mind Points**.  
+  The **target** loses【HR&nbsp;+&nbsp;15】**Mind Points**.  
   Then, you recover an amount of **Mind Points** equal to half the **Mind Points** loss they suffered (if the loss was reduced to 0 in some way, you recover none).
 
 spell_drain_vigor: "Drain Vigor"
 spell_drain_vigor_description: >
   You steal another **creature's life force**.  
-  The **target** suffers【HR + 15】**dark damage**.  
+  The **target** suffers【HR&nbsp;+&nbsp;15】**dark damage**.  
   Then, you recover an amount of **Hit Points** equal to half the **Hit Points** loss they suffered (if the loss was reduced to 0 in some way, you recover none).
 
 spell_gamble: "Gamble"
-spell_gamble_description: >
+spell_gamble_description: |
   You summon a vortex of **chaotic energy**.  
   Roll your current **Willpower** die once for every 10 **Mind Points** spent while casting it, then keep the single die you prefer: the number on that die determines the effects.
   
@@ -64,7 +64,7 @@ spell_mirror_description: >
 spell_omega: "Omega"
 spell_omega_description: >
   You invoke doom on your foe, turning strength into frailty.  
-  The **target** loses an amount of **Hit Points** equal to【20 + half the **target**'s level】.
+  The **target** loses an amount of **Hit Points** equal to【20&nbsp;+&nbsp;half the **target**'s level】.
 
 spell_stop: "Stop"
 spell_stop_description: >
@@ -74,6 +74,6 @@ spell_stop_description: >
 spell_umbra: "Umbra"
 spell_umbra_description: >
   A storm of dark energy turns matter into ash.  
-  Each **target** hit suffers【HR + 15】**dark damage**.  
+  Each **target** hit suffers【HR&nbsp;+&nbsp;15】**dark damage**.  
   
   **Opportunity**: Each **target** hit suffers **weak**.

@@ -2,10 +2,10 @@ skill_cheap_shot: "Cheap Shot"
 skill_cheap_shot_description: >
   When you hit a creature with an attack, if the attack **only** targeted that creature
   and they are suffering from **one or more status effects**,  
-  you may have it deal extra damage equal to **【SL + the number of status effects on the creature】**.
+  you may have it deal extra damage equal to **【SL&nbsp;+&nbsp;the number of status effects on the creature】**.
 
 skill_high_speed: "High Speed"
-skill_high_speed_description: >
+skill_high_speed_description: |
   At the start of a conflict, you may spend 10 Mind Points.  
   If you do, choose one option and apply it before the start of the first round:  
   - perform a **free attack** with a weapon you have equipped;  
@@ -22,16 +22,22 @@ skill_see_you_later_description: >
   You may use an action and spend 1 **Fabula Point** to vanish from the current scene,  
   reappearing whenever you want during a **different** scene in which another Player Character is present.  
 
+
+
   Describe how you escaped and miraculously got here!
 
 skill_soul_steal: "Soul Steal"
-skill_soul_steal_description: |
-  You may use an action to perform a **【DEX + WLP】** Check against the Magic Defense of a creature you can see.  
+skill_soul_steal_description: >
+  You may use an action to perform a **【DEX&nbsp;+&nbsp;WLP】** Check against the Magic Defense of a creature you can see.  
   If you succeed and the target is a **soldier**, you recover **【SL】** Inventory Point;  
   if they are an **elite** or **champion**, the GM gives you the target’s **soul treasure**,
-  an item worth zenit **equal to or lower than 【the target's level × 30, or × 50 if they are a Villain】**.  
+  an item worth zenit **equal to or lower than 【the target's level&nbsp;×&nbsp;30, or ×&nbsp;50 if they are a Villain】**.  
+
+
 
   This **soul treasure** will appear inside your **backpack**.
   A creature can only be successfully stolen from once with this Skill.  
   
-  You gain a bonus equal to **【SL】** to your **【DEX + WLP】** Checks for this Skill.
+  
+  
+  You gain a bonus equal to **【SL】** to your **【DEX&nbsp;+&nbsp;WLP】** Checks for this Skill.

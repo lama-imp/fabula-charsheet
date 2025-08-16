@@ -1,6 +1,6 @@
 skill_adrenaline: "Adrenaline"
 skill_adrenaline_description: >
-  As long as you are in **Crisis**, you deal **【SL × 2】** extra damage  
+  As long as you are in **Crisis**, you deal **【SL&nbsp;×&nbsp;2】** extra damage  
   (be it with attacks, spells, Arcana, items or any other method).
 
 skill_frenzy: "Frenzy"
@@ -10,16 +10,18 @@ skill_frenzy_description: >
   (and the Check is not a **fumble**).
 
 skill_indomitable_spirit: "Indomitable Spirit"
-skill_indomitable_spirit_description: >
+skill_indomitable_spirit_description: |
   When you spend one or more **Fabula Points**, you get an additional benefit — choose one option:  
-  - you recover **【SL × 5】** Hit Points;  
-  - or you recover **【SL × 5】** Mind Points;  
+  - you recover **【SL&nbsp;×&nbsp;5】** Hit Points;  
+  - or you recover **【SL&nbsp;×&nbsp;5】** Mind Points;  
   - or you recover from a single status effect of your choice.
 
 skill_provoke: "Provoke"
 skill_provoke_description: >
-  You may use an action and spend 5 Mind Points to perform an Opposed **【MIG + WLP】** Check  
+  You may use an action and spend 5 Mind Points to perform an Opposed **【MIG&nbsp;+&nbsp;WLP】** Check  
   against a creature you can see — describe how you taunt them!  
+
+
 
   If you succeed, the target suffers **enraged** and is compelled to focus their attention on you  
   (their attacks and offensive spells must include you among the targets if possible).  
@@ -27,7 +29,9 @@ skill_provoke_description: >
   This compulsion ends if you fall unconscious or leave the scene,  
   if the creature is no longer **enraged**, or if they are successfully provoked by someone else.  
 
-  You gain a bonus equal to **【SL】** to your **【MIG + WLP】** Checks for this Skill.
+
+
+  You gain a bonus equal to **【SL】** to your **【MIG&nbsp;+&nbsp;WLP】** Checks for this Skill.
 
 skill_withstand: "Withstand"
 skill_withstand_description: >

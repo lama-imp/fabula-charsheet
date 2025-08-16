@@ -24,7 +24,7 @@ skill_follow_my_lead_description: >
 skill_frenetic_footwork: "Frenetic Footwork"
 skill_frenetic_footwork_description: >
   After you perform a **dance** with a duration of “Until the start of your next turn”,  
-  you gain a bonus equal to **【SL × 2】** to all Opposed Checks that rely on **acrobatics**, **coordination**
+  you gain a bonus equal to **【SL&nbsp;×&nbsp;2】** to all Opposed Checks that rely on **acrobatics**, **coordination**
   or **speed** until the start of your next turn.  
 
 skill_quick_change: "Quick-Change"

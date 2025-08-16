@@ -1,16 +1,18 @@
 skill_condemn: "Condemn"
 skill_condemn_description: >
   During a conflict, you may use an action and spend 5 Mind Points to choose another creature that can hear and understand you.  
-  That creature recovers **【SL × 5】 ** Hit Points and chooses **Dexterity**, **Insight**, **Might**, or **Willpower**:  
+  That creature recovers **【SL&nbsp;×&nbsp;5】 ** Hit Points and chooses **Dexterity**, **Insight**, **Might**, or **Willpower**:  
   they treat the chosen Attribute as being one die size higher (up to a maximum of **d12**) until the start of your next turn.
 
 skill_encourage: "Encourage"
 skill_encourage_description: >
-  You may use an action and spend 5 Mind Points to perform an Opposed **【INS + WLP】** Check against a creature
+  You may use an action and spend 5 Mind Points to perform an Opposed **【INS&nbsp;+&nbsp;WLP】** Check against a creature
   that can hear and understand you — describe your accusations!  
-  If you succeed, the target loses **【SL × 10】 ** Mind Points and suffers **dazed** or **shaken** (your choice).  
+  If you succeed, the target loses **【SL&nbsp;×&nbsp;10】 ** Mind Points and suffers **dazed** or **shaken** (your choice).  
 
-  You gain a bonus equal to **【SL】** to your **【INS + WLP】** Checks for this skill.
+
+
+  You gain a bonus equal to **【SL】** to your **【INS&nbsp;+&nbsp;WLP】** Checks for this skill.
 
 skill_my_trust_in_you: "My Trust in You"
 skill_my_trust_in_you_description: >
@@ -18,16 +20,20 @@ skill_my_trust_in_you_description: >
   you may spend 1 **Fabula Point** and invoke one of their **Traits** or **Bonds** in order to let them reroll dice
   or improve the Result of the Check (following the normal rules).  
 
-  Then, if you have a **Bond** towards that character, they recover **【SL × 10】 ** Mind Points.
+
+
+  Then, if you have a **Bond** towards that character, they recover **【SL&nbsp;×&nbsp;10】 ** Mind Points.
 
 skill_persuasive: "Persuasive"
 skill_persuasive_description: >
   When you successfully perform a Check to fill or erase sections of a Clock,
   if your approach relied on **charm**, **diplomacy**, **deception**, or **intimidation**,
-  you may spend up to **【SL × 20】 ** Mind Points.  
+  you may spend up to **【SL&nbsp;×&nbsp;20】 ** Mind Points.  
+  
   If you do, fill or erase an additional section of that Clock for every 20 Mind Points you spend this way.
 
 skill_unexpected_ally: "Unexpected Ally"
 skill_unexpected_ally_description: >
   You may use an action and spend 1 **Fabula Point** to choose a non-hostile creature able to hear and understand you.  
+  
   If you do, that creature becomes helpful towards you so long as you are kind and respectful to them and your requests are reasonable.

@@ -15,6 +15,7 @@ skill_arcane_echoes_description: >
   When you successfully perform a Check to fill or erase one or more sections of a Clock,  
   if the domains of one or more **Arcana** you have bound are applicable to the Check in question,  
   you may fill or erase an additional section of that Clock.  
+  
   The Game Master has final say on whether a given domain applies or not.
 
 skill_chimeric_mastery: "CHIMERIC MASTERY"
@@ -22,11 +23,13 @@ skill_chimeric_mastery_description: >
   Choose two creature **Species** among **construct**, **demon**, **elemental**, and **undead**.  
   You can now use **Spell Mimic** to learn spells from creatures of the chosen Species.  
 
+
+
   This Heroic Skill may be acquired up to twice, each time selecting two Species from the list above.  
   Whenever you acquire this Skill, you also increase your upper limit for memorized **Chimerist** spells by **2**.
 
 skill_comet: "COMET"
-skill_comet_description: >
+skill_comet_description: |
   You learn the ultimate **Entropist** spell: **Comet**.  
 
   **Comet MP:** 50  
@@ -47,33 +50,31 @@ skill_deep_pockets_description: >
   When you spend Inventory Points, you spend **1 less** Inventory Point (minimum 1).
 
 skill_disarming_rhetoric: "DISARMING RHETORIC"
-skill_disarming_rhetoric_description: >
-  During a conflict scene, you may use an action and choose a soldier-rank creature that can hear and understand you  
-  (the Game Master must tell you who is a valid target).  
+skill_disarming_rhetoric_description: |
+  During a conflict scene, you may use an action and choose a soldier-rank creature that can hear and understand you (the Game Master must tell you who is a valid target).  
 
-  If that creature is shaken or in **Crisis**, you may spend an amount of Mind Points equal to  **【20 + half that creature's level】**
-  to have them peacefully leave the conflict.  
+  If that creature is shaken or in **Crisis**, you may spend an amount of Mind Points equal to  **【20 + half that creature's level】** to have them peacefully leave the conflict.  
 
   Describe how you convince them to desist.
 
 skill_extra_hp: "EXTRA HP"
-skill_extra_hp_description: >
+skill_extra_hp_description: |
   Permanently increase your maximum Hit Points by 10.  
 
   The amount of additional HP increases to 20 if you are level 40 or higher.
 
 skill_extra_ip: "EXTRA IP"
-skill_extra_ip_description: >
+skill_extra_ip_description: |
   Permanently increase your maximum Inventory Points by 4.
 
 skill_extra_mp: "EXTRA MP"
-skill_extra_mp_description: >
+skill_extra_mp_description: |
   Permanently increase your maximum Mind Points by 10.  
 
   The amount of additional MP increases to 20 if you are level 40 or higher.
 
 skill_extra_spells: "EXTRA SPELLS"
-skill_extra_spells_description: >
+skill_extra_spells_description: |
   When you acquire this Skill, learn any two spells from one of the following lists: **Elementalist**, **Entropist**, or **Spiritist**.  
 
   Both spells chosen this way must come from the same list, and they follow the standard rules for casting spells of that Class.
@@ -83,11 +84,13 @@ skill_heartbreaker_description: >
   When you hit a creature with an attack, if that attack only targeted that creature and you have a **Bond** towards them,  
   you may choose to spend half of your current Hit Points, rounded down.  
 
+
+
   If you do, the attack deals extra damage equal to  **【10 multiplied by the strength of your Bond towards the target】**.  
   You may use this Skill only on your turn during a conflict, and only once per turn.
 
 skill_heroic_companion: "HEROIC COMPANION"
-skill_heroic_companion_description: >
+skill_heroic_companion_description: |
   Your bond with your companion grows stronger. You gain the following benefits:  
 
   The companion's maximum Hit Points increase by 10.  
@@ -103,9 +106,13 @@ skill_hope: "HOPE"
 skill_hope_description: >
   You learn the ultimate **Spiritist** spell: **Hope**.  
 
+
+
   **Hope MP:** 40  
   **Target:** Special  
   **Duration:** Instantaneous  
+
+
 
   You rekindle the flames of courage and hope within a defeated hero.  
 
@@ -115,6 +122,8 @@ skill_hope_description: >
   Note that this spell will not undo the consequences of the character's surrender and is of no use if the character left the scene as part of their surrender —  
   such as if they were captured and dragged away, or if they were trapped in a parallel dimension, and so on.  
 
+
+
   A Player Character may only be affected by this spell once per scene; if a character is brought back into the conflict by this spell  
   and is subsequently reduced to 0 Hit Points again, they must sacrifice themselves or surrender as per the normal rules  
   (including a new consequence and 2 more **Fabula Points** if they surrender).
@@ -123,9 +132,13 @@ skill_mathemagic: "MATHEMAGIC"
 skill_mathemagic_description: >
   When you cast a spell with a target of **One creature**, you may double the spell's total MP cost.  
 
+
+
   If you do, choose an **Attribute** (**Dexterity**, **Insight**, **Might**, or **Willpower**) and a die size (d6, d8, d10 or d12).  
   The spell now targets all creatures present on the scene whose current Attribute die size matches your choice, regardless of whether they are friends or foes  
   (you might even end up targeting yourself).  
+
+
 
   The effects of the spell are fully applied to every target. If the spell is an offensive (⚡) spell, it follows the normal rules:  
   you perform a single Magic Check and confront it with the Magic Defense of each target to determine who is hit by the spell.
@@ -133,6 +146,8 @@ skill_mathemagic_description: >
 skill_monkey_grip: "MONKEY GRIP"
 skill_monkey_grip_description: >
   You may equip two-handed weapons belonging to the **flail**, **heavy**, **spear**, or **sword** Categories in a single hand slot.  
+
+
 
   This allows you, for instance, to enjoy the benefits of **two-weapon fighting** while wielding a pair of two-handed weapons,  
   or to equip a two-handed weapon in your main hand slot and a shield in your off-hand slot.
@@ -149,19 +164,19 @@ skill_pillage_description: >
   (you perform a single Check and compare it to the Magic Defense of each creature you are attempting to steal from).
 
 skill_powerful_shot: "POWERFUL SHOT"
-skill_powerful_shot_description: >
+skill_powerful_shot_description: |
   When you hit one or more creatures with a **ranged attack**, that attack deals 5 extra damage to each creature.  
 
   The amount of extra damage increases to 10 if you are level 40 or higher.
 
 skill_powerful_spell: "POWERFUL SPELL"
-skill_powerful_spell_description: >
+skill_powerful_spell_description: |
   When you cast a spell that deals damage to one or more creatures, that spell deals 5 extra damage to each creature.  
 
   The amount of extra damage increases to 10 if you are level 40 or higher.
 
 skill_powerful_strike: "POWERFUL STRIKE"
-skill_powerful_strike_description: >
+skill_powerful_strike_description: |
   When you hit one or more creatures with a **melee** attack, that attack deals 5 extra damage to each creature.  
 
   The amount of extra damage increases to 10 if you are level 40 or higher.
@@ -170,6 +185,8 @@ skill_predictable: "PREDICTABLE!"
 skill_predictable_description: >
   During a conflict, you may use an action and spend 20 Mind Points to anticipate the upcoming moves of a creature you can see,  
   as long as you know two or more of that creature's **Traits**.  
+
+
 
   If you do so, choose one type of action among the following: **Attack**, **Guard**, **Objective**, **Spell**, or **Skill**.  
   Until the start of your next turn, the creature must spend 20 Mind Points whenever they wish to perform that action.
@@ -180,6 +197,8 @@ skill_rampart_description: >
   During the first round of each conflict scene, you have **Resistance** to all damage types and cannot suffer status effects  
   (you do not recover from preexisting status effects, however).  
 
+
+
   These benefits only last until the end of the first round.
 
 skill_repetition: "REPETITION"
@@ -187,13 +206,19 @@ skill_repetition_description: >
   One per turn during a conflict, after you use the **Condemn** Skill or the **Encourage** Skill,  
   you may immediately perform that same Skill again (on the same target or a different one).  
 
+
+
   You must still pay the Mind Point cost for the second use of the Skill.
 
 skill_revelation: "REVELATION"
 skill_revelation_description: >
   You make contact with an unknown **Arcanum** and bind it to your soul.  
 
+
+
   This Arcanum must be something you design together with the rest of the group; as long as you live, no one else in your world will be able to bind that Arcanum.  
+
+
 
   Once per scene while you are merged with an Arcanum, you may use an action and spend 2 **Fabula Points**  
   to trigger that Arcanum's dismiss effect (if any) without dismissing them. Doing so does not trigger the **Arcane Circle** Skill.
@@ -218,20 +243,24 @@ skill_upgrade_description: >
   Once per rest, you may choose one option: add a **Quality** to a single weapon, armor, or shield that doesn't have one;  
   or replace the current Quality of a single weapon, armor, or shield with a different Quality.  
 
+
+
   When you use this Skill, you must select a Quality from the default list for that item type as long as the cost
   modifier associated with that ability is +1000 zenit or lower.  
   Then, you must spend an amount of zenit equal to twice the cost modifier of the chosen ability.  
 
+
+
   The modified item will be ready at the end of the rest; you may only modify one item per rest.  
 
 skill_vanish: "VANISH"
-skill_vanish_description: >
+skill_vanish_description: |
   When you hit one or more creatures with an attack, you may spend 1 **Fabula Point**.  
 
   If you do, each of those creatures will be unable to perform any action that requires them to be able to see you until the start of your next turn.
 
 skill_volcano: "VOLCANO"
-skill_volcano_description: >
+skill_volcano_description: |
   You learn the ultimate **Elementalist** spell: **Volcano**.  
 
   **Volcano MP:** 40  

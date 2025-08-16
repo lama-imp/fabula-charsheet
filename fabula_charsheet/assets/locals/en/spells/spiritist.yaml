@@ -43,7 +43,7 @@ spell_heal_description: >
 spell_lux: "Lux"
 spell_lux_description: >
   You focus your inner energy into a barrage of blinding soul rays. Each target hit by
-  this spell suffers【HR + 15】**light** damage.
+  this spell suffers【HR&nbsp;+&nbsp;15】**light** damage.
   
   **Opportunity**: Each target hit by this spell suffers **dazed**.
 
