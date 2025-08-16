@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class Skill(BaseModel):
     name: str = ""
     current_level: int = 0
-    max_level: int = 10
+    max_level: int = 1
     can_add_spell: bool = False
 
     def localized_name(self, loc: LocNamespace) -> str:
