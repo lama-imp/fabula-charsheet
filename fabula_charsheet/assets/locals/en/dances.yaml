@@ -1,0 +1,89 @@
+dance_duration_instantaneous: "Instantaneous"
+dance_duration_next_turn: "Until the start of your next turn"
+
+dance_angel: "Angel Dance"
+dance_angel_description: >
+  Choose one option: you gain Resistance to **light** damage;  
+  or all damage dealt by your attacks and spells becomes **light**.  
+
+dance_banshee: "Banshee Dance"
+dance_banshee_description: >
+  Choose another creature that is able to see you.  
+  If that creature is already **slow**, they immediately suffer **shaken**.  
+
+dance_bat: "Bat Dance"
+dance_bat_description: >
+  Choose one option: you gain Resistance to **dark** damage;  
+  or all damage dealt by your attacks and spells becomes **dark**.  
+
+dance_golem: "Golem Dance"
+dance_golem_description: >
+  Choose one option: you gain Resistance to **lightning** damage;  
+  or all damage dealt by your attacks and spells becomes **lightning**.  
+
+dance_griffin: "Griffin Dance"
+dance_griffin_description: >
+  Choose one option: you gain Resistance to **air** damage;  
+  or all damage dealt by your attacks and spells becomes **air**.  
+
+dance_hydra: "Hydra Dance"
+dance_hydra_description: >
+  After you suffer damage, choose one option:  
+  you recover **5** Hit Points, or you recover **5** Mind Points.  
+
+dance_kraken: "Kraken Dance"
+dance_kraken_description: >
+  Choose another creature that is able to see you.  
+  If that creature is already **dazed**, they immediately suffer **slow**.  
+
+dance_lion: "Lion Dance"
+dance_lion_description: >
+  You immediately recover from a single status effect of your choice.  
+
+dance_maenad: "Maenad Dance"
+dance_maenad_description: >
+  Choose another creature that is able to see you.  
+  That creature loses an amount of Mind Points equal to your current **Dexterity** die size.  
+
+dance_myrmidon: "Myrmidon Dance"
+dance_myrmidon_description: >
+  Choose one option: you gain Resistance to **earth** damage;  
+  or all damage dealt by your attacks and spells becomes **earth**.  
+
+dance_nightmare: "Nightmare Dance"
+dance_nightmare_description: >
+  Choose another creature that is able to see you.  
+  If that creature is already **shaken**, they immediately suffer **weak**.  
+
+dance_ouroboros: "Ouroboros Dance"
+dance_ouroboros_description: >
+  Choose one ally you can see who has yet to take a turn during this round.  
+  That ally may take their turn immediately after yours during this round.  
+
+dance_peacock: "Peacock Dance"
+dance_peacock_description: >
+  Choose another creature that is able to see you.  
+  The next time that creature performs an attack or casts an offensive spell during this scene,  
+  that attack or spell must include you among its targets if possible.  
+
+dance_phoenix: "Phoenix Dance"
+dance_phoenix_description: >
+  Choose one option: you gain Resistance to **fire** damage;  
+  or all damage dealt by your attacks and spells becomes **fire**.  
+
+dance_satyr: "Satyr Dance"
+dance_satyr_description: >
+  Choose another creature that is able to see you.  
+  If that creature is already **weak**, they immediately suffer **dazed**.  
+
+dance_unicorn: "Unicorn Dance"
+dance_unicorn_description: >
+  Choose an ally that is able to see you and has a Bond towards you:  
+  you and that ally both recover an amount of Hit Points equal to your current **Dexterity die size**.  
+  The restored amount increases by **5** Hit Points if you are level **20** or higher,  
+  or by **10** Hit Points if you are level **40** or higher.  
+
+dance_yeti: "Yeti Dance"
+dance_yeti_description: >
+  Choose one option: you gain Resistance to **ice** damage;  
+  or all damage dealt by your attacks and spells becomes **ice**.  

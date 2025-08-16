@@ -13,6 +13,7 @@ from .inventory import Inventory
 from .skill import HeroicSkill
 from .spell import Spell, ChimeristSpell
 from .therioform import Therioform
+from .dance import Dance
 
 if TYPE_CHECKING:
     from data.models import LocNamespace
@@ -40,6 +41,7 @@ class InvalidCharacterField(Exception):
 
 class CharSpecial(BaseModel):
     therioforms: list[Therioform] = list()
+    dances: list[Dance] = list()
 
     def get_special(self, attribute: str):
         return getattr(self, attribute, None)

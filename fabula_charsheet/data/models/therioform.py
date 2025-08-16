@@ -10,7 +10,6 @@ if TYPE_CHECKING:
 
 class Therioform(BaseModel):
     name: str = ""
-    added: bool = False
 
     def localized_name(self, loc: LocNamespace) -> str:
         key = f"therioform_{self.name}"

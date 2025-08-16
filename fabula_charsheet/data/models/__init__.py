@@ -52,3 +52,7 @@ from .bonds import (
 )
 from .species import Species
 from .therioform import Therioform
+from .dance import (
+    Dance,
+    DanceDuration
+)
