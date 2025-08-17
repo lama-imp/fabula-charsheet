@@ -17,3 +17,11 @@ class CharState(BaseModel):
         )
         ip_cost = 2 if has_deep_pockets else 3
         self.minus_ip = min(controller.max_ip(), self.minus_ip + ip_cost)
+
+    def use_mana_potion(self, controller):
+        self.minus_mp = max(0, self.minus_mp - 50)
+        has_deep_pockets = any(
+            skill.name == "deep_pockets" for skill in controller.character.heroic_skills
+        )
+        ip_cost = 2 if has_deep_pockets else 3
+        self.minus_ip = min(controller.max_ip(), self.minus_ip + ip_cost)
