@@ -299,6 +299,24 @@ class CharacterController:
         non_mastered_classes = [char_class for char_class in self.character.classes if char_class.class_level() < 10]
         return len(non_mastered_classes) < 3
 
+    def can_increase_attribute(self) -> bool:
+        sum_of_attributes = sum(
+            [
+                self.character.dexterity.base,
+                self.character.might.base,
+                self.character.insight.base,
+                self.character.willpower.base,
+            ]
+        )
+        if (
+                self.character.level == 20 and sum_of_attributes < 34
+        ) or (
+                self.character.level == 40 and sum_of_attributes < 36
+        ):
+            return True
+
+        return False
+
 
 class ClassController:
     def __init__(self):

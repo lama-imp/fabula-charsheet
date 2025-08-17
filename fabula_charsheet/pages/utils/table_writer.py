@@ -727,7 +727,7 @@ class ItemTableWriter(TableWriter):
             ColumnConfig(
                 name="quality",
                 width=0.155,
-                process=lambda s, idx=None: st.markdown(f"{s.quality}"),
+                process=lambda s, idx=None: st.markdown(f"{s.localized_quality(self.loc)}"),
             ),
         )
 
