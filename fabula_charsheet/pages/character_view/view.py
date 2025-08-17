@@ -2,7 +2,7 @@ import streamlit as st
 
 import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
-    WeaponRange, ClassName, LocNamespace, Character
+    WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
@@ -223,8 +223,15 @@ def build(controller: CharacterController):
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button(loc.page_view_health_potion, disabled=(current_ip < 2 if "deep_pockets" in Character.heroic_skills else current_ip < 3), use_container_width=True):
-                    st.session_state.state_controller.state.use_health_potion()
+                has_deep_pockets = any(
+                    skill.name == "deep_pockets" for skill in controller.character.heroic_skills
+                )
+                if st.button(
+                    loc.page_view_health_potion,
+                    disabled=(current_ip < 2 if has_deep_pockets else current_ip < 3),
+                    use_container_width=True,
+                ):
+                    st.session_state.state_controller.state.use_health_potion(controller)
                     st.rerun()
             with col2:
                 if st.button(loc.page_view_mana_potion, disabled=(current_ip < 3), use_container_width=True):
