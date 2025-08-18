@@ -127,8 +127,8 @@ class Character(BaseModel):
                 return char_class
         return None
 
-    def has_heroic_skill(self, heroic_skill_name : HeroicSkillName) -> bool:
-        if heroic_skill_name.name in self.heroic_skills:
-            return True
-        else:
-            return False
+    def has_heroic_skill(self, heroic_skill_name: HeroicSkillName) -> bool:
+        for skill in self.heroic_skills:
+            if skill.name == heroic_skill_name:
+                return True
+        return False

@@ -227,14 +227,14 @@ def build(controller: CharacterController):
                     disabled=not st.session_state.state_controller.can_use_potion(current_ip),
                     use_container_width=True,
                 ):
-                    st.session_state.state_controller.use_health_potion(controller)
+                    st.session_state.state_controller.use_health_potion()
                     st.rerun()
             with col2:
                 if st.button(loc.page_view_mana_potion,
                     disabled=not st.session_state.state_controller.can_use_potion(current_ip),
                     use_container_width=True
                 ):
-                    st.session_state.state_controller.use_mana_potion(controller)
+                    st.session_state.state_controller.use_mana_potion()
                     st.rerun()
             with col3:
                 if st.button(loc.page_view_magic_tent,
