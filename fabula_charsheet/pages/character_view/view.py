@@ -223,29 +223,25 @@ def build(controller: CharacterController):
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                has_deep_pockets = any(
-                    skill.name == "deep_pockets" for skill in controller.character.heroic_skills
-                )
-                if st.button(
-                    loc.page_view_health_potion,
-                    disabled=(current_ip < 2 if has_deep_pockets else current_ip < 3),
+                if st.button(loc.page_view_health_potion,
+                    disabled=not st.session_state.state_controller.can_use_potion(current_ip),
                     use_container_width=True,
                 ):
-                    st.session_state.state_controller.state.use_health_potion(controller)
+                    st.session_state.state_controller.use_health_potion(controller)
                     st.rerun()
             with col2:
                 if st.button(loc.page_view_mana_potion,
-                    disabled=(current_ip < 2 if has_deep_pockets else current_ip < 3),
+                    disabled=not st.session_state.state_controller.can_use_potion(current_ip),
                     use_container_width=True
                 ):
-                    st.session_state.state_controller.state.use_mana_potion(controller)
+                    st.session_state.state_controller.use_mana_potion(controller)
                     st.rerun()
             with col3:
-                if st.button(loc.page_view_magic_tent, disabled=(current_ip < 4), use_container_width=True):
-                    st.session_state.state_controller.state.minus_hp = 0
-                    st.session_state.state_controller.state.minus_mp = 0
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 4)
+                if st.button(loc.page_view_magic_tent,
+                    disabled=not st.session_state.state_controller.can_use_magic_tent(current_ip),
+                    use_container_width=True
+                ):
+                    st.session_state.state_controller.use_magic_tent()
                     st.rerun()
 
             st.write(f"##### {loc.page_view_equipped}")

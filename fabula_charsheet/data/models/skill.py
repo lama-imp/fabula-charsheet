@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 from typing import TYPE_CHECKING
+from enum import StrEnum, auto
 
 from .class_name import ClassName
 
@@ -36,3 +37,6 @@ class HeroicSkill(BaseModel):
     def localized_description(self, loc: LocNamespace) -> str:
         key = f"skill_{self.name}_description"
         return getattr(loc, key, f"[Missing description for {self.name}]")
+
+class HeroicSkillName(StrEnum):
+    deep_pockets = auto()

@@ -10,7 +10,7 @@ from .bonds import Bond
 from .char_class import CharClass, ClassName
 from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
-from .skill import HeroicSkill
+from .skill import HeroicSkill, HeroicSkillName
 from .spell import Spell, ChimeristSpell
 from .therioform import Therioform
 from .dance import Dance
@@ -126,3 +126,9 @@ class Character(BaseModel):
             if char_class.name == class_name.lower():
                 return char_class
         return None
+
+    def has_heroic_skill(self, heroic_skill_name : HeroicSkillName) -> bool:
+        if heroic_skill_name in self.heroic_skills:
+            return True
+        else:
+            return False
