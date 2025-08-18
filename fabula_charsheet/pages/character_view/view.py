@@ -437,8 +437,14 @@ def build(controller: CharacterController):
                 st.markdown(f"**{loc.column_initiative}**: {controller.initiative()}")
 
             if ClassName.mutant in [char_class.name for char_class in controller.character.classes]:
-                if st.button(loc.manifest_therioform_button):
-                    manifest_therioform_dialog(controller, loc)
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button(loc.manifest_therioform_button):
+                        manifest_therioform_dialog(controller, loc)
+                with col2:
+                    if st.button(loc.page_view_end_therioform_effect):
+                        controller.state.active_therioforms = list()
+                        st.rerun()
 
         st.divider()
 
