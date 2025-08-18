@@ -114,7 +114,7 @@ def build(controller: CharacterController):
                 if controller.can_add_heroic_skill():
                     if st.button(loc.heroic_skill_button):
                         add_heroic_skill_dialog(controller, loc)
-                if controller.character.level == 20 or controller.character.level == 40:
+                if controller.can_increase_attribute():
                     if st.button(loc.increase_attribute_button):
                         increase_attribute_dialog(controller, loc)
 

@@ -16,7 +16,7 @@ from data.models import (
     Therioform,
     Item,
     LocNamespace,
-    HeroicSkill, Bond, ChimeristSpell, Dance,
+    HeroicSkill, Bond, ChimeristSpell, Dance, WeaponRange,
 )
 from .common import add_item_as, join_with_or
 
@@ -420,7 +420,11 @@ class WeaponTableWriter(TableWriter):
         if item.martial:
             cannot_equip = True
             for char_class in st.session_state.char_controller.character.classes:
-                if char_class.martial_weapon:
+                if (
+                    char_class.martial_melee and item.range == WeaponRange.melee
+                ) or (
+                    char_class.martial_ranged and item.range == WeaponRange.ranged
+                ):
                     cannot_equip = False
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
@@ -723,7 +727,7 @@ class ItemTableWriter(TableWriter):
             ColumnConfig(
                 name="quality",
                 width=0.155,
-                process=lambda s, idx=None: st.markdown(f"{s.quality}"),
+                process=lambda s, idx=None: st.markdown(f"{s.localized_quality(self.loc)}"),
             ),
         )
 

@@ -261,6 +261,7 @@ def unequip_item(controller, category: str):
 
 
 def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
+    st.session_state.selected_hero_skills = []
     mastered_classes = [char_class for char_class in controller.character.classes if char_class.class_level() == 10]
 
     def heroic_skill_availability(skill: HeroicSkill):
