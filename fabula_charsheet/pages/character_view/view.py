@@ -8,14 +8,13 @@ from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, S
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
-    increase_attribute, add_therioform, add_dance
+    increase_attribute, add_therioform, add_dance, manifest_therioform
 from pages.character_view.view_state import ViewState
 
 
 def build(controller: CharacterController):
     st.set_page_config(layout="wide")
     loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
-    st.session_state.state_controller = st.session_state.get("state_controller")
 
     @st.dialog(loc.page_view_avatar_update_dialog_title)
     def avatar_update_dialog(controller: CharacterController, loc: LocNamespace):
@@ -73,6 +72,10 @@ def build(controller: CharacterController):
     def add_dance_dialog(controller: CharacterController, loc: LocNamespace):
         add_dance(controller, loc)
 
+    @st.dialog(loc.page_view_manifest_therioform_dialog_title, width="large")
+    def manifest_therioform_dialog(controller: CharacterController, loc: LocNamespace):
+        manifest_therioform(controller, loc)
+
     st.title(f"{controller.character.name}")
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -104,8 +107,7 @@ def build(controller: CharacterController):
                 st.markdown(f"**{loc.page_view_level}:** {controller.character.level}")
                 st.markdown(f"**{loc.page_view_theme}:** {controller.character.theme}")
                 st.number_input(loc.page_view_fabula_points, min_value=0)
-                current_hp = (controller.max_hp() - st.session_state.state_controller.state.minus_hp)
-                if current_hp <= controller.crisis_value():
+                if controller.current_hp() <= controller.crisis_value():
                     st.write(f":red[{loc.page_view_crisis_text}]")
                 else:
                     st.write("")
@@ -153,18 +155,24 @@ def build(controller: CharacterController):
                     </style>""",
                     unsafe_allow_html=True,
                 )
-                current_hp = (controller.max_hp() - st.session_state.state_controller.state.minus_hp)
-                st.progress(max((current_hp / controller.max_hp()), 0), text=f"{loc.hp} {current_hp} / {controller.max_hp()}")
+                st.progress(
+                    max((controller.current_hp() / controller.max_hp()), 0),
+                    text=f"{loc.hp} {controller.current_hp()} / {controller.max_hp()}"
+                )
                 st.write("")
                 st.write("")
 
-                current_mp = (controller.max_mp() - st.session_state.state_controller.state.minus_mp)
-                st.progress(max((current_mp / controller.max_mp()), 0), text=f"{loc.mp} {current_mp} / {controller.max_mp()}")
+                st.progress(
+                    max((controller.current_mp() / controller.max_mp()), 0),
+                    text=f"{loc.mp} {controller.current_mp()} / {controller.max_mp()}"
+                )
                 st.write("")
                 st.write("")
 
-                current_ip = (controller.max_ip() - st.session_state.state_controller.state.minus_ip)
-                st.progress(max((current_ip / controller.max_ip()), 0), text=f"{loc.ip} {current_ip} / {controller.max_ip()}")
+                st.progress(
+                    max((controller.current_ip() / controller.max_ip()), 0),
+                    text=f"{loc.ip} {controller.current_ip()} / {controller.max_ip()}"
+                )
             with col2:
                 hp_input = st.number_input("hp_input", min_value=0, label_visibility="hidden", value=10)
                 mp_input = st.number_input("mp_input", min_value=0, label_visibility="hidden", value=10)
@@ -172,74 +180,71 @@ def build(controller: CharacterController):
             with col3:
                 st.write("")
                 if st.button("", icon=":material/add:", key="add_hp"):
-                    st.session_state.state_controller.state.minus_hp = max(0, st.session_state.state_controller.state.minus_hp - hp_input)
+                    controller.state.minus_hp = max(0, controller.state.minus_hp - hp_input)
                     st.rerun()
                 st.write("")
                 st.write("")
                 if st.button("", icon=":material/add:", key="add_mp"):
-                    st.session_state.state_controller.state.minus_mp = max(0, st.session_state.state_controller.state.minus_mp - mp_input)
+                    controller.state.minus_mp = max(0, controller.state.minus_mp - mp_input)
                     st.rerun()
                 st.write("")
                 st.write("")
                 if st.button("", icon=":material/add:", key="add_ip"):
-                    st.session_state.state_controller.state.minus_ip = max(0, st.session_state.state_controller.state.minus_ip - ip_input)
+                    controller.state.minus_ip = max(0, controller.state.minus_ip - ip_input)
                     st.rerun()
                 st.write("")
                 st.write("")
             with col4:
                 st.write("")
                 if st.button("", icon=":material/remove:", key="subtract_hp"):
-                    st.session_state.state_controller.state.minus_hp = min(controller.max_hp(), st.session_state.state_controller.state.minus_hp + hp_input)
+                    controller.state.minus_hp = min(controller.max_hp(), controller.state.minus_hp + hp_input)
                     st.rerun()
                 st.write("")
                 st.write("")
                 if st.button("", icon=":material/remove:", key="subtract_mp"):
-                    st.session_state.state_controller.state.minus_mp = min(controller.max_mp(), st.session_state.state_controller.state.minus_mp + mp_input)
+                    controller.state.minus_mp = min(controller.max_mp(), controller.state.minus_mp + mp_input)
                     st.rerun()
                 st.write("")
                 st.write("")
                 if st.button("", icon=":material/remove:", key="subtract_ip"):
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(), st.session_state.state_controller.state.minus_ip + ip_input)
+                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + ip_input)
                     st.rerun()
                 st.write("")
                 st.write("")
             with col5:
                 st.write("")
                 if st.button("", icon=":material/laps:", key="reset_hp", help="Reset HP"):
-                    st.session_state.state_controller.state.minus_hp = 0
+                    controller.state.minus_hp = 0
                     st.rerun()
                 st.write("")
                 st.write("")
                 if st.button("", icon=":material/laps:", key="reset_mp", help="Reset MP"):
-                    st.session_state.state_controller.state.minus_mp = 0
+                    controller.state.minus_mp = 0
                     st.rerun()
                 st.write("")
                 st.write("")
                 if st.button("", icon=":material/laps:", key="reset_ip", help="Reset IP"):
-                    st.session_state.state_controller.state.minus_ip = 0
+                    controller.state.minus_ip = 0
                     st.rerun()
                 st.write("")
                 st.write("")
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button(loc.page_view_health_potion, disabled=(current_ip < 3), use_container_width=True):
-                    st.session_state.state_controller.state.minus_hp = max(0, st.session_state.state_controller.state.minus_hp - 50)
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 3)
+                if st.button(loc.page_view_health_potion, disabled=(controller.current_ip() < 3), use_container_width=True):
+                    controller.state.minus_hp = max(0, controller.state.minus_hp - 50)
+                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + 3)
                     st.rerun()
             with col2:
-                if st.button(loc.page_view_mana_potion, disabled=(current_ip < 3), use_container_width=True):
-                    st.session_state.state_controller.state.minus_mp = max(0, st.session_state.state_controller.state.minus_mp - 50)
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 3)
+                if st.button(loc.page_view_mana_potion, disabled=(controller.current_ip() < 3), use_container_width=True):
+                    controller.state.minus_mp = max(0, controller.state.minus_mp - 50)
+                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + 3)
                     st.rerun()
             with col3:
-                if st.button(loc.page_view_magic_tent, disabled=(current_ip < 4), use_container_width=True):
-                    st.session_state.state_controller.state.minus_hp = 0
-                    st.session_state.state_controller.state.minus_mp = 0
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 4)
+                if st.button(loc.page_view_magic_tent, disabled=(controller.current_ip() < 4), use_container_width=True):
+                    controller.state.minus_hp = 0
+                    controller.state.minus_mp = 0
+                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + 4)
                     st.rerun()
 
             st.write(f"##### {loc.page_view_equipped}")
@@ -377,16 +382,19 @@ def build(controller: CharacterController):
                 col = col1 if idx < 3 else col2
                 with col:
                     checked = st.checkbox(stat.localized_name(loc),
-                                          value=(stat in st.session_state.state_controller.state.statuses))
+                                          value=(stat in controller.state.statuses))
                     if checked:
-                        st.session_state.state_controller.add_status(stat)
+                        controller.add_status(stat)
                     else:
-                        st.session_state.state_controller.remove_status(stat)
+                        controller.remove_status(stat)
 
-            changes = controller.apply_status(st.session_state.state_controller.state.statuses)
+            changes = controller.apply_status()
             for attribute, value in changes.items():
                 if value > 0:
-                    st.toast(f"{loc.msg_status_change.format(attribute=attribute, value=value)}")
+                    st.toast(f"{loc.msg_status_change.format(
+                        attribute=attribute.localized_name(loc),
+                        value=value,
+                    )}")
             if st.button(loc.page_view_refresh_attributes):
                 st.rerun()
 
@@ -398,6 +406,10 @@ def build(controller: CharacterController):
                 st.write(f"**{loc.attr_insight}**: {loc.dice_prefix}{controller.character.insight.current}")
                 st.write(f"**{loc.attr_willpower}**: {loc.dice_prefix}{controller.character.willpower.current}")
                 st.markdown(f"**{loc.column_magic_defense}**: {controller.magic_defense()}")
+
+            if ClassName.mutant in [char_class.name for char_class in controller.character.classes]:
+                if st.button(loc.manifest_therioform_button):
+                    manifest_therioform_dialog(controller, loc)
 
         st.divider()
 
@@ -526,7 +538,7 @@ def build(controller: CharacterController):
     with col1:
         if st.button(loc.save_current_character_button):
             controller.dump_character()
-            st.session_state.state_controller.dump_state()
+            controller.dump_state()
     with col2:
         if st.button(loc.load_another_character_button):
             set_view_state(ViewState.load)
