@@ -16,7 +16,11 @@ from data.models import (
     Therioform,
     Item,
     LocNamespace,
-    HeroicSkill, Bond, ChimeristSpell, Dance, WeaponRange,
+    HeroicSkill,
+    Bond,
+    ChimeristSpell,
+    Dance,
+    WeaponRange,
 )
 from .common import add_item_as, join_with_or
 

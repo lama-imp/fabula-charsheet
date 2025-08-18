@@ -297,6 +297,32 @@ class CharacterController:
             AttributeName.willpower: self.character.willpower.base - self.character.willpower.current,
         }
 
+    def apply_attribute_bonus(self):
+        dex_bonus = 0
+        mig_bonus = 0
+        ins_bonus = 0
+        wlp_bonus = 0
+        if AttributeName.dexterity in self.state.improved_attributes:
+            dex_bonus += 2
+        if AttributeName.might in self.state.improved_attributes:
+            mig_bonus += 2
+        if AttributeName.insight in self.state.improved_attributes:
+            ins_bonus += 2
+        if AttributeName.willpower in self.state.improved_attributes:
+            wlp_bonus += 2
+
+        self.character.insight.current = min(12, self.character.insight.base + ins_bonus)
+        self.character.dexterity.current = min(12, self.character.dexterity.base + dex_bonus)
+        self.character.willpower.current = min(12, self.character.willpower.base + wlp_bonus)
+        self.character.might.current = min(12, self.character.might.base + mig_bonus)
+
+        return {
+            AttributeName.dexterity: self.character.dexterity.current - self.character.dexterity.base,
+            AttributeName.might: self.character.might.current - self.character.might.base,
+            AttributeName.insight: self.character.insight.current - self.character.insight.base,
+            AttributeName.willpower: self.character.willpower.current - self.character.willpower.base,
+        }
+
     def crisis_value(self) -> int:
         return math.floor(self.max_hp() / 2)
 

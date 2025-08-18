@@ -373,8 +373,7 @@ def build(controller: CharacterController):
         with attributes_col:
             st.markdown(f"##### {loc.page_view_current_attributes}")
             att_col1, att_col2 = st.columns(2)
-
-            st.markdown(f"**{loc.column_initiative}**: {controller.initiative()}")
+            initiative_column, _ = st.columns([0.9, 0.1])
 
             st.markdown(f"##### {loc.page_view_statuses}")
             col1, col2 = st.columns(2)
@@ -395,6 +394,33 @@ def build(controller: CharacterController):
                         attribute=attribute.localized_name(loc),
                         value=value,
                     )}")
+
+            st.markdown(f"##### {loc.page_view_bonus_to_attributes}")
+            col1, col2 = st.columns(2)
+            for idx, attribute in enumerate(AttributeName):
+                col = col1 if idx < 2 else col2
+                with col:
+                    checked = st.checkbox(attribute.localized_name(loc),
+                                          value=(stat in controller.state.improved_attributes))
+                    if checked and attribute not in controller.state.improved_attributes:
+                        controller.state.improved_attributes.append(attribute)
+                    if not checked and attribute in controller.state.improved_attributes:
+                        controller.state.improved_attributes.remove(attribute)
+
+            minus_changes = controller.apply_status()
+            for attribute, value in minus_changes.items():
+                if value > 0:
+                    st.toast(f"{loc.msg_negative_status_change.format(
+                        attribute=attribute.localized_name(loc),
+                        value=value,
+                    )}")
+            plus_changes = controller.apply_attribute_bonus()
+            for attribute, value in plus_changes.items():
+                if value > 0:
+                    st.toast(f"{loc.msg_positive_status_change.format(
+                        attribute=attribute.localized_name(loc),
+                        value=value,
+                    )}")
             if st.button(loc.page_view_refresh_attributes):
                 st.rerun()
 
@@ -406,6 +432,9 @@ def build(controller: CharacterController):
                 st.write(f"**{loc.attr_insight}**: {loc.dice_prefix}{controller.character.insight.current}")
                 st.write(f"**{loc.attr_willpower}**: {loc.dice_prefix}{controller.character.willpower.current}")
                 st.markdown(f"**{loc.column_magic_defense}**: {controller.magic_defense()}")
+
+            with initiative_column:
+                st.markdown(f"**{loc.column_initiative}**: {controller.initiative()}")
 
             if ClassName.mutant in [char_class.name for char_class in controller.character.classes]:
                 if st.button(loc.manifest_therioform_button):

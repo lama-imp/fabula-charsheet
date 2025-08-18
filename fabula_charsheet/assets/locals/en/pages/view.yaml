@@ -58,6 +58,7 @@ page_view_unequip_help: "Unequip this item"
 
 page_view_current_attributes: "Current Attributes"
 page_view_statuses: "Statuses"
+page_view_bonus_to_attributes: "Bonus to Attributes"
 page_view_refresh_attributes: "Refresh current attributes"
 
 page_view_chimerist_spell_count: " ({current} from {max})"
