@@ -128,7 +128,7 @@ class Character(BaseModel):
         return None
 
     def has_heroic_skill(self, heroic_skill_name : HeroicSkillName) -> bool:
-        if heroic_skill_name in self.heroic_skills:
+        if heroic_skill_name.name in self.heroic_skills:
             return True
         else:
             return False
