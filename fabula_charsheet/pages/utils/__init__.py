@@ -43,6 +43,7 @@ from .view_page_actions import (
     increase_attribute,
     add_therioform,
     add_dance,
+    manifest_therioform,
 )
 
 from .classes_page_actions import (

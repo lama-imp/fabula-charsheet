@@ -24,7 +24,9 @@ from data.models import (
     CharState,
     Status,
     AttributeName,
+    Therioform,
 )
+
 if TYPE_CHECKING:
     from data.models import LocNamespace
 
@@ -33,6 +35,7 @@ class CharacterController:
     def __init__(self, loc: LocNamespace):
         self.character = Character()
         self.loc = loc
+        self.state = CharState()
 
     def get_character(self):
         return self.character
@@ -117,6 +120,15 @@ class CharacterController:
                 + sum([c.bonus_value for c in self.character.classes if c.class_bonus == "ip"])
         )
 
+    def current_hp(self) -> int:
+        return self.max_hp() - self.state.minus_hp
+
+    def current_mp(self) -> int:
+        return self.max_mp() - self.state.minus_mp
+
+    def current_ip(self) -> int:
+        return self.max_ip() - self.state.minus_ip
+
     def defense(self):
         armor = self.character.inventory.equipped.armor
         shield = self.character.inventory.equipped.shield
@@ -174,7 +186,7 @@ class CharacterController:
             bonus += armor.bonus_initiative
 
         if bonus:
-            return f"{initiative} + {bonus}"
+            return f"{initiative} {bonus}"
         return initiative
 
     def equip_item(self, item: Item):
@@ -254,24 +266,24 @@ class CharacterController:
             )
             image_file_path.write_bytes(image.getbuffer())
 
-    def apply_status(self, statuses: list[Status]):
+    def apply_status(self):
         dex_malus = 0
         mig_malus = 0
         ins_malus = 0
         wlp_malus = 0
-        if Status.dazed in statuses:
+        if Status.dazed in self.state.statuses:
             ins_malus -= 2
-        if Status.enraged in statuses:
+        if Status.enraged in self.state.statuses:
             ins_malus -= 2
             dex_malus -= 2
-        if Status.poisoned in statuses:
+        if Status.poisoned in self.state.statuses:
             mig_malus -= 2
             wlp_malus -= 2
-        if Status.shaken in statuses:
+        if Status.shaken in self.state.statuses:
             wlp_malus -= 2
-        if Status.slow in statuses:
+        if Status.slow in self.state.statuses:
             dex_malus -= 2
-        if Status.weak in statuses:
+        if Status.weak in self.state.statuses:
             mig_malus -= 2
 
         self.character.insight.current = max(6, self.character.insight.base + ins_malus)
@@ -284,6 +296,32 @@ class CharacterController:
             AttributeName.might: self.character.might.base - self.character.might.current,
             AttributeName.insight: self.character.insight.base - self.character.insight.current,
             AttributeName.willpower: self.character.willpower.base - self.character.willpower.current,
+        }
+
+    def apply_attribute_bonus(self):
+        dex_bonus = 0
+        mig_bonus = 0
+        ins_bonus = 0
+        wlp_bonus = 0
+        if AttributeName.dexterity in self.state.improved_attributes:
+            dex_bonus += 2
+        if AttributeName.might in self.state.improved_attributes:
+            mig_bonus += 2
+        if AttributeName.insight in self.state.improved_attributes:
+            ins_bonus += 2
+        if AttributeName.willpower in self.state.improved_attributes:
+            wlp_bonus += 2
+
+        self.character.insight.current = min(12, self.character.insight.base + ins_bonus)
+        self.character.dexterity.current = min(12, self.character.dexterity.base + dex_bonus)
+        self.character.willpower.current = min(12, self.character.willpower.base + wlp_bonus)
+        self.character.might.current = min(12, self.character.might.base + mig_bonus)
+
+        return {
+            AttributeName.dexterity: self.character.dexterity.current - self.character.dexterity.base,
+            AttributeName.might: self.character.might.current - self.character.might.base,
+            AttributeName.insight: self.character.insight.current - self.character.insight.base,
+            AttributeName.willpower: self.character.willpower.current - self.character.willpower.base,
         }
 
     def crisis_value(self) -> int:
@@ -317,23 +355,6 @@ class CharacterController:
 
         return False
 
-
-class ClassController:
-    def __init__(self):
-        self.char_class = CharClass()
-
-    def add_ritual(self, ritual: Ritual):
-        self.char_class.rituals.append(ritual)
-
-    def add_skill(self, skill: Skill):
-        self.char_class.skills.append(skill)
-
-class StateController:
-    def __init__(self, char_id: uuid.UUID, char_controller : CharacterController):
-        self.state = CharState()
-        self.char_controller = char_controller
-        self.char_id = char_id
-
     def add_status(self, status: Status):
         if status not in self.state.statuses:
             self.state.statuses.append(status)
@@ -344,42 +365,42 @@ class StateController:
 
     def use_health_potion(self):
         self.state.minus_hp = max(0, self.state.minus_hp - 50)
-        ip_cost = 2 if self.char_controller.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 3
-        self.state.minus_ip = min(self.char_controller.max_ip(), self.state.minus_ip + ip_cost)
+        ip_cost = 2 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 3
+        self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
 
     def use_mana_potion(self):
         self.state.minus_mp = max(0, self.state.minus_mp - 50)
-        ip_cost = 2 if self.char_controller.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 3
-        self.state.minus_ip = min(self.char_controller.max_ip(), self.state.minus_ip + ip_cost)
+        ip_cost = 2 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 3
+        self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
 
     def use_magic_tent(self):
         self.state.minus_mp = 0
         self.state.minus_hp = 0
-        ip_cost = 3 if self.char_controller.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 4
-        self.state.minus_ip = min(self.char_controller.max_ip(), self.state.minus_ip + ip_cost)
+        ip_cost = 3 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 4
+        self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
 
-    def can_use_potion(self, current_ip: int) -> bool:
+    def can_use_potion(self) -> bool:
         ip_cost = (
             2
-            if self.char_controller.character.has_heroic_skill(
+            if self.character.has_heroic_skill(
                 heroic_skill_name=HeroicSkillName.deep_pockets
             )
             else 3
         )
-        return current_ip >= ip_cost
+        return self.current_ip() >= ip_cost
 
-    def can_use_magic_tent(self, current_ip : int) -> bool:
+    def can_use_magic_tent(self) -> bool:
         ip_cost = (
             3
-            if self.char_controller.character.has_heroic_skill(
+            if self.character.has_heroic_skill(
                 heroic_skill_name=HeroicSkillName.deep_pockets
             )
-            else 3
+            else 4
         )
-        return current_ip >= ip_cost
+        return self.current_ip() >= ip_cost
 
     def dump_state(self):
-        with Path(SAVED_STATES_DIRECTORY, f"{self.char_id}.yaml").open("w", encoding="utf-8") as yaml_file:
+        with Path(SAVED_STATES_DIRECTORY, f"{self.character.id}.yaml").open("w", encoding="utf-8") as yaml_file:
             yaml.dump(
                 self.state.model_dump(),
                 yaml_file,
@@ -390,9 +411,20 @@ class StateController:
 
     def load_state(self):
         try:
-            with Path(SAVED_STATES_DIRECTORY, f"{self.char_id}.yaml").open('r', encoding="utf-8") as yaml_file:
+            with Path(SAVED_STATES_DIRECTORY, f"{self.character.id}.yaml").open('r', encoding="utf-8") as yaml_file:
                 raw_state = yaml.load(yaml_file, Loader=yaml.Loader)
                 self.state = CharState(**dict(raw_state))
         except:
             self.state = CharState()
             raise Exception("Unable to load state. Switching to default.")
+
+
+class ClassController:
+    def __init__(self):
+        self.char_class = CharClass()
+
+    def add_ritual(self, ritual: Ritual):
+        self.char_class.rituals.append(ritual)
+
+    def add_skill(self, skill: Skill):
+        self.char_class.skills.append(skill)

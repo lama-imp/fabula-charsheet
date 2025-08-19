@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 import streamlit as st
 
 from pages.controller import CharacterController, ClassController
@@ -336,7 +338,7 @@ def add_therioform(controller: CharacterController, loc: LocNamespace):
     writer.columns = writer.add_one_therioform_columns(single_selector)
     writer.write_in_columns(available_therioforms, description=False)
 
-    if st.button(loc.add_spell_button, disabled=(len(selected_therioform) != 1)):
+    if st.button(loc.add_therioform_button, key="add-new-therioform", disabled=(len(selected_therioform) != 1)):
         therioform = selected_therioform[0]
         controller.character.special.therioforms.append(therioform)
         st.rerun()
@@ -366,3 +368,44 @@ def add_dance(controller: CharacterController, loc: LocNamespace):
         dance = selected_dance[0]
         controller.character.special.dances.append(dance)
         st.rerun()
+
+
+def manifest_therioform(controller: CharacterController, loc: LocNamespace):
+    selected_therioforms = list()
+    can_manifest_number = 0
+    def selector(therioform: Therioform, idx=None):
+        if st.checkbox("add therioform",
+                       value=(therioform in selected_therioforms),
+                       label_visibility="hidden",
+                       key=f"{therioform.name}-toggle"
+                       ):
+            if therioform not in selected_therioforms:
+                selected_therioforms.append(therioform)
+        else:
+            if therioform in selected_therioforms:
+                selected_therioforms.remove(therioform)
+
+    st.markdown(loc.page_view_manifest_therioform_selection)
+    key = "skill_{skill_name}"
+    skill = st.pills(
+        "therioform selection",
+        ["theriomorphosis", "genoclepsis"],
+        format_func=lambda x: getattr(loc, key.format(skill_name=x), x),
+        label_visibility="hidden"
+    )
+    if skill == "theriomorphosis":
+        available_therioforms = [t for t in controller.character.special.therioforms]
+        can_manifest_number = 2
+    elif skill == "genoclepsis":
+        available_therioforms = sorted(c.COMPENDIUM.therioforms, key=lambda x: x.localized_name(loc))
+        can_manifest_number = controller.get_skill_level(ClassName.mutant, "genoclepsis")
+
+    if skill:
+        writer = TherioformTableWriter(loc)
+        writer.columns = writer.add_one_therioform_columns(selector)
+        writer.write_in_columns(available_therioforms, description=False)
+
+        if st.button(loc.confirm_button, key="confirm-therioform", disabled=(len(selected_therioforms) > can_manifest_number)):
+            controller.state.minus_hp += math.floor(controller.current_hp() / 3)
+            controller.state.active_therioforms.extend(selected_therioforms)
+            st.rerun()
