@@ -44,6 +44,7 @@ from .view_page_actions import (
     add_therioform,
     add_dance,
     manifest_therioform,
+    display_equipped_item,
 )
 
 from .classes_page_actions import (

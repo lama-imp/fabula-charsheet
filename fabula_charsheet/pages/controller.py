@@ -24,7 +24,7 @@ from data.models import (
     CharState,
     Status,
     AttributeName,
-    Therioform,
+    GripType,
 )
 
 if TYPE_CHECKING:
@@ -131,13 +131,14 @@ class CharacterController:
 
     def defense(self):
         armor = self.character.inventory.equipped.armor
-        shield = self.character.inventory.equipped.shield
-        weapon = self.character.inventory.equipped.weapon
+        main_hand = self.character.inventory.equipped.main_hand
+        off_hand = self.character.inventory.equipped.off_hand
 
-        combined_weapon_bonus = 0
-        if weapon:
-            for weapon_item in weapon:
-                combined_weapon_bonus += weapon_item.bonus_defense
+        weapon_and_shield_bonus = 0
+        if main_hand:
+            weapon_and_shield_bonus += main_hand.bonus_defense
+        if off_hand:
+            weapon_and_shield_bonus += off_hand.bonus_defense
 
         other_bonuses = 0
         for char_class in self.character.classes:
@@ -147,41 +148,40 @@ class CharacterController:
                         other_bonuses += skill.current_level
         if armor:
             if isinstance(armor.defense, int):
-                return (armor.defense 
-                        + armor.bonus_defense 
-                        + (shield.bonus_defense if shield else 0) 
-                        + combined_weapon_bonus 
-                        + other_bonuses)
+                armor_defense = armor.defense
             else:
-                return self.character.dexterity.current + armor.bonus_defense + combined_weapon_bonus + other_bonuses
+                armor_defense = self.character.dexterity.current
+            return (armor_defense
+                    + armor.bonus_defense
+                    + weapon_and_shield_bonus
+                    + other_bonuses)
         return (self.character.dexterity.current 
-            + (shield.bonus_defense if shield else 0) 
-            + combined_weapon_bonus 
+            + weapon_and_shield_bonus
             + other_bonuses)
 
     def magic_defense(self):
         armor = self.character.inventory.equipped.armor
-        shield = self.character.inventory.equipped.shield
-        weapon = self.character.inventory.equipped.weapon
+        main_hand = self.character.inventory.equipped.main_hand
+        off_hand = self.character.inventory.equipped.off_hand
 
-        combined_weapon_bonus = 0
-        if weapon:
-            for weapon_item in weapon:
-                combined_weapon_bonus += weapon_item.bonus_magic_defense
+        weapon_and_shield_bonus = 0
+        if main_hand:
+            weapon_and_shield_bonus += main_hand.bonus_magic_defense
+        if off_hand:
+            weapon_and_shield_bonus += off_hand.bonus_magic_defense
 
         return (self.character.insight.current
-                + (shield.bonus_magic_defense if shield else 0)
                 + (armor.bonus_magic_defense if armor else 0)
-                + combined_weapon_bonus
+                + weapon_and_shield_bonus
         )
 
     def initiative(self) -> str:
         armor = self.character.inventory.equipped.armor
-        shield = self.character.inventory.equipped.shield
+        off_hand = self.character.inventory.equipped.off_hand
         initiative = f"{self.loc.dice_prefix}{self.character.insight.current} + {self.loc.dice_prefix}{self.character.dexterity.current}"
         bonus = 0
-        if shield:
-            bonus += shield.bonus_initiative
+        if isinstance(off_hand, Shield):
+            bonus += off_hand.bonus_initiative
         if armor:
             bonus += armor.bonus_initiative
 
@@ -190,44 +190,82 @@ class CharacterController:
         return initiative
 
     def equip_item(self, item: Item):
+        equipped = self.character.inventory.equipped
+
         if isinstance(item, Armor):
-            self.character.inventory.equipped.armor = item
-        elif isinstance(item, Weapon):
-            equipped_weapon = self.character.inventory.equipped.weapon
-            if len(equipped_weapon) == 1 and equipped_weapon[0].grip_type == "one_handed" and item.grip_type == "one_handed":
-                self.character.inventory.equipped.weapon.append(item)
-            else:
-                self.character.inventory.equipped.weapon = [item]
-        elif isinstance(item, Shield):
-            self.character.inventory.equipped.shield = item
+            equipped.armor = item
+
         elif isinstance(item, Accessory):
-            self.character.inventory.equipped.accessory = item
+            equipped.accessory = item
+
+        elif isinstance(item, Weapon):
+            is_two_handed = item.grip_type == "two_handed"
+            can_dual_two_handed = self.character.has_heroic_skill(HeroicSkillName.monkey_grip)
+
+            if is_two_handed and not can_dual_two_handed:
+                # Two-handed weapon without special skill → clears both hands
+                equipped.main_hand = item
+                equipped.off_hand = None
+            else:
+                # Treat weapon as one-handed (normal or skill-enabled two-handed)
+                if equipped.main_hand is None:
+                    equipped.main_hand = item
+                elif equipped.off_hand is None:
+                    if isinstance(equipped.main_hand, Weapon):
+                        # Dual wield with one-handers or dual two-handers (if skilled)
+                        if (equipped.main_hand.grip_type == "one_handed" or
+                                (equipped.main_hand.grip_type == "two_handed" and can_dual_two_handed)):
+                            equipped.off_hand = item
+                        else:
+                            equipped.main_hand = item  # incompatible → replace
+                    else:
+                        equipped.main_hand = item
+                else:
+                    # both occupied → replace main hand by default
+                    equipped.main_hand = item
+        elif isinstance(item, Shield):
+            # --- Dual Shieldbearer ---
+            if self.has_skill("dual_shieldbearer"):
+                if equipped.off_hand is None:
+                    equipped.off_hand = item
+                elif isinstance(equipped.off_hand, Shield):
+                    equipped.main_hand = Weapon(
+                        name="twin_shields",
+                        cost=item.cost,
+                        accuracy=[AttributeName.might, AttributeName.might],
+                        bonus_damage=5,
+                        bonus_defense=item.bonus_defense,
+                        bonus_magic_defense=item.bonus_magic_defense,
+                    )
+                else:
+                    equipped.off_hand = item
+
+            # --- Monkey Grip ---
+            elif self.character.has_heroic_skill(HeroicSkillName.monkey_grip):
+                equipped.off_hand = item
+
+            # --- Normal char ---
+            else:
+                equipped.off_hand = item
+                if (isinstance(equipped.main_hand, Weapon)
+                        and equipped.main_hand.grip_type == "two_handed"):
+                    equipped.main_hand = None
+
         else:
             raise Exception(self.loc.error_equipping_item)
 
     def unequip_item(self, category: str):
-        equipped = getattr(self.character.inventory.equipped, category)
-        if equipped:
-            if category == "weapon":
-                self.character.inventory.equipped.weapon = []
-            elif category == "armor":
-                self.character.inventory.equipped.armor = None
-            elif category == "shield":
-                self.character.inventory.equipped.shield = None
-            elif category == "accessory":
-                self.character.inventory.equipped.accessory = None
+        equipped = self.character.inventory.equipped
+        if hasattr(equipped, category):
+            setattr(equipped, category, None)
 
     def equipped_items(self) -> list[Item]:
-        equipped_items = []
-        if self.character.inventory.equipped.shield:
-            equipped_items.append(self.character.inventory.equipped.shield)
-        if self.character.inventory.equipped.armor:
-            equipped_items.append(self.character.inventory.equipped.armor)
-        if self.character.inventory.equipped.accessory:
-            equipped_items.append(self.character.inventory.equipped.accessory)
-        if self.character.inventory.equipped.weapon:
-            equipped_items.extend(self.character.inventory.equipped.weapon)
-        return equipped_items
+        equipped = self.character.inventory.equipped
+        return [
+            item
+            for item in (equipped.main_hand, equipped.off_hand, equipped.armor, equipped.accessory)
+            if item is not None
+        ]
 
     def add_item(self, item: Item):
         self.character.inventory.backpack.add_item(item)

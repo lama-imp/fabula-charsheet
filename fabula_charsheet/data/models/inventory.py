@@ -11,10 +11,10 @@ from .accessory import Accessory
 
 
 class Equipped(BaseModel):
+    main_hand: Weapon | None = None
+    off_hand: Weapon | Shield | None = None
     armor: Armor | None = None
-    weapon: Annotated[list[Weapon], Len(max_length=2)] = list() 
     accessory: Accessory | None = None
-    shield: Shield | None = None
 
 class Backpack(BaseModel):
     armors: list[Armor] = list()

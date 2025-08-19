@@ -159,17 +159,14 @@ def build(controller: CharacterController):
         st.markdown(f"#### {loc.page_view_equipment}")
         st.write(loc.page_view_zenit.format(amount=controller.character.inventory.zenit))
         st.markdown(f"**{loc.page_view_equipped.upper()}**")
-        equipped_categories = ["weapon", "armor", "shield"]
+        equipped_categories = ["main_hand", "off_hand", "armor"]
         for category in equipped_categories:
             key = f"item_{category}"
             localized_category = getattr(loc, key, category.title())
             eq_col1, eq_col_2 = st.columns([0.7, 0.3])
             with eq_col1:
                 equipped_item = getattr(controller.character.inventory.equipped, category)
-                if isinstance(equipped_item, list):
-                    equipped_item_str = ' | '.join([w.localized_name(loc) for w in equipped_item if w])
-                else:
-                    equipped_item_str = equipped_item.localized_name(loc) if equipped_item else ''
+                equipped_item_str = equipped_item.localized_name(loc) if equipped_item else ''
                 st.markdown(f"**{localized_category}**: {equipped_item_str}")
             with eq_col_2:
                 if st.button(loc.unequip_button,
@@ -213,7 +210,6 @@ def build(controller: CharacterController):
                     st.write(display_str)
                 with item_button_col:
                     if st.button(loc.equip_button,
-                                 key=f'{item.name}-{i}-equip',
-                                 disabled=(item in controller.equipped_items())):
+                                 key=f'{item.name}-{i}-equip'):
                         equip_item(controller, item)
                         st.rerun()
