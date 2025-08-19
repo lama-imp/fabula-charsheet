@@ -28,4 +28,4 @@ column_species: "Species"
 column_dance: "Dance"
 
 or_separator: ", or "
-and_separator: ", and "
+and_separator: " and "

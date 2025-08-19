@@ -95,9 +95,9 @@ inventory:
       bonus_defense: 0
       bonus_magic_defense: 1
       bonus_initiative: -3
-    weapon: []
+    main_hand: null
     accessory: null
-    shield:
+    off_hand:
       name: runic_shield
       cost: 150
       quality: no_quality

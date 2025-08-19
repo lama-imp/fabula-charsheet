@@ -108,7 +108,7 @@
     - might
   bonus_damage: 14
 
-- name: light spear
+- name: light_spear
   cost: 200
   martial: true
   weapon_category: spear
@@ -117,7 +117,7 @@
     - might
   bonus_damage: 8
 
-- name: heavy spear
+- name: heavy_spear
   cost: 200
   martial: true
   grip_type: two_handed
@@ -127,7 +127,7 @@
     - might
   bonus_damage: 12
 
-- name: bronze sword
+- name: bronze_sword
   cost: 200
   martial: true
   weapon_category: sword
@@ -157,7 +157,7 @@
   bonus_accuracy: 1
   bonus_damage: 6
 
-- name: improvised (ranged)
+- name: improvised_ranged
   weapon_category: thrown
   range: ranged
   bonus_damage: 2
@@ -168,15 +168,3 @@
   weapon_category: thrown
   range: ranged
   bonus_damage: 4
-
-- name: twin shields
-  cost: 0
-  martial: true
-  grip_type: two_handed
-  weapon_category: brawling
-  accuracy:
-    - might
-    - might
-  bonus_accuracy: 0
-  bonus_damage: 5
-

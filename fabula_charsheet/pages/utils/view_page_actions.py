@@ -409,3 +409,96 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
             controller.state.minus_hp += math.floor(controller.current_hp() / 3)
             controller.state.active_therioforms.extend(selected_therioforms)
             st.rerun()
+
+
+def display_equipped_item(controller: CharacterController,
+                          item: Item,
+                          category: str,
+                          loc: LocNamespace):
+    if not item:
+        return
+
+    if isinstance(item, Weapon):
+        icon = "⚔️"
+    elif isinstance(item, Shield):
+        icon = "🛡️"
+    elif isinstance(item, Armor):
+        icon = "🧥"
+    else:
+        icon = "💍"
+
+    # Write header
+    category_name = {
+        "main_hand": loc.item_main_hand,
+        "off_hand": loc.item_off_hand,
+        "armor": loc.column_armor,
+        "accessory": loc.column_accessory
+    }.get(category, category)
+    st.write(f"**{category_name}**")
+
+    # Columns setup
+    c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1]) if category != "accessory" else st.columns([0.3, 0.5, 0.1, 0.1])
+    # c1, c2, c3 = cols[0], cols[1], cols[2]
+    # c4 = cols[3] if len(cols) > 3 else None
+
+    # Column 1: icon and name
+    with c1:
+        st.markdown(icon)
+        st.write(item.localized_name(loc))
+
+    # Column 2: accuracy/defense/magic defense
+    with c2:
+        if isinstance(item, Weapon):
+            st.markdown(f"_{loc.column_accuracy}_")
+            accuracy_str = " + ".join(f"{loc.dice_prefix}{getattr(controller.character, attr).current}" for attr in item.accuracy)
+            st.write(accuracy_str)
+        elif isinstance(item, Armor):
+            st.markdown(f"_{loc.column_defense}_")
+            if isinstance(item.defense, AttributeName):
+                bonus = f" + {item.bonus_defense}" if item.bonus_defense > 0 else ""
+                st.write(f"{loc.dice_prefix}{getattr(controller.character, item.defense).current}{bonus}")
+            else:
+                st.write(str(item.defense))
+        elif isinstance(item, Shield):
+            st.markdown(f"_{loc.column_defense}_")
+            st.write(item.bonus_defense)
+        elif isinstance(item, Accessory):
+            st.write(f"_{loc.column_quality}_")
+            st.write(item.localized_quality(loc))
+
+    # Column 3: damage/magic defense/initiative
+    with c3:
+        if isinstance(item, Weapon):
+            st.markdown(f"_{loc.column_damage}_")
+            st.markdown(f"{loc.hr} + {item.bonus_damage}\n\n{item.damage_type.localized_name(loc)}")
+        elif isinstance(item, Armor):
+            st.markdown(f"_{loc.column_magic_defense}_")
+            if isinstance(item.magic_defense, AttributeName):
+                bonus = f" + {item.bonus_magic_defense}" if item.bonus_magic_defense > 0 else ""
+                st.write(f"{loc.dice_prefix}{getattr(controller.character, item.magic_defense).current}{bonus}")
+            else:
+                st.write(str(item.magic_defense))
+        elif isinstance(item, Shield):
+            st.markdown(f"_{loc.column_magic_defense}_")
+            st.write(item.bonus_magic_defense)
+        elif isinstance(item, Accessory):
+            pass
+
+    # Column 4: unequip button
+    with c4:
+        disabled = (isinstance(item, Weapon) and item.name == "unarmed_strike")
+        if st.button("", icon=":material/arrow_downward:", key=f"{category}-unequip", help=loc.page_view_unequip_help, disabled=disabled):
+            unequip_item(controller, category)
+            st.rerun()
+
+    # Footer line
+    if isinstance(item, Weapon):
+        st.write(" ◆ ".join([
+            item.grip_type.localized_name(loc),
+            item.range.localized_name(loc),
+            item.localized_quality(loc),
+        ]))
+    elif isinstance(item, Armor):
+        st.write(f"{item.localized_quality(loc)} ◆ {loc.column_initiative}: {item.bonus_initiative}")
+    elif isinstance(item, Shield):
+        st.write(f"{item.localized_quality(loc)} ◆ {loc.column_initiative}: {item.bonus_initiative}")

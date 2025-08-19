@@ -8,7 +8,7 @@ from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, S
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
-    increase_attribute, add_therioform, add_dance, manifest_therioform
+    increase_attribute, add_therioform, add_dance, manifest_therioform, display_equipped_item
 from pages.character_view.view_state import ViewState
 
 
@@ -253,124 +253,32 @@ def build(controller: CharacterController):
                     st.rerun()
 
             st.write(f"##### {loc.page_view_equipped}")
-            st.write(f"**{loc.item_weapon}**")
-            equipped_weapon = controller.character.inventory.equipped.weapon
-            if not equipped_weapon:
-                equipped_weapon = [
-                    Weapon(
-                        name="unarmed_strike",
-                        cost=0,
-                        quality=loc.unarmed_strike_quality,
-                        martial=False,
-                        grip_type=GripType.one_handed,
-                        range=WeaponRange.melee,
-                        weapon_category=WeaponCategory.brawling,
-                        accuracy=[AttributeName.dexterity, AttributeName.might],
-                    )
-                ]
-            for i, weapon in enumerate(equipped_weapon):
-                c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
-                with c1:
-                    st.markdown("⚔️")
-                    st.write(weapon.localized_name(loc))
-                with c2:
-                    st.markdown(f"_{loc.column_accuracy}_")
-                    accuracy_str = (" + ".join([f"{loc.dice_prefix}{getattr(controller.character, attribute).current }"for attribute in weapon.accuracy]))
-                    st.write(accuracy_str)
-                with c3:
-                    st.markdown(f"_{loc.column_damage}_")
-                    st.markdown(f"{loc.hr} + {weapon.bonus_damage}\n\n{weapon.damage_type.localized_name(loc)}")
-                with c4:
-                    if st.button(
-                            "",
-                            icon=":material/arrow_downward:",
-                            key=f"{weapon.name}-{i}-unequip",
-                            help=loc.page_view_unequip_help,
-                            disabled=(weapon.name == "unarmed_strike")
-                        ):
-                        unequip_item(controller, "weapon")
-                        st.rerun()
-                st.write(
-                    " ◆ ".join((
-                        weapon.grip_type.localized_name(loc),
-                        weapon.range.localized_name(loc),
-                        weapon.localized_quality(loc),
-                    ))
-                )
+            main_hand = controller.character.inventory.equipped.main_hand or Weapon(
+                name="unarmed_strike",
+                cost=0,
+                quality=loc.unarmed_strike_quality,
+                martial=False,
+                grip_type=GripType.one_handed,
+                range=WeaponRange.melee,
+                weapon_category=WeaponCategory.brawling,
+                accuracy=[AttributeName.dexterity, AttributeName.might],
+            )
+            display_equipped_item(controller, main_hand, "main_hand", loc)
 
+            # Off-hand
+            off_hand = controller.character.inventory.equipped.off_hand
+            if off_hand:
+                display_equipped_item(controller, off_hand, "off_hand", loc)
+
+            # Armor
             armor = controller.character.inventory.equipped.armor
             if armor:
-                st.write(f"**{loc.column_armor}**")
-                c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
-                with c1:
-                    st.markdown("🧥")
-                    st.write(armor.localized_name(loc))
-                with c2:
-                    st.markdown(f"_{loc.column_defense}_")
-                    if isinstance(armor.defense, AttributeName):
-                        def_bonus = f" + {armor.bonus_defense}" if armor.bonus_defense > 0 else ""
-                        st.write(f"{loc.dice_prefix}{str(getattr(controller.character, armor.defense).current)}{def_bonus}")
-                    else:
-                        st.write(str(armor.defense))
-                with c3:
-                    st.markdown(f"_{loc.column_magic_defense}_")
-                    if isinstance(armor.magic_defense, AttributeName):
-                        def_bonus = f" + {armor.bonus_magic_defense}" if armor.bonus_magic_defense > 0 else ""
-                        st.write(f"{loc.dice_prefix}{str(getattr(controller.character, armor.magic_defense).current)}{def_bonus}")
-                    else:
-                        st.write(str(armor.magic_defense))
-                with c4:
-                    if st.button(
-                            "",
-                            icon=":material/arrow_downward:",
-                            key=f"armor-unequip",
-                            help=loc.page_view_unequip_help,
-                        ):
-                        unequip_item(controller, "armor")
-                        st.rerun()
-                st.write(f"{armor.localized_quality(loc)} ◆ {loc.column_initiative}: {armor.bonus_initiative}")
+                display_equipped_item(controller, armor, "armor", loc)
 
-            shield = controller.character.inventory.equipped.shield
-            if shield:
-                st.write(f"**{loc.column_shield}**")
-                c1, c2, c3, c4 = st.columns([0.3, 0.3, 0.3, 0.1])
-                with c1:
-                    st.markdown("🛡️")
-                    st.write(shield.localized_name(loc))
-                with c2:
-                    st.markdown(f"_{loc.column_defense}_")
-                    st.write(str(shield.bonus_defense))
-                with c3:
-                    st.markdown(f"_{loc.column_magic_defense}_")
-                    st.write(str(shield.bonus_magic_defense))
-                with c4:
-                    if st.button(
-                            "",
-                            icon=":material/arrow_downward:",
-                            key=f"shield-unequip",
-                            help=loc.page_view_unequip_help,
-                        ):
-                        unequip_item(controller, "shield")
-                        st.rerun()
-                st.write(f"{shield.localized_quality(loc)} ◆ {loc.column_initiative}: {shield.bonus_initiative}")
-
+            # Accessory
             accessory = controller.character.inventory.equipped.accessory
             if accessory:
-                st.write(f"**{loc.column_accessory}**")
-                c1, c2, c3 = st.columns([0.4, 0.5, 0.1])
-                with c1:
-                    st.write(accessory.localized_name(loc))
-                with c2:
-                    st.write(accessory.localized_quality(loc))
-                with c3:
-                    if st.button(
-                            "",
-                            icon=":material/arrow_downward:",
-                            key=f"accessory-unequip",
-                            help=loc.page_view_unequip_help,
-                        ):
-                        unequip_item(controller, "accessory")
-                        st.rerun()
+                display_equipped_item(controller, accessory, "accessory", loc)
 
             show_martial(controller.character)
 

@@ -9,6 +9,10 @@ from .class_name import ClassName
 if TYPE_CHECKING:
     from data.models import LocNamespace
 
+class HeroicSkillName(StrEnum):
+    deep_pockets = auto()
+    monkey_grip = auto()
+
 
 class Skill(BaseModel):
     name: str = ""
@@ -37,6 +41,3 @@ class HeroicSkill(BaseModel):
     def localized_description(self, loc: LocNamespace) -> str:
         key = f"skill_{self.name}_description"
         return getattr(loc, key, f"[Missing description for {self.name}]")
-
-class HeroicSkillName(StrEnum):
-    deep_pockets = auto()
