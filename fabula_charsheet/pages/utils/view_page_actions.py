@@ -338,7 +338,7 @@ def add_therioform(controller: CharacterController, loc: LocNamespace):
     writer.columns = writer.add_one_therioform_columns(single_selector)
     writer.write_in_columns(available_therioforms, description=False)
 
-    if st.button(loc.add_therioform_button, disabled=(len(selected_therioform) != 1)):
+    if st.button(loc.add_therioform_button, key="add-new-therioform", disabled=(len(selected_therioform) != 1)):
         therioform = selected_therioform[0]
         controller.character.special.therioforms.append(therioform)
         st.rerun()
@@ -405,7 +405,7 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
         writer.columns = writer.add_one_therioform_columns(selector)
         writer.write_in_columns(available_therioforms, description=False)
 
-        if st.button(loc.confirm_button, disabled=(len(selected_therioforms) > can_manifest_number)):
+        if st.button(loc.confirm_button, key="confirm-therioform", disabled=(len(selected_therioforms) > can_manifest_number)):
             controller.state.minus_hp += math.floor(controller.current_hp() / 3)
             controller.state.active_therioforms.extend(selected_therioforms)
             st.rerun()
