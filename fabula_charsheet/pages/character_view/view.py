@@ -231,20 +231,25 @@ def build(controller: CharacterController):
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button(loc.page_view_health_potion, disabled=(controller.current_ip() < 3), use_container_width=True):
-                    controller.state.minus_hp = max(0, controller.state.minus_hp - 50)
-                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + 3)
+                if st.button(loc.page_view_health_potion,
+                    disabled=not controller.can_use_potion(),
+                    use_container_width=True,
+                ):
+                    st.session_state.state_controller.use_health_potion()
                     st.rerun()
             with col2:
-                if st.button(loc.page_view_mana_potion, disabled=(controller.current_ip() < 3), use_container_width=True):
-                    controller.state.minus_mp = max(0, controller.state.minus_mp - 50)
-                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + 3)
+                if st.button(loc.page_view_mana_potion,
+                    disabled=not controller.can_use_potion(),
+                    use_container_width=True
+                ):
+                    st.session_state.state_controller.use_mana_potion()
                     st.rerun()
             with col3:
-                if st.button(loc.page_view_magic_tent, disabled=(controller.current_ip() < 4), use_container_width=True):
-                    controller.state.minus_hp = 0
-                    controller.state.minus_mp = 0
-                    controller.state.minus_ip = min(controller.max_ip(), controller.state.minus_ip + 4)
+                if st.button(loc.page_view_magic_tent,
+                    disabled=not controller.can_use_magic_tent(),
+                    use_container_width=True
+                ):
+                    st.session_state.state_controller.use_magic_tent()
                     st.rerun()
 
             st.write(f"##### {loc.page_view_equipped}")
@@ -387,10 +392,10 @@ def build(controller: CharacterController):
                     else:
                         controller.remove_status(stat)
 
-            changes = controller.apply_status()
-            for attribute, value in changes.items():
+            minus_changes = controller.apply_status()
+            for attribute, value in minus_changes.items():
                 if value > 0:
-                    st.toast(f"{loc.msg_status_change.format(
+                    st.toast(f"{loc.msg_negative_status_change.format(
                         attribute=attribute.localized_name(loc),
                         value=value,
                     )}")
@@ -407,13 +412,6 @@ def build(controller: CharacterController):
                     if not checked and attribute in controller.state.improved_attributes:
                         controller.state.improved_attributes.remove(attribute)
 
-            minus_changes = controller.apply_status()
-            for attribute, value in minus_changes.items():
-                if value > 0:
-                    st.toast(f"{loc.msg_negative_status_change.format(
-                        attribute=attribute.localized_name(loc),
-                        value=value,
-                    )}")
             plus_changes = controller.apply_attribute_bonus()
             for attribute, value in plus_changes.items():
                 if value > 0:

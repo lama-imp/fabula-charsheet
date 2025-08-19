@@ -13,6 +13,7 @@ from data.models import (
     CharClass,
     Ritual,
     Skill,
+    HeroicSkillName,
     ClassName,
     Spell,
     Accessory,
@@ -361,6 +362,42 @@ class CharacterController:
     def remove_status(self, status: Status):
         if status in self.state.statuses:
             self.state.statuses.remove(status)
+
+    def use_health_potion(self):
+        self.state.minus_hp = max(0, self.state.minus_hp - 50)
+        ip_cost = 2 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 3
+        self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
+
+    def use_mana_potion(self):
+        self.state.minus_mp = max(0, self.state.minus_mp - 50)
+        ip_cost = 2 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 3
+        self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
+
+    def use_magic_tent(self):
+        self.state.minus_mp = 0
+        self.state.minus_hp = 0
+        ip_cost = 3 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 4
+        self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
+
+    def can_use_potion(self, current_ip: int) -> bool:
+        ip_cost = (
+            2
+            if self.character.has_heroic_skill(
+                heroic_skill_name=HeroicSkillName.deep_pockets
+            )
+            else 3
+        )
+        return current_ip >= ip_cost
+
+    def can_use_magic_tent(self, current_ip : int) -> bool:
+        ip_cost = (
+            3
+            if self.character.has_heroic_skill(
+                heroic_skill_name=HeroicSkillName.deep_pockets
+            )
+            else 4
+        )
+        return current_ip >= ip_cost
 
     def dump_state(self):
         with Path(SAVED_STATES_DIRECTORY, f"{self.character.id}.yaml").open("w", encoding="utf-8") as yaml_file:
