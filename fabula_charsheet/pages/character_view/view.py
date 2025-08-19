@@ -2,7 +2,7 @@ import streamlit as st
 
 import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
-    WeaponRange, ClassName, LocNamespace
+    WeaponRange, ClassName, LocNamespace, HeroicSkillName
 from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
@@ -384,7 +384,7 @@ def build(controller: CharacterController):
                 chimerist_message = ""
                 if chimerist_condition:
                     max_n_spells = controller.get_skill_level(ClassName.chimerist, "spell_mimic") + 2
-                    if "chimeric_mastery" in [s.name for s in controller.character.heroic_skills]:
+                    if controller.character.has_heroic_skill(HeroicSkillName.chimeric_mastery):
                         max_n_spells += 2
                     chimerist_message = loc.page_view_chimerist_spell_count.format(
                         current=len(spell_list),

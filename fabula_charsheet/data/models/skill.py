@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 class HeroicSkillName(StrEnum):
     deep_pockets = auto()
     monkey_grip = auto()
+    chimeric_mastery = auto()
 
 
 class Skill(BaseModel):
