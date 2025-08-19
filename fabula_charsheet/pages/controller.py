@@ -211,15 +211,12 @@ class CharacterController:
                 if equipped.main_hand is None:
                     equipped.main_hand = item
                 elif equipped.off_hand is None:
-                    if isinstance(equipped.main_hand, Weapon):
-                        # Dual wield with one-handers or dual two-handers (if skilled)
-                        if (equipped.main_hand.grip_type == "one_handed" or
-                                (equipped.main_hand.grip_type == "two_handed" and can_dual_two_handed)):
-                            equipped.off_hand = item
-                        else:
-                            equipped.main_hand = item  # incompatible → replace
+                    # Dual wield with one-handers or dual two-handers (if skilled)
+                    if (equipped.main_hand.grip_type == "one_handed" or
+                            (equipped.main_hand.grip_type == "two_handed" and can_dual_two_handed)):
+                        equipped.off_hand = item
                     else:
-                        equipped.main_hand = item
+                        equipped.main_hand = item  # incompatible → replace
                 else:
                     # both occupied → replace main hand by default
                     equipped.main_hand = item
