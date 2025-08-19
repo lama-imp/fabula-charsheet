@@ -223,23 +223,25 @@ def build(controller: CharacterController):
 
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button(loc.page_view_health_potion, disabled=(current_ip < 3), use_container_width=True):
-                    st.session_state.state_controller.state.minus_hp = max(0, st.session_state.state_controller.state.minus_hp - 50)
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 3)
+                if st.button(loc.page_view_health_potion,
+                    disabled=not st.session_state.state_controller.can_use_potion(current_ip),
+                    use_container_width=True,
+                ):
+                    st.session_state.state_controller.use_health_potion()
                     st.rerun()
             with col2:
-                if st.button(loc.page_view_mana_potion, disabled=(current_ip < 3), use_container_width=True):
-                    st.session_state.state_controller.state.minus_mp = max(0, st.session_state.state_controller.state.minus_mp - 50)
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 3)
+                if st.button(loc.page_view_mana_potion,
+                    disabled=not st.session_state.state_controller.can_use_potion(current_ip),
+                    use_container_width=True
+                ):
+                    st.session_state.state_controller.use_mana_potion()
                     st.rerun()
             with col3:
-                if st.button(loc.page_view_magic_tent, disabled=(current_ip < 4), use_container_width=True):
-                    st.session_state.state_controller.state.minus_hp = 0
-                    st.session_state.state_controller.state.minus_mp = 0
-                    st.session_state.state_controller.state.minus_ip = min(controller.max_ip(),
-                                                                     st.session_state.state_controller.state.minus_ip + 4)
+                if st.button(loc.page_view_magic_tent,
+                    disabled=not st.session_state.state_controller.can_use_magic_tent(current_ip),
+                    use_container_width=True
+                ):
+                    st.session_state.state_controller.use_magic_tent()
                     st.rerun()
 
             st.write(f"##### {loc.page_view_equipped}")

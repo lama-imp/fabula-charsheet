@@ -35,7 +35,7 @@ def build(controller: CharacterController):
                     if st.button(loc.page_load_character_load_button, key=f"{char.id}-loader"):
                         controller.character = char
                         try:
-                            st.session_state.state_controller = StateController(char.id)
+                            st.session_state.state_controller = StateController(char.id, controller)
                             st.session_state.state_controller.load_state()
                         except Exception as e:
                             st.toast(e)
