@@ -379,7 +379,7 @@ class CharacterController:
         ip_cost = 3 if self.character.has_heroic_skill(heroic_skill_name=HeroicSkillName.deep_pockets) else 4
         self.state.minus_ip = min(self.max_ip(), self.state.minus_ip + ip_cost)
 
-    def can_use_potion(self, current_ip: int) -> bool:
+    def can_use_potion(self) -> bool:
         ip_cost = (
             2
             if self.character.has_heroic_skill(
@@ -387,9 +387,9 @@ class CharacterController:
             )
             else 3
         )
-        return current_ip >= ip_cost
+        return self.current_ip() >= ip_cost
 
-    def can_use_magic_tent(self, current_ip : int) -> bool:
+    def can_use_magic_tent(self) -> bool:
         ip_cost = (
             3
             if self.character.has_heroic_skill(
@@ -397,7 +397,7 @@ class CharacterController:
             )
             else 4
         )
-        return current_ip >= ip_cost
+        return self.current_ip() >= ip_cost
 
     def dump_state(self):
         with Path(SAVED_STATES_DIRECTORY, f"{self.character.id}.yaml").open("w", encoding="utf-8") as yaml_file:
