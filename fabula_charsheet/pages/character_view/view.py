@@ -235,21 +235,21 @@ def build(controller: CharacterController):
                     disabled=not controller.can_use_potion(),
                     use_container_width=True,
                 ):
-                    st.session_state.state_controller.use_health_potion()
+                    controller.use_health_potion()
                     st.rerun()
             with col2:
                 if st.button(loc.page_view_mana_potion,
                     disabled=not controller.can_use_potion(),
                     use_container_width=True
                 ):
-                    st.session_state.state_controller.use_mana_potion()
+                    controller.use_mana_potion()
                     st.rerun()
             with col3:
                 if st.button(loc.page_view_magic_tent,
                     disabled=not controller.can_use_magic_tent(),
                     use_container_width=True
                 ):
-                    st.session_state.state_controller.use_magic_tent()
+                    controller.use_magic_tent()
                     st.rerun()
 
             st.write(f"##### {loc.page_view_equipped}")
