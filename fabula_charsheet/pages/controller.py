@@ -151,13 +151,20 @@ class CharacterController:
                 armor_defense = armor.defense
             else:
                 armor_defense = self.character.dexterity.current
-            return (armor_defense
-                    + armor.bonus_defense
-                    + weapon_and_shield_bonus
-                    + other_bonuses)
-        return (self.character.dexterity.current 
-            + weapon_and_shield_bonus
-            + other_bonuses)
+            defense = (armor_defense
+                        + armor.bonus_defense
+                        + weapon_and_shield_bonus
+                        + other_bonuses)
+        else:
+            defense = (self.character.dexterity.current
+                        + weapon_and_shield_bonus
+                        + other_bonuses)
+        if "placophora" in [t.name for t in self.state.active_therioforms]:
+            t_defense = 13 + math.floor(self.get_skill_level(ClassName.mutant, "theriomorphosis") / 2)
+            if t_defense > defense:
+                defense = t_defense
+
+        return defense
 
     def magic_defense(self):
         armor = self.character.inventory.equipped.armor
@@ -338,14 +345,26 @@ class CharacterController:
         mig_bonus = 0
         ins_bonus = 0
         wlp_bonus = 0
-        if AttributeName.dexterity in self.state.improved_attributes:
-            dex_bonus += 2
-        if AttributeName.might in self.state.improved_attributes:
-            mig_bonus += 2
-        if AttributeName.insight in self.state.improved_attributes:
-            ins_bonus += 2
-        if AttributeName.willpower in self.state.improved_attributes:
-            wlp_bonus += 2
+
+        for attribute in self.state.improved_attributes:
+            match attribute:
+                case AttributeName.dexterity:
+                    dex_bonus += 2
+                case AttributeName.might:
+                    mig_bonus += 2
+                case AttributeName.insight:
+                    ins_bonus += 2
+                case AttributeName.willpower:
+                    wlp_bonus += 2
+
+        for t in self.state.active_therioforms:
+            match t.name:
+                case "arpaktida":
+                    ins_bonus += 2
+                case "dynamotheria":
+                    mig_bonus += 2
+                case "tachytheria":
+                    dex_bonus += 2
 
         self.character.insight.current = min(12, self.character.insight.base + ins_bonus)
         self.character.dexterity.current = min(12, self.character.dexterity.base + dex_bonus)

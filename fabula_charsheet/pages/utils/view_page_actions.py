@@ -440,7 +440,7 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
 
         if st.button(loc.confirm_button, key="confirm-therioform", disabled=(len(selected_therioforms) > can_manifest_number)):
             controller.state.minus_hp += math.floor(controller.current_hp() / 3)
-            controller.state.active_therioforms.extend(selected_therioforms)
+            controller.state.active_therioforms = selected_therioforms
             st.rerun()
 
 
