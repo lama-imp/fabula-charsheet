@@ -77,3 +77,13 @@ spell_umbra_description: >
   Each **target** hit suffers【HR&nbsp;+&nbsp;15】**dark damage**.  
   
   **Opportunity**: Each **target** hit suffers **weak**.
+
+spell_comet: "Comet"
+spell_comet_description: >
+  You rip open a large portal to the Cosmos, calling down astral debris from the gaping void. Choose on option:
+  one creature you can see suffers 60 damage; **or** you choose any number of creatures you can see, and each of
+  them suffers 40 damage. These amounts increase by 5 if you are **level 20 or higher**, or by 10 if you are **level 40 or higher**.
+  
+  
+  
+  Damage dealt by this spell has **no type** (thus being unaffected by damage Affinities).

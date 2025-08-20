@@ -71,3 +71,18 @@ spell_torpor: "Torpor"
 spell_torpor_description: >
   You smother the soul energy coursing through the bodies of your foes, hindering their movements.
   Choose **slow** or **weak**: you inflict the chosen status effect on each target hit by this spell.
+
+spell_hope: "Hope"
+spell_hope_description: >
+  You rekindle the flames of courage and hope within a defeated hero. Choose a Player Character who **surrendered**
+  but is still present on the scene: that Player Character immediately regains consciousness and recovers
+  an amount of Hit Points equal to their **Crisis** score. Note that this spell will not undo the **consequences** of
+  the character's surrender and is of no use if the character left the scene as part of their surrender — such as
+  if they were captured and dragged away, or if they were trapped in a parallel dimension, and so on.
+  
+  
+  
+  A Player Character may only be affected by this spell once per scene; if a character is brought back into the conflict
+  by this spell and is subsequently reduced to 0 Hit Points again, they must **sacrifice** themselves or **surrender** as per
+  the normal rules (including a new **consequence** and 2 more Fabula Points if they surrender).
+

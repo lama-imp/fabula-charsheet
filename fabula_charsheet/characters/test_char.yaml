@@ -138,7 +138,8 @@ spells:
     - up_to_three
     duration: !!python/object/apply:data.models.spell.SpellDuration
     - instantaneous
-    damage_type: null
+    damage_type: !!python/object/apply:data.models.damage.DamageType
+    - no_damage
     char_class: null
   - name: lux
     is_offensive: true
@@ -157,7 +158,8 @@ spells:
     - one_creature
     duration: !!python/object/apply:data.models.spell.SpellDuration
     - instantaneous
-    damage_type: null
+    damage_type: !!python/object/apply:data.models.damage.DamageType
+    - no_damage
     char_class: null
 special:
   therioforms: []

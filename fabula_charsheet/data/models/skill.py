@@ -13,6 +13,9 @@ class HeroicSkillName(StrEnum):
     deep_pockets = auto()
     monkey_grip = auto()
     chimeric_mastery = auto()
+    comet = auto()
+    hope = auto()
+    volcano = auto()
 
 
 class Skill(BaseModel):

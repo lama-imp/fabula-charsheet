@@ -406,7 +406,11 @@ def build(controller: CharacterController):
                         can_add_spell = False
                         if casting_skill:
                             can_add_spell = casting_skill.current_level > len(controller.character.get_spells_by_class(class_name))
-                        if st.button(loc.learn_spell_button, disabled=not can_add_spell):
+                        if st.button(
+                                loc.learn_spell_button,
+                                disabled=not can_add_spell,
+                                key=f"{class_name}-add-spell"
+                        ):
                             add_spell_dialog(controller, class_name, loc)
 
                 with c3:

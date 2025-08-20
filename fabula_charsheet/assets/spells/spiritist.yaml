@@ -59,7 +59,7 @@
   target: up_to_three
   duration: scene
 
-- name: soul weapon
+- name: soul_weapon
   is_offensive: false
   mp_cost: 10
   target: weapon

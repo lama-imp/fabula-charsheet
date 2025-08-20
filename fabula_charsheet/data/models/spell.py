@@ -42,7 +42,7 @@ class Spell(BaseModel):
     mp_cost: int
     target: SpellTarget = SpellTarget.one_creature
     duration: SpellDuration = SpellDuration.instantaneous
-    damage_type: DamageType | None = None
+    damage_type: DamageType = DamageType.no_damage
     char_class: ClassName | None = None
 
     def localized_name(self, loc: LocNamespace) -> str:

@@ -83,3 +83,13 @@ spell_vortex: "Vortex"
 spell_vortex_description: >
   A roaring gale surrounds you, blowing away arrows and bullets.  
   Until this spell ends, you gain a +2 bonus to your **Defense** against **ranged attacks**.
+
+spell_volcano: "Volcano"
+spell_volcano_description: >
+  You channel the fury of the planet into a powerful wave of fire and magma. Choose one option: one creature
+  you can see suffers 50 fire damage; **or** you choose any number of creatures you can see, and each of them suffers
+  30 fire damage. These amounts increase by 5 if you are **level 20 or higher**, or by 10 if you are **level 40 or higher**.
+  
+  
+  
+  Damage dealt by this spell **ignores** Resistances and Immunities.
