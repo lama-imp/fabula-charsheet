@@ -423,7 +423,7 @@ def build(controller: CharacterController):
 
     #Equipment
     with tab4:
-        col1, col2, col3 = st.columns([0.2, 0.2, 0.6])
+        col1, col2, col3, col4 = st.columns([0.2, 0.2, 0.2, 0.4])
         with col1:
             if st.button(loc.add_item_button):
                 add_item_dialog(controller, loc)
@@ -436,6 +436,21 @@ def build(controller: CharacterController):
                 value=loc.page_view_remaining_zenit_value.format(zenits=controller.character.inventory.zenit),
                 delta=None,
             )
+        with col4:
+            c1, c2, c3 = st.columns([0.7, 0.15, 0.15])
+            with c1:
+                zenit_input = st.number_input("zenit_input", min_value=0, label_visibility="hidden", value=10, step=10)
+            with c2:
+                st.write("")
+                if st.button("", icon=":material/add:", key="add_zenit"):
+                    controller.character.inventory.zenit += zenit_input
+                    st.rerun()
+            with c3:
+                st.write("")
+                if st.button("", icon=":material/remove:", key="subtract_zenit"):
+                    controller.character.inventory.zenit -= zenit_input
+                    st.rerun()
+
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
             weapon_writer = WeaponTableWriter(loc)
