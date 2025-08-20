@@ -2,3 +2,5 @@ warn_edit_equipment_lost: "You will not be able to edit your starting equipment 
 warn_more_skill_points_needed: "You need to put **{points}** more points into skills."
 warn_exact_skill_points_needed: "You need to put exactly **{level}** points to your skills."
 warn_confirm_delete_character: "Are you sure you want to completely delete this character?"
+warn_therioform_number_warning: "You can manifest up to {number} therioforms using {skill}."
+warn_therioform_health_warning: "Your health is too low to manifest a therioform."
