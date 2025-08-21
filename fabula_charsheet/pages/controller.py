@@ -101,24 +101,47 @@ class CharacterController:
             self.character.spells[class_name].remove(spell)
 
     def max_hp(self) -> int:
-        return (
+        base_hp = (
                 self.character.level
                 + self.character.might.base * 5
                 + sum([c.bonus_value for c in self.character.classes if c.class_bonus == "hp"])
         )
+        bonus = 0
+        if self.character.has_heroic_skill(HeroicSkillName.extra_hp):
+            if self.character.level < 40:
+                bonus += 10
+            else:
+                bonus += 20
+        # to-do: add other class bonuses to HP, e.g., Guardian
+
+        return base_hp + bonus
 
     def max_mp(self) -> int:
-        return (
+        base_mp = (
                 self.character.level
                 + self.character.willpower.base * 5
                 + sum([c.bonus_value for c in self.character.classes if c.class_bonus == "mp"])
         )
+        bonus = 0
+        if self.character.has_heroic_skill(HeroicSkillName.extra_mp):
+            if self.character.level < 40:
+                bonus += 10
+            else:
+                bonus += 20
+        # to-do: add other class bonuses to MP, e.g., Loremaster
+
+        return base_mp + bonus
 
     def max_ip(self) -> int:
-        return (
+        base_ip =  (
                 6
                 + sum([c.bonus_value for c in self.character.classes if c.class_bonus == "ip"])
         )
+        bonus = 0
+        if self.character.has_heroic_skill(HeroicSkillName.extra_ip):
+            bonus += 4
+
+        return base_ip + bonus
 
     def current_hp(self) -> int:
         return self.max_hp() - self.state.minus_hp
