@@ -241,7 +241,8 @@ class HeroicSkillTableWriter(TableWriter):
                 st.session_state.selected_hero_skills.remove(skill)
 
     def _add_description(self, skill: HeroicSkill, idx=None):
-        st.markdown(skill.localized_description(self.loc))
+        with st.expander(self.loc.heroic_skill_description.format(skill=skill.localized_name(self.loc))):
+            st.markdown(skill.localized_description(self.loc))
         st.divider()
 
 

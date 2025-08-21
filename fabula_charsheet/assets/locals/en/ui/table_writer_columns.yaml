@@ -29,3 +29,4 @@ column_dance: "Dance"
 
 or_separator: ", or "
 and_separator: " and "
+heroic_skill_description: "{skill} description"

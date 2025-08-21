@@ -79,3 +79,5 @@ heroic_skill_several_mastery_requirement: "You must have mastered one or more Cl
 
 page_view_remaining_zenit: "You have"
 page_view_remaining_zenit_value: "{zenits} zenits"
+
+page_view_select_class_for_extra_spells: "Choose a class to learn your 2 spells from:"

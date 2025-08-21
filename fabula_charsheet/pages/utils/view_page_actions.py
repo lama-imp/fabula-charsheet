@@ -84,18 +84,19 @@ def level_up(controller: CharacterController, loc: LocNamespace):
 
 
 def add_spell(controller: CharacterController, class_name: ClassName, loc: LocNamespace):
-    selected_spells = set()
-    def single_spell_selector(self, spell: Spell, idx=None):
+    selected_spells = list()
+
+    def single_spell_selector(spell: Spell, idx=None):
         if st.checkbox("add spell",
                        value=(spell in selected_spells),
                        label_visibility="hidden",
                        key=f"{spell.name}-toggle"
                        ):
             if spell not in selected_spells:
-                selected_spells.add(spell)
+                selected_spells.append(spell)
         else:
             if spell in selected_spells:
-                selected_spells.discard(spell)
+                selected_spells.remove(spell)
 
     class_spells = c.COMPENDIUM.spells.get_spells(class_name)
     available_spells = [spell for spell in class_spells if spell not in controller.character.get_spells_by_class(class_name)]
@@ -105,7 +106,7 @@ def add_spell(controller: CharacterController, class_name: ClassName, loc: LocNa
     writer.write_in_columns(available_spells)
 
     if st.button(loc.add_spell_button, disabled=(len(selected_spells) != 1)):
-        spell = list(selected_spells)[0]
+        spell = selected_spells[0]
         controller.character.spells[class_name] = controller.character.spells.get(class_name, [])
         controller.character.spells[class_name].append(spell)
         st.rerun()
@@ -285,11 +286,55 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
     sorted_skills = sorted(c.COMPENDIUM.heroic_skills.heroic_skills, key=lambda x: x.localized_name(loc))
     writer.write_in_columns([skill for skill in sorted_skills if heroic_skill_availability(skill)])
 
-    if st.button(loc.confirm_button, disabled=(len(st.session_state.selected_hero_skills) != 1)):
-        selected_heroic_skill = st.session_state.selected_hero_skills[0]
-        controller.character.heroic_skills.append(selected_heroic_skill)
-        apply_heroic_skill_effect(controller, selected_heroic_skill)
-        st.rerun()
+    if HeroicSkillName.extra_spells in [skill.name for skill in st.session_state.selected_hero_skills]:
+        selected_class_name = st.pills(
+            loc.page_view_select_class_for_extra_spells,
+            [ClassName.elementalist, ClassName.entropist, ClassName.spiritist],
+            format_func=lambda x: x.localized_name(loc)
+        )
+        if selected_class_name:
+            selected_spells = list()
+
+            def single_spell_selector(spell: Spell, idx=None):
+                if st.checkbox("add spell",
+                               value=(spell in selected_spells),
+                               label_visibility="hidden",
+                               key=f"{spell.name}-toggle"
+                               ):
+                    if spell not in selected_spells:
+                        selected_spells.append(spell)
+                else:
+                    if spell in selected_spells:
+                        selected_spells.remove(spell)
+
+            class_spells = c.COMPENDIUM.spells.get_spells(selected_class_name)
+            available_spells = [spell for spell in class_spells if
+                                spell not in controller.character.get_spells_by_class(selected_class_name)]
+
+            writer = SpellTableWriter(loc)
+            writer.columns = writer.add_one_spell_columns(single_spell_selector)
+            writer.write_in_columns(available_spells)
+
+            if st.button(loc.confirm_button,
+                         key="add-extra-spells-skill",
+                         disabled=(len(st.session_state.selected_hero_skills) != 1)
+                                  and (len(selected_spells) != 2)):
+                selected_heroic_skill = st.session_state.selected_hero_skills[0]
+                controller.character.heroic_skills.append(selected_heroic_skill)
+                for spell in selected_spells:
+                    controller.character.spells[selected_class_name] = controller.character.spells.get(
+                        selected_class_name, [])
+                    controller.character.spells[selected_class_name].append(spell)
+                st.rerun()
+
+    else:
+        if st.button(loc.confirm_button,
+                     key="add-heroic-skill",
+                     disabled=(len(st.session_state.selected_hero_skills) != 1)):
+            selected_heroic_skill = st.session_state.selected_hero_skills[0]
+            controller.character.heroic_skills.append(selected_heroic_skill)
+            apply_heroic_skill_effect(controller, selected_heroic_skill)
+            st.rerun()
 
 
 def apply_heroic_skill_effect(controller: CharacterController, skill: HeroicSkill):
