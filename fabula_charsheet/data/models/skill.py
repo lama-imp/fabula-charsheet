@@ -16,6 +16,9 @@ class HeroicSkillName(StrEnum):
     comet = auto()
     hope = auto()
     volcano = auto()
+    extra_hp = auto()
+    extra_mp = auto()
+    extra_ip = auto()
 
 
 class Skill(BaseModel):
