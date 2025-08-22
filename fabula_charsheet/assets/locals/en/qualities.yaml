@@ -1,0 +1,72 @@
+# Weapons
+
+quality_antistatus: "Antistatus"
+quality_antistatus_description: "You are immune to a single status effect."
+
+quality_resistance: "Resistance"
+quality_resistance_description: "You have Resistance to a single damage type (not **physical** damage)."
+
+quality_amulet: "Amulet"
+quality_amulet_description: "You gain a **+1** bonus to Magic Defense."
+
+quality_bulwark: "Bulwark"
+quality_bulwark_description: "You gain a **+1** bonus to Defense."
+
+quality_dual_resistance: "Dual Resistance"
+quality_dual_resistance_description: "You have Resistance to **two** damage types (not **physical** damage)."
+
+quality_swordbreaker: "Swordbreaker"
+quality_swordbreaker_description: "You have Resistance to **physical** damage."
+
+quality_immunity: "Immunity"
+quality_immunity_description: "You have Immunity to a single damage type (not **physical** damage)."
+
+quality_omnishield: "Omnishield"
+quality_omnishield_description: "You gain a **+1** bonus to Defense and Magic Defense."
+
+quality_perfect_health: "Perfect Health"
+quality_perfect_health_description: "You are immune to **all** status effects."
+
+quality_magical: "Magical"
+quality_magical_description: "The weapon targets Magic Defense instead of **Defense**."
+
+quality_hunter: "Hunter"
+quality_hunter_description: "The weapon deals **5** extra damage to creatures of a particular **Species**."
+
+quality_piercing: "Piercing"
+quality_piercing_description: "Damage dealt by the weapon ignores Resistances."
+
+quality_dual_hunter: "Dual Hunter"
+quality_dual_hunter_description: "The weapon deals **5** extra damage to creatures belonging to one of two particular **Species**."
+
+quality_multi: "Multi"
+quality_multi_description: "Attacks with the weapon have **multi (2)**."
+
+quality_status: "Status"
+quality_status_description: "Each target hit by the weapon suffers (choose one: **dazed**, **shaken**, **slow**, **weak**)."
+
+quality_status_plus: "Status Plus"
+quality_status_plus_description: "Each target hit by the weapon suffers (choose one: **enraged**, **poisoned**)."
+
+# Armors and Shields
+
+quality_initiative_up: "Initiative Up"
+quality_initiative_up_description: "You gain a **+4** bonus to your Initiative modifier."
+
+quality_accuracy_up: "Accuracy Up"
+quality_accuracy_up_description: "You gain a **+1** bonus to your Accuracy Checks."
+
+quality_magic_up: "Magic Up"
+quality_magic_up_description: "You gain a **+1** bonus to your Magic Checks."
+
+quality_vitality_up: "Vitality Up"
+quality_vitality_up_description: "When you recover HP, you recover **5** extra HP."
+
+quality_healing_up: "Healing Up"
+quality_healing_up_description: "Spells you cast whose effects restore Hit Points will restore **5** extra Hit Points."
+
+quality_spell_up: "Spell Up"
+quality_spell_up_description: "Spells you cast deal **5** extra damage."
+
+quality_weapon_up: "Weapon Up"
+quality_weapon_up_description: "Your attacks with (choose one: **melee**, **ranged**) weapons deal **5** extra damage."

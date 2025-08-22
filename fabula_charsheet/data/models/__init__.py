@@ -56,3 +56,4 @@ from .dance import (
     Dance,
     DanceDuration
 )
+from .quality import Quality

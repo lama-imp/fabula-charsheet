@@ -1,0 +1,14 @@
+- name: initiative_up
+  cost: 500
+- name: accuracy_up
+  cost: 1000
+- name: magic_up
+  cost: 1000
+- name: vitality_up
+  cost: 1000
+- name: healing_up
+  cost: 1500
+- name: spell_up
+  cost: 2000
+- name: weapon_up
+  cost: 2000

@@ -30,4 +30,7 @@ class Item(BaseModel):
             except AttributeError:
                 return self.quality
         else:
-            return self.quality
+            try:
+                return getattr(loc, f"quality_{self.quality}_description")
+            except AttributeError:
+                return self.quality
