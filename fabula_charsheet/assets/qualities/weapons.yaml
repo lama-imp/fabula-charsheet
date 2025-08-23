@@ -18,3 +18,15 @@
   cost: 1500
 - name: status_plus
   cost: 2000
+- name: antistatus
+  cost: 500
+- name: dual_resistance
+  cost: 1000
+- name: swordbreaker
+  cost: 1000
+- name: immunity
+  cost: 1500
+- name: perfect_health
+  cost: 2000
+- name: resistance
+  cost: 700

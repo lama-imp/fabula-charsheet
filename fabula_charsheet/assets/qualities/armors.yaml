@@ -10,5 +10,19 @@
   cost: 1500
 - name: spell_up
   cost: 2000
-- name: weapon_up
+- name: weapon_up_melee
+  cost: 2000
+- name: weapon_up_ranged
+  cost: 2000
+- name: antistatus
+  cost: 500
+- name: resistance
+  cost: 700
+- name: dual_resistance
+  cost: 1000
+- name: swordbreaker
+  cost: 1000
+- name: immunity
+  cost: 1500
+- name: perfect_health
   cost: 2000
