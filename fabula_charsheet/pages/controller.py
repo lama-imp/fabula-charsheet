@@ -153,34 +153,26 @@ class CharacterController:
         return self.max_ip() - self.state.minus_ip
 
     def defense(self):
-        armor = self.character.inventory.equipped.armor
-        main_hand = self.character.inventory.equipped.main_hand
-        off_hand = self.character.inventory.equipped.off_hand
-
-        weapon_and_shield_bonus = 0
-        if main_hand:
-            weapon_and_shield_bonus += main_hand.bonus_defense
-        if off_hand:
-            weapon_and_shield_bonus += off_hand.bonus_defense
+        item_bonus = 0
+        for item in self.equipped_items():
+            item_bonus += item.bonus_defense
 
         other_bonuses = 0
-        for char_class in self.character.classes:
-            if char_class.name == ClassName.rogue:
-                for skill in char_class.skills:
-                    if skill.name == "dodge":
-                        other_bonuses += skill.current_level
+        if ClassName.rogue in self.character.classes:
+            other_bonuses += self.get_skill_level(ClassName.rogue, "dodge")
+
+        armor = self.character.inventory.equipped.armor
         if armor:
             if isinstance(armor.defense, int):
                 armor_defense = armor.defense
             else:
                 armor_defense = self.character.dexterity.current
             defense = (armor_defense
-                        + armor.bonus_defense
-                        + weapon_and_shield_bonus
+                        + item_bonus
                         + other_bonuses)
         else:
             defense = (self.character.dexterity.current
-                        + weapon_and_shield_bonus
+                        + item_bonus
                         + other_bonuses)
         if "placophora" in [t.name for t in self.state.active_therioforms]:
             t_defense = 13 + math.floor(self.get_skill_level(ClassName.mutant, "theriomorphosis") / 2)
@@ -190,33 +182,22 @@ class CharacterController:
         return defense
 
     def magic_defense(self):
-        armor = self.character.inventory.equipped.armor
-        main_hand = self.character.inventory.equipped.main_hand
-        off_hand = self.character.inventory.equipped.off_hand
+        bonus = 0
+        for item in self.equipped_items():
+            bonus += item.bonus_magic_defense
 
-        weapon_and_shield_bonus = 0
-        if main_hand:
-            weapon_and_shield_bonus += main_hand.bonus_magic_defense
-        if off_hand:
-            weapon_and_shield_bonus += off_hand.bonus_magic_defense
-
-        return (self.character.insight.current
-                + (armor.bonus_magic_defense if armor else 0)
-                + weapon_and_shield_bonus
-        )
+        return self.character.insight.current + bonus
 
     def initiative(self) -> str:
-        armor = self.character.inventory.equipped.armor
-        off_hand = self.character.inventory.equipped.off_hand
         initiative = f"{self.loc.dice_prefix}{self.character.insight.current} + {self.loc.dice_prefix}{self.character.dexterity.current}"
         bonus = 0
-        if isinstance(off_hand, Shield):
-            bonus += off_hand.bonus_initiative
-        if armor:
-            bonus += armor.bonus_initiative
+        for item in self.equipped_items():
+            bonus += item.bonus_initiative
 
-        if bonus:
+        if bonus and bonus < 0:
             return f"{initiative} {bonus}"
+        elif bonus and bonus > 0:
+            return f"{initiative} +{bonus}"
         return initiative
 
     def equip_item(self, item: Item):
@@ -308,7 +289,6 @@ class CharacterController:
             elif isinstance(item, Accessory):
                 self.unequip_item("accessory")
         self.character.inventory.backpack.remove_item(item)
-
 
     def dump_character(self):
         with Path(
