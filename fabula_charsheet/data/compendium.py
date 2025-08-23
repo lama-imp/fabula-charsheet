@@ -7,8 +7,7 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
-from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield, Therioform, Dance
-from data.models.skill import HeroicSkill, Skill
+from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield, Therioform, Dance, Quality, HeroicSkill, Skill
 
 COMPENDIUM: Compendium | None = None
 
@@ -73,6 +72,7 @@ class Compendium:
     heroic_skills: HeroicSkills
     therioforms: list[Therioform] = field(default_factory=list)
     dances: list[Dance] = field(default_factory=list)
+    qualities: dict[str, Quality] = field(default_factory=dict)
 
     def get_class_name_from_skill(self, skill: Skill):
         for char_class in self.classes.classes:
@@ -129,6 +129,11 @@ def init(assets_directory: Path) -> None:
         }
         special_dict[yaml_file.stem] = get_assets_from_file(yaml_file, item_mapping[yaml_file.stem])
 
+    quality_directory = Path(assets_directory, 'qualities').resolve(strict=True)
+    quality_dict = {}
+    for yaml_file in quality_directory.glob('*.yaml'):
+        quality_dict[yaml_file.stem] = get_assets_from_file(yaml_file, Quality)
+
     e = Equipment(**equipment_dict)
     c = Compendium(
         equipment=e,
@@ -136,6 +141,7 @@ def init(assets_directory: Path) -> None:
         spells=Spells(spells=spells_dict),
         heroic_skills=HeroicSkills(heroic_skills=heroic_skills_list),
         **special_dict,
+        qualities=quality_dict,
     )
     COMPENDIUM = c
 

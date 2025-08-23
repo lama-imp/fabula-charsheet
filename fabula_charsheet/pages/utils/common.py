@@ -14,9 +14,16 @@ from data.models import (
     Character,
     Shield,
     Item,
-    LocNamespace, Bond, Emotion,
+    LocNamespace,
+    Bond,
+    Emotion,
+    Quality,
+    Status,
+    DamageType,
+    Species,
 )
 from pages.controller import ClassController, CharacterController
+from data import compendium as c
 
 
 def get_avatar_path(char_id: uuid.UUID) -> Path | None:
@@ -156,3 +163,117 @@ def remove_bond(controller: CharacterController, loc: LocNamespace):
             if st.button(loc.remove_button, key=f"{bond.name}-remove"):
                 controller.character.bonds.remove(bond)
                 st.rerun()
+
+
+def upgrade_item(controller: CharacterController, item: Item, loc: LocNamespace):
+    if item.quality == "no_quality":
+        st.markdown(loc.page_view_upgrade_add_quality)
+    else:
+        st.markdown(loc.page_view_upgrade_replace_quality)
+
+    available_qualities = []
+
+    if isinstance(item, Weapon):
+        available_qualities.extend(
+            [q for q in c.COMPENDIUM.qualities["weapons"] if q.cost <= 1000]
+        )
+    else:
+        available_qualities.extend(
+            [q for q in c.COMPENDIUM.qualities["armors"] if q.cost <= 1000]
+        )
+
+    selected_quality, detail = select_quality(available_qualities, loc)
+
+    if st.button(
+            loc.upgrade_button,
+            key=f'{item.name}-upgrade-confirm',
+            disabled=not selected_quality,
+    ):
+        for category in ("main_hand", "off_hand", "armor", "accessory"):
+            if item == getattr(controller.character.inventory.equipped, category):
+                controller.unequip_item(category)
+        item.quality = selected_quality.name
+        item.quality_detail = detail
+        apply_quality_effects(item, selected_quality)
+        st.rerun()
+
+
+def select_quality(
+        available_qualities: list[Quality],
+        loc: LocNamespace
+) -> (Quality, list[Status | DamageType | Species]):
+    selected_quality: Quality | None = st.selectbox(
+        "selected_quality",
+        sorted(available_qualities, key=lambda x: x.localized_name(loc)),
+        index=None,
+        format_func=lambda x: x.localized_name(loc),
+        label_visibility="hidden"
+    )
+    detail = list()
+
+    if selected_quality:
+        st.markdown(loc.page_view_upgrade_cost.format(cost=selected_quality.cost))
+        st.markdown(selected_quality.localized_description(loc))
+        match selected_quality.name:
+            case "antistatus":
+                detail = st.pills(
+                    loc.page_view_select_status,
+                    [status for status in Status],
+                    format_func=lambda x: x.localized_name(loc),
+                )
+            case "status":
+                detail = st.pills(
+                    loc.page_view_select_status,
+                    [Status.slow, Status.shaken, Status.dazed, Status.weak],
+                    format_func=lambda x: x.localized_name(loc),
+                )
+            case "status_plus":
+                detail = st.pills(
+                    loc.page_view_select_status,
+                    [Status.enraged, Status.poisoned],
+                    format_func=lambda x: x.localized_name(loc),
+                )
+            case "resistance" | "immunity" | "damage_change":
+                detail = st.pills(
+                    loc.page_view_select_damage,
+                    [dmg for dmg in DamageType if dmg.name not in ["no_damage", "physical", "no_type"]],
+                    format_func=lambda x: x.localized_name(loc),
+                )
+            case "dual_resistance":
+                detail = st.pills(
+                    loc.page_view_select_damage,
+                    [dmg for dmg in DamageType if dmg.name not in ["no_damage", "physical", "no_type"]],
+                    format_func=lambda x: x.localized_name(loc),
+                    selection_mode="multi",
+                )
+            case "hunter":
+                detail = st.pills(
+                    loc.page_view_select_status,
+                    [species for species in Species],
+                    format_func=lambda x: x.localized_name(loc),
+                )
+            case "dual_hunter":
+                detail = st.pills(
+                    loc.page_view_select_status,
+                    [species for species in Species],
+                    format_func=lambda x: x.localized_name(loc),
+                    selection_mode="multi",
+                )
+    if not detail:
+        detail = list()
+    if not isinstance(detail, list):
+        detail = [detail]
+    return selected_quality, detail
+
+
+def apply_quality_effects(item: Item, selected_quality: Quality):
+    match selected_quality.name:
+        case "amulet":
+            item.bonus_magic_defense += 1
+        case "bulwark":
+            item.bonus_defense += 1
+        case "omnishield":
+            item.bonus_defense += 1
+            item.bonus_magic_defense += 1
+        case "initiative_up":
+            item.bonus_initiative += 4

@@ -81,3 +81,10 @@ page_view_remaining_zenit: "You have"
 page_view_remaining_zenit_value: "{zenits} zenits"
 
 page_view_select_class_for_extra_spells: "Choose a class to learn your 2 spells from:"
+
+page_view_upgrade_item_dialog_title: "Upgrade Item"
+page_view_upgrade_add_quality: "You can **add** a quality to this item."
+page_view_upgrade_replace_quality: "You can **replace** quality of this item."
+page_view_upgrade_cost: "**Cost**: {cost}"
+page_view_select_status: "Select a status:"
+page_view_select_damage: "Select damage type:"

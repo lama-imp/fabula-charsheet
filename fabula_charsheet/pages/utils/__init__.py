@@ -29,6 +29,7 @@ from .common import (
     add_item_as,
     add_bond,
     remove_bond,
+    upgrade_item,
 )
 
 from .view_page_actions import (

@@ -21,8 +21,9 @@ from data.models import (
     ChimeristSpell,
     Dance,
     WeaponRange,
+    HeroicSkillName,
 )
-from .common import add_item_as, join_with_or
+from .common import add_item_as, join_with_or, upgrade_item
 
 
 class ColumnConfig(BaseModel):
@@ -421,6 +422,10 @@ class WeaponTableWriter(TableWriter):
             self._add_item_as(weapon)
 
     def equip(self, item: Weapon, idx: int | None = None):
+        @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
+        def upgrade_item_dialog(item: Item):
+            upgrade_item(st.session_state.char_controller, item, self.loc)
+
         cannot_equip = False
         if item.martial:
             cannot_equip = True
@@ -443,6 +448,12 @@ class WeaponTableWriter(TableWriter):
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
+        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+            if st.button(
+                self.loc.upgrade_button,
+                key=f'{key_suffix}-upgrade',
+            ):
+                upgrade_item_dialog(item)
 
 
 class ArmorTableWriter(TableWriter):
@@ -536,6 +547,9 @@ class ArmorTableWriter(TableWriter):
             st.markdown(f"{str(item.magic_defense)}{def_bonus}")
 
     def equip(self, item: Armor, idx: int | None = None):
+        @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
+        def upgrade_item_dialog(item: Item):
+            upgrade_item(st.session_state.char_controller, item, self.loc)
         cannot_equip = False
         if item.martial:
             cannot_equip = True
@@ -557,6 +571,13 @@ class ArmorTableWriter(TableWriter):
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
+
+        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+            if st.button(
+                self.loc.upgrade_button,
+                key=f'{key_suffix}-upgrade',
+            ):
+                upgrade_item_dialog(item)
 
 
 class ShieldTableWriter(TableWriter):
@@ -642,6 +663,9 @@ class ShieldTableWriter(TableWriter):
         st.markdown(f"+{item.bonus_magic_defense}")
 
     def equip(self, item: Shield, idx=None):
+        @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
+        def upgrade_item_dialog(item: Item):
+            upgrade_item(st.session_state.char_controller, item, self.loc)
         cannot_equip = False
         if item.martial:
             cannot_equip = True
@@ -663,6 +687,13 @@ class ShieldTableWriter(TableWriter):
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
+
+        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+            if st.button(
+                self.loc.upgrade_button,
+                key=f'{key_suffix}-upgrade',
+            ):
+                upgrade_item_dialog(item)
 
 
 class AccessoryTableWriter(TableWriter):
