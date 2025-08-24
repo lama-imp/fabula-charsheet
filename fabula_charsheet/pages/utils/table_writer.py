@@ -22,6 +22,7 @@ from data.models import (
     Dance,
     WeaponRange,
     HeroicSkillName,
+    Arcanum,
 )
 from .common import add_item_as, join_with_or, upgrade_item
 
@@ -839,6 +840,41 @@ class DanceTableWriter(TableWriter):
 
     def _add_description(self, dance: Dance, idx=None):
         pass
+
+
+class ArcanumTableWriter(TableWriter):
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="arcanum",
+                width=0.45,
+                process=lambda a, idx=None: st.markdown(f"_{a.localized_name(self.loc)}_"),
+            ),
+            ColumnConfig(
+                name="domains",
+                width=0.45,
+                process=lambda a, idx=None: st.markdown(a.domains(self.loc)),
+            ),
+        )
+
+    def add_one_dance_columns(self, single_selector: Callable):
+        return (
+            *self.columns,
+            ColumnConfig(
+                name="select",
+                width=0.1,
+                process=single_selector,
+            ),
+        )
+
+    def _add_description(self, arcanum: Arcanum, idx=None):
+        with st.expander(self.loc.page_view_arcanum_effects.format(arcanum=arcanum.localized_name(self.loc))):
+            st.markdown(f"**{self.loc.arcana_merge}:**")
+            st.markdown(arcanum.merge(self.loc))
+            st.markdown(f"**{self.loc.arcana_dismiss}:**")
+            st.markdown(arcanum.dismiss(self.loc))
+        st.write(" ")
 
 
 class BondTableWriter(TableWriter):

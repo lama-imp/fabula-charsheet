@@ -26,6 +26,8 @@ column_heroic_skill: "Heroic Skill"
 column_requirements: "Requirements"
 column_species: "Species"
 column_dance: "Dance"
+column_arcanum: "Arcanum"
+column_domains: "Domains"
 
 or_separator: ", or "
 and_separator: " and "

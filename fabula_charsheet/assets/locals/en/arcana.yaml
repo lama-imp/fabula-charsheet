@@ -1,53 +1,90 @@
 arcanum_forge: "Arcanum of the Forge"
-arcanum_forge_domains: "fire, heat, metal."
-arcanum_forge_merge: "You have Resistance to **fire** damage.\nAny **fire** damage you deal ignores Resistances."
-arcanum_forge_dismiss: "When you dismiss this Arcanum, choose **Forge** or **Inferno**:
-**Forge**. You create a **basic armor**, **shield** or **weapon** of your choice. If you select this option again, the previously created item vanishes. If you create a weapon this way, it deals **fire** damage instead of **physical**.
-**Inferno**. Choose any number of creatures you can see: each of them suffers 30 **fire** damage. This damage ignores Resistances."
+arcanum_forge_domains: "fire, heat, metal"
+arcanum_forge_merge: |
+  You have Resistance to **fire** damage.  
+  Any **fire** damage you deal ignores Resistances.
+arcanum_forge_dismiss: |
+  When you dismiss this Arcanum, choose **Forge** or **Inferno**:
+
+  **Forge**. You create a **basic armor**, **shield** or **weapon** of your choice. If you select this option again, the previously created item vanishes. If you create a weapon this way, it deals **fire** damage instead of **physical**.  
+
+  **Inferno**. Choose any number of creatures you can see: each of them suffers 30 **fire** damage. This damage ignores Resistances.
 
 arcanum_frost: "Arcanum of the Frost"
-arcanum_frost_domains: "cold, ice, silence."
-arcanum_frost_merge: "You have Resistance to **ice** damage and are immune to **enraged**. Any **ice** damage you deal ignores Resistances."
-arcanum_frost_dismiss: "**Ice Age**. Choose any number of creatures you can see: each of them suffers 30 **ice** damage. This damage ignores Resistances."
+arcanum_frost_domains: "cold, ice, silence"
+arcanum_frost_merge: |
+  You have Resistance to **ice** damage and are immune to **enraged**.  
+  Any **ice** damage you deal ignores Resistances.
+arcanum_frost_dismiss: |
+  **Ice Age**. Choose any number of creatures you can see: each of them suffers 30 **ice** damage. This damage ignores Resistances.
 
 arcanum_gate: "Arcanum of the Gate"
-arcanum_gate_domains: "space, travel, void."
-arcanum_gate_merge: "You have Resistance to **dark** damage.\nYou gain a +1 bonus to your Magic Defense."
-arcanum_gate_dismiss: "When you dismiss this Arcanum, choose **Oblivion** or **Warp**:
-**Oblivion**. Choose any number of creatures you can see: each of them suffers 30 **dark** damage. This damage ignores Resistances.
-**Warp**. You teleport yourself and up to five other nearby willing creatures to a location you previously visited, if that location is within **1 travel day**."
+arcanum_gate_domains: "space, travel, void"
+arcanum_gate_merge: |
+  You have Resistance to **dark** damage.  
+  You gain a +1 bonus to your Magic Defense.
+arcanum_gate_dismiss: |
+  When you dismiss this Arcanum, choose **Oblivion** or **Warp**:
+
+  **Oblivion**. Choose any number of creatures you can see: each of them suffers 30 **dark** damage. This damage ignores Resistances.  
+
+  **Warp**. You teleport yourself and up to five other nearby willing creatures to a location you previously visited, if that location is within **1 travel day**.
 
 arcanum_grimoire: "Arcanum of the Grimoire"
-arcanum_grimoire_domains: "knowledge, revelations, understanding."
-arcanum_grimoire_merge: "You are able to read, write, speak and understand all languages.\nYou treat your **Insight** as if it were one die size higher (up to a maximum of **d12**)."
-arcanum_grimoire_dismiss: "**Oracle**. You ask the Game Master a single question. The Game Master must answer truthfully, describing the vision shown to you by the Grimoire.
-Once used, this dismiss effect will not be available until the next dawn. Furthermore, the same question may never be asked more than once. The Game Master has final say on which questions are too similar to be asked again."
+arcanum_grimoire_domains: "knowledge, revelations, understanding"
+arcanum_grimoire_merge: |
+  You are able to read, write, speak and understand all languages.  
+  You treat your **Insight** as if it were one die size higher (up to a maximum of **d12**).
+arcanum_grimoire_dismiss: |
+  **Oracle**. You ask the Game Master a single question. The Game Master must answer truthfully, describing the vision shown to you by the Grimoire.  
+
+  Once used, this dismiss effect will not be available until the next dawn. Furthermore, the same question may never be asked more than once. The Game Master has final say on which questions are too similar to be asked again.
 
 arcanum_oak: "Arcanum of the Oak"
-arcanum_oak_domains: "earth, plants, poison."
-arcanum_oak_merge: "You have Resistance to **earth** and **poison** damage and are immune to **poisoned**.\nWhenever you recover Hit Points, you recover **5** extra Hit Points."
-arcanum_oak_dismiss: "**Blossom**. Choose any number of creatures you can see (you may also choose yourself): each of them recovers from the **poisoned** status effect and recovers 40 Hit Points. This amount increases to 50 Hit Points if you are **level 20 or higher**, or to 60 Hit Points if you are **level 40 or higher**."
+arcanum_oak_domains: "earth, plants, poison"
+arcanum_oak_merge: |
+  You have Resistance to **earth** and **poison** damage and are immune to **poisoned**.  
+  Whenever you recover Hit Points, you recover **5** extra Hit Points.
+arcanum_oak_dismiss: |
+  **Blossom**. Choose any number of creatures you can see (you may also choose yourself): each of them recovers from the **poisoned** status effect and recovers 40 Hit Points.  
+
+  This amount increases to 50 Hit Points if you are **level 20 or higher**, or to 60 Hit Points if you are **level 40 or higher**.
 
 arcanum_sky: "Arcanum of the Sky"
-arcanum_sky_domains: "fog, rain, storms."
-arcanum_sky_merge: "You have Resistance to **air** and **lightning** damage.\nYou may use an action to accurately predict weather conditions for the next day within a range of **two travel days** — the Game Master will tell you what the weather conditions will be."
-arcanum_sky_dismiss: "**Thunderstorm**. Choose any number of creatures you can see: each of them suffers 30 **lightning** damage. This damage ignores Resistances."
+arcanum_sky_domains: "fog, rain, storms"
+arcanum_sky_merge: |
+  You have Resistance to **air** and **lightning** damage.  
+  You may use an action to accurately predict weather conditions for the next day within a range of **two travel days** — the Game Master will tell you what the weather conditions will be.
+arcanum_sky_dismiss: |
+  **Thunderstorm**. Choose any number of creatures you can see: each of them suffers 30 **lightning** damage. This damage ignores Resistances.
 
 arcanum_sword: "Arcanum of the Sword"
-arcanum_sword_domains: "conquest, heroism, leadership."
-arcanum_sword_merge: "Your attacks deal **5** extra damage, and all damage dealt by your attacks is treated as having no type (thus being unaffected by damage Affinities). Damage dealt by your attacks cannot gain a type as long as you are merged with this Arcanum.\nWhen you perform an attack, you may have that attack gain the **multi (any number of targets)** property. If you do, this Arcanum will be automatically dismissed after the attack is resolved (this is **not** considered a willing dismiss)."
+arcanum_sword_domains: "conquest, heroism, leadership"
+arcanum_sword_merge: |
+  Your attacks deal **5** extra damage, and all damage dealt by your attacks is treated as having no type (thus being unaffected by damage Affinities). Damage dealt by your attacks cannot gain a type as long as you are merged with this Arcanum.  
+
+  When you perform an attack, you may have that attack gain the **multi (any number of targets)** property. If you do, this Arcanum will be automatically dismissed after the attack is resolved (this is **not** considered a willing dismiss).
 arcanum_sword_dismiss: ""
 
 arcanum_tower: "Arcanum of the Tower"
-arcanum_tower_domains: "judgment, protection, sacrifice."
-arcanum_tower_merge: "When you summon this Arcanum, choose a damage type: **air**, **lightning**, **dark**, **earth**, **fire**, or **ice**. Until this Arcanum is dismissed, each of your allies present on the scene has Resistance to the chosen damage type (you do **not** gain this Resistance)."
-arcanum_tower_dismiss: "**Judgment**. Choose any number of creatures you can see: each of them suffers 30 **light** damage. This damage ignores Resistances."
+arcanum_tower_domains: "judgment, protection, sacrifice"
+arcanum_tower_merge: |
+  When you summon this Arcanum, choose a damage type: **air**, **lightning**, **dark**, **earth**, **fire**, or **ice**.  
+
+  Until this Arcanum is dismissed, each of your allies present on the scene has Resistance to the chosen damage type (you do **not** gain this Resistance).
+arcanum_tower_dismiss: |
+  **Judgment**. Choose any number of creatures you can see: each of them suffers 30 **light** damage. This damage ignores Resistances.
 
 arcanum_wheel: "Arcanum of the Wheel"
-arcanum_wheel_domains: "destiny, speed, time."
-arcanum_wheel_merge: "You are immune to **slow**.\nYou gain a +1 bonus to your Defense."
-arcanum_wheel_dismiss: "**Time Freeze**. Choose any number of creatures you can see: each of them suffers **slow**. If a creature chosen this way is already **slow**, that creature will instead perform one fewer action during their next turn (to a minimum of 0 actions)."
+arcanum_wheel_domains: "destiny, speed, time"
+arcanum_wheel_merge: |
+  You are immune to **slow**.  
+  You gain a +1 bonus to your Defense.
+arcanum_wheel_dismiss: |
+  **Time Freeze**. Choose any number of creatures you can see: each of them suffers **slow**.  
+
+  If a creature chosen this way is already **slow**, that creature will instead perform one fewer action during their next turn (to a minimum of 0 actions).
 
 arcana_domains: "Domains"
-arcana_merge: "Merge"
-arcana_dismiss: "Dismiss"
+arcana_merge: "MERGE"
+arcana_dismiss: "DISMISS"
