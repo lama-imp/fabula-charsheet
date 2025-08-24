@@ -57,3 +57,4 @@ from .dance import (
     DanceDuration
 )
 from .quality import Quality
+from .arcana import Arcanum

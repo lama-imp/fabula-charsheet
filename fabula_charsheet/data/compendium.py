@@ -7,7 +7,8 @@ from pathlib import Path
 import yaml
 from pydantic import BaseModel
 
-from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield, Therioform, Dance, Quality, HeroicSkill, Skill
+from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield, Therioform, Dance, Quality, \
+    HeroicSkill, Skill, Arcanum
 
 COMPENDIUM: Compendium | None = None
 
@@ -126,6 +127,7 @@ def init(assets_directory: Path) -> None:
         item_mapping = {
             "therioforms": Therioform,
             "dances": Dance,
+            "arcana": Arcanum,
         }
         special_dict[yaml_file.stem] = get_assets_from_file(yaml_file, item_mapping[yaml_file.stem])
 
