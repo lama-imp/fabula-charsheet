@@ -46,13 +46,13 @@ spell_gamble_description: |
   You summon a vortex of **chaotic energy**.  
   Roll your current **Willpower** die once for every 10 **Mind Points** spent while casting it, then keep the single die you prefer: the number on that die determines the effects.
   
-  - "**1** You lose half of your current **Hit Points** and half of your current **Mind Points**."
-  - "**2-3** Each creature present on the scene, including yourself, suffers **poisoned**."
-  - "**4-6** Each creature present on the scene, including yourself, suffers **slow**."
-  - "**7-8** Choose up to three creatures you can see: each of them recovers **50 Hit Points** and also recovers from all **status effects**."
-  - "**9+** Choose any number of creatures you can see: each of them suffers **30 damage**.  
+  - **1** You lose half of your current **Hit Points** and half of your current **Mind Points**.
+  - **2-3** Each creature present on the scene, including yourself, suffers **poisoned**.
+  - **4-6** Each creature present on the scene, including yourself, suffers **slow**.
+  - **7-8** Choose up to three creatures you can see: each of them recovers **50 Hit Points** and also recovers from all **status effects**.
+  - **9+** Choose any number of creatures you can see: each of them suffers **30 damage**.  
     The **damage type** is determined randomly by rolling a **d6**:  
-    1. **air**  2. **bolt**  3. **dark**  4. **earth**  5. **fire**  6. **poison**"
+    1. **air**  2. **bolt**  3. **dark**  4. **earth**  5. **fire**  6. **poison**
 
 
 spell_mirror: "Mirror"

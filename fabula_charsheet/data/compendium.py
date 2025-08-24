@@ -73,6 +73,7 @@ class Compendium:
     heroic_skills: HeroicSkills
     therioforms: list[Therioform] = field(default_factory=list)
     dances: list[Dance] = field(default_factory=list)
+    arcana: list[Arcanum] = field(default_factory=list)
     qualities: dict[str, Quality] = field(default_factory=dict)
 
     def get_class_name_from_skill(self, skill: Skill):

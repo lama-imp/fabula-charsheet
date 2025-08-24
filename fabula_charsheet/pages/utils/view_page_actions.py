@@ -7,9 +7,9 @@ import streamlit as st
 from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform, HeroicSkillName
+    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform, HeroicSkillName, Dance, Arcanum
 from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter, TherioformTableWriter, \
-    DanceTableWriter
+    DanceTableWriter, ArcanumTableWriter
 from .classes_page_actions import add_new_class
 from data import compendium as c
 
@@ -421,19 +421,20 @@ def add_therioform(controller: CharacterController, loc: LocNamespace):
         controller.character.special.therioforms.append(therioform)
         st.rerun()
 
+
 def add_dance(controller: CharacterController, loc: LocNamespace):
     selected_dance = list()
-    def single_selector(therioform: Therioform, idx=None):
-        if st.checkbox("add therioform",
-                       value=(therioform in selected_dance),
+    def single_selector(dance: Dance, idx=None):
+        if st.checkbox("add dance",
+                       value=(dance in selected_dance),
                        label_visibility="hidden",
-                       key=f"{therioform.name}-toggle"
+                       key=f"{dance.name}-toggle"
                        ):
-            if therioform not in selected_dance:
-                selected_dance.append(therioform)
+            if dance not in selected_dance:
+                selected_dance.append(dance)
         else:
-            if therioform in selected_dance:
-                selected_dance.remove(therioform)
+            if dance in selected_dance:
+                selected_dance.remove(dance)
 
     sorted_dances = sorted(c.COMPENDIUM.dances, key=lambda x: x.localized_name(loc))
     available_dances = [t for t in sorted_dances if t not in controller.character.special.dances]
@@ -589,3 +590,33 @@ def display_equipped_item(controller: CharacterController,
         st.write(f"{item.localized_quality(loc)} ◆ {loc.column_initiative}: {item.bonus_initiative}")
     elif isinstance(item, Shield):
         st.write(f"{item.localized_quality(loc)} ◆ {loc.column_initiative}: {item.bonus_initiative}")
+
+
+def add_arcanum(controller: CharacterController, loc: LocNamespace):
+    selected_arcanum = list()
+    def single_selector(arcanum: Arcanum, idx=None):
+        if st.checkbox("add arcanum",
+                       value=(arcanum in selected_arcanum),
+                       label_visibility="hidden",
+                       key=f"{arcanum.name}-toggle"
+                       ):
+            if arcanum not in selected_arcanum:
+                selected_arcanum.append(arcanum)
+        else:
+            if arcanum in selected_arcanum:
+                selected_arcanum.remove(arcanum)
+
+    sorted_arcana = sorted(c.COMPENDIUM.arcana, key=lambda x: x.localized_name(loc))
+    available_arcana = [t for t in sorted_arcana if t not in controller.character.special.arcana]
+
+    writer = ArcanumTableWriter(loc)
+    writer.columns = writer.add_one_dance_columns(single_selector)
+    writer.write_in_columns(available_arcana)
+
+    if st.button(loc.add_arcanum_button,
+                 key="add-selected-arcanum",
+                 disabled=(len(selected_arcanum) != 1)):
+        arcanum = selected_arcanum[0]
+        controller.character.special.arcana.append(arcanum)
+        st.rerun()
+
