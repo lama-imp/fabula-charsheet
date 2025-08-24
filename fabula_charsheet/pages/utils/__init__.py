@@ -16,6 +16,7 @@ from .table_writer import (
     TherioformTableWriter,
     BondTableWriter,
     DanceTableWriter,
+    ArcanumTableWriter,
 )
 
 from .common import (
@@ -44,6 +45,7 @@ from .view_page_actions import (
     increase_attribute,
     add_therioform,
     add_dance,
+    add_arcanum,
     manifest_therioform,
     display_equipped_item,
 )

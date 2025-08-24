@@ -5,10 +5,10 @@ from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory,
     WeaponRange, ClassName, LocNamespace, HeroicSkillName
 from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, \
-    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, \
+    AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, ArcanumTableWriter, \
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
-    increase_attribute, add_therioform, add_dance, manifest_therioform, display_equipped_item
+    increase_attribute, add_therioform, add_dance, add_arcanum, manifest_therioform, display_equipped_item
 from pages.character_view.view_state import ViewState
 
 
@@ -75,6 +75,10 @@ def build(controller: CharacterController):
     @st.dialog(loc.page_view_manifest_therioform_dialog_title, width="large")
     def manifest_therioform_dialog(controller: CharacterController, loc: LocNamespace):
         manifest_therioform(controller, loc)
+
+    @st.dialog(loc.page_view_add_arcanum_dialog_title, width="large")
+    def add_arcanum_dialog(controller: CharacterController, loc: LocNamespace):
+        add_arcanum(controller, loc)
 
     st.title(f"{controller.character.name}")
 
@@ -494,6 +498,17 @@ def build(controller: CharacterController):
                     if st.button(loc.add_dance_button):
                         add_dance_dialog(controller, loc)
             DanceTableWriter(loc).write_in_columns(added_dances)
+            st.divider()
+
+        if controller.is_class_added(ClassName.arcanist) and controller.has_skill("bind_and_summon"):
+            added_arcana = [t for t in controller.character.special.arcana]
+            col1, col2 = st.columns([0.25, 0.75])
+            with col1:
+                st.markdown(f"##### {loc.page_view_arcana}")
+            with col2:
+                if st.button(loc.add_arcanum_button):
+                    add_arcanum_dialog(controller, loc)
+            ArcanumTableWriter(loc).write_in_columns(added_arcana)
             st.divider()
 
     col1, col2 = st.columns([0.2, 0.8])
