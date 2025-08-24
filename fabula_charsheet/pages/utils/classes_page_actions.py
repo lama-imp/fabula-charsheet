@@ -73,15 +73,9 @@ def add_new_class(
                 list_skills(class_controller, can_add_skill_number)
                 st.session_state.class_not_ready = False
 
-            if if_show_spells(casting_skill):
+            if if_show_spells(casting_skill) and mode == "creation":
                 class_spells = c.COMPENDIUM.spells.get_spells(class_controller.char_class.name)
-
-                if mode == "creation":
-                    max_n_spells = casting_skill.current_level
-                else:
-                    class_spells = [spell for spell in class_spells if
-                                    spell not in character_controller.character.get_spells_by_class(selected_class_name)]
-                    max_n_spells = 1
+                max_n_spells = casting_skill.current_level
 
                 with st.expander(loc.page_class_select_spells_expander):
                     SpellTableWriter(loc).write_in_columns(class_spells)
