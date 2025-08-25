@@ -158,7 +158,7 @@ class CharacterController:
             item_bonus += item.bonus_defense
 
         other_bonuses = 0
-        if ClassName.rogue in self.character.classes:
+        if self.is_class_added(ClassName.rogue):
             other_bonuses += self.get_skill_level(ClassName.rogue, "dodge")
 
         armor = self.character.inventory.equipped.armor
