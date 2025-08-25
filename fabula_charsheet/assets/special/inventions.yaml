@@ -1,0 +1,9 @@
+- name: alchemy_basic
+- name: alchemy_advanced
+- name: alchemy_superior
+- name: magitech_basic
+- name: magitech_advanced
+- name: magitech_superior
+- name: infusion_basic
+- name: infusion_advanced
+- name: infusion_superior

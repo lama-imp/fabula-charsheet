@@ -1,0 +1,69 @@
+# Tinkerer's inventions
+alchemy_basic: "Alchemy (Basic)"
+alchemy_basic_description: |
+  You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
+  Roll **two d20** and assign them to the effects in the table.
+alchemy_basic_base_ip_cost: "3"
+
+alchemy_advanced: "Alchemy (Advanced)"
+alchemy_advanced_description: |
+  You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
+  Roll **three d20** and assign two of them to the effects in the table.
+  base_ip_cost: 4
+alchemy_advanced_base_ip_cost: "4"
+
+alchemy_superior: "Alchemy (Superior)"
+alchemy_superior_description: |
+  You treat your **Might** as if it were one die size higher (to a maximum of **d12**).
+
+  When you succeed on a Check to advance or turn back a Clock, if that Check includes **Might**,
+  you may fill or erase 1 additional section of that Clock.
+alchemy_superior_base_ip_cost: "5"
+
+
+magitech_basic: "Magitech (Basic)"
+magitech_basic_description: |
+  When you deal damage with an attack or spell, you may have all that damage become **lightning**.
+
+  While your unarmed strikes deal **lightning** damage, any enemy who loses **20 or more** Hit Points
+  due to one of your unarmed strikes also suffers **slow**.
+magitech_basic_base_ip_cost: "0"
+
+magitech_advanced: "Magitech (Advanced)"
+magitech_advanced_description: |
+  When you use the **Biophagy** Skill, you also recover an amount of **Mind Points** equal to
+  **【4 + (your Skill Level in Theriomorphosis)】**.
+magitech_advanced_base_ip_cost: "3"
+
+magitech_superior: "Magitech (Superior)"
+magitech_superior_description: |
+  You may treat your Defense score as being equal to
+  **【13 + (half your Skill Level in Theriomorphosis)】** (you may still use your normal scores if better).
+magitech_superior_base_ip_cost: "2"
+
+infusion_basic: "Infusion (Basic)"
+infusion_basic_description: |
+  When you deal damage with an attack or spell, you may have all that damage become **air**.
+
+  While your unarmed strikes deal **air** damage, any enemy who loses **20 or more** Hit Points
+  due to one of your unarmed strikes also suffers **weak**.
+infusion_basic_base_ip_cost: "2"
+
+infusion_advanced: "Infusion (Advanced)"
+infusion_advanced_description: |
+  Your attacks with unarmed strikes gain **multi (3)**.
+infusion_advanced_base_ip_cost: "2"
+
+infusion_superior: "Infusion (Superior)"
+infusion_superior_description: |
+  You are able to fly. In addition to the obvious advantages in mobility,
+  your melee attacks can target flying creatures and you cannot be targeted by melee attacks
+  unless the attacker is flying or is somehow able to reach flying targets.
+
+  These benefits do not apply if you are unable to fly freely (such as when inside a vehicle
+  designed for human-sized creatures, or in a narrow corridor).
+
+  Additionally, when you suffer **air**, **lightning** or **ice** damage during a conflict scene,
+  you lose these benefits until the start of your next turn.
+infusion_superior_base_ip_cost: "2"
+
