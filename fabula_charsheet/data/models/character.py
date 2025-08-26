@@ -7,7 +7,8 @@ from enum import StrEnum, auto
 from pydantic import BaseModel, Field, ConfigDict, conint
 
 from .bonds import Bond
-from .char_class import CharClass, ClassName
+from .char_class import CharClass
+from .char_class_name import ClassName
 from .attributes import Dexterity, Might, Willpower, Insight
 from .inventory import Inventory
 from .skill import HeroicSkill, HeroicSkillName
@@ -15,6 +16,7 @@ from .spell import Spell, ChimeristSpell
 from .therioform import Therioform
 from .dance import Dance
 from .arcana import Arcanum
+from .companion import Companion
 
 if TYPE_CHECKING:
     from data.models import LocNamespace
@@ -44,6 +46,7 @@ class CharSpecial(BaseModel):
     therioforms: list[Therioform] = list()
     dances: list[Dance] = list()
     arcana: list[Arcanum] = list()
+    companion: Companion | None = None
 
     def get_special(self, attribute: str):
         return getattr(self, attribute, None)

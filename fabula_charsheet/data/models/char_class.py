@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import TYPE_CHECKING
 
 from .skill import Skill
-from .class_name import ClassName
+from .char_class_name import ClassName
 
 if TYPE_CHECKING:
     from data.models import LocNamespace, WeaponRange

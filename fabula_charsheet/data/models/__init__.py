@@ -9,11 +9,11 @@ from .attributes import (
     Willpower,
 )
 from .char_class import (
-    ClassName,
     ClassBonus,
     CharClass,
     Ritual,
 )
+from .char_class_name import ClassName
 from .character import (
     Character,
     CharSpecial,
@@ -58,3 +58,4 @@ from .dance import (
 )
 from .quality import Quality
 from .arcana import Arcanum
+from .companion import Companion

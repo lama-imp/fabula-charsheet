@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from data.models import LocNamespace
 
-from .class_name import ClassName
+from .char_class_name import ClassName
 from .damage import DamageType
 from .species import Species
 
