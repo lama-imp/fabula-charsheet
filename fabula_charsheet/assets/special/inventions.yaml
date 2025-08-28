@@ -1,9 +1,25 @@
 - name: alchemy_basic
+  ip_cost: 3
+
 - name: alchemy_advanced
+  ip_cost: 4
+
 - name: alchemy_superior
+  ip_cost: 5
+
 - name: magitech_basic
+  
 - name: magitech_advanced
+  ip_cost: 3
+
 - name: magitech_superior
+  ip_cost: 2
+
 - name: infusion_basic
+  ip_cost: 2
+
 - name: infusion_advanced
+  ip_cost: 2
+
 - name: infusion_superior
+  ip_cost: 2

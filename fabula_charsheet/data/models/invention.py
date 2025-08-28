@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 
 class Invention(BaseModel):
     name: str = ""
+    ip_cost: int = 0
 
     def localized_name(self, loc: LocNamespace) -> str:
         key = f"invention_{self.name}"

@@ -7,9 +7,9 @@ import streamlit as st
 from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform, HeroicSkillName, Dance, Arcanum
+    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform, HeroicSkillName, Dance, Arcanum, Invention
 from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter, TherioformTableWriter, \
-    DanceTableWriter, ArcanumTableWriter
+    DanceTableWriter, ArcanumTableWriter, InventionTableWriter
 from .classes_page_actions import add_new_class
 from data import compendium as c
 
@@ -446,6 +446,32 @@ def add_dance(controller: CharacterController, loc: LocNamespace):
     if st.button(loc.add_spell_button, disabled=(len(selected_dance) != 1)):
         dance = selected_dance[0]
         controller.character.special.dances.append(dance)
+        st.rerun()
+
+def add_invention(controller: CharacterController, loc: LocNamespace):
+    selected_invention = list()
+    def single_selector(invention: Invention, idx=None):
+        if st.checkbox("add invention",
+                       value=(invention in selected_invention),
+                       label_visibility="hidden",
+                       key=f"{invention.name}-toggle"
+                       ):
+            if invention not in selected_invention:
+                selected_invention.append(invention)
+        else:
+            if invention in selected_invention:
+                selected_invention.remove(invention)
+
+    sorted_inventions = sorted(c.COMPENDIUM.inventions, key=lambda x: x.localized_name(loc))
+    available_inventions = [i for i in sorted_inventions if i not in controller.character.special.inventions]
+
+    writer = InventionTableWriter(loc)
+    writer.columns = writer.add_one_invention_columns(single_selector)
+    writer.write_in_columns(available_inventions, description=False)
+
+    if st.button(loc.add_invention_button, disabled=(len(selected_invention) != 1), key="add_invention"):
+        invention = selected_invention[0]
+        controller.character.special.inventions.append(invention)
         st.rerun()
 
 

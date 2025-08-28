@@ -4,11 +4,11 @@ import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, LocNamespace, HeroicSkillName
 from pages.controller import CharacterController
-from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, \
+from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, InventionTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, ArcanumTableWriter, \
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
-    increase_attribute, add_therioform, add_dance, add_arcanum, manifest_therioform, display_equipped_item
+    increase_attribute, add_therioform, add_dance, add_arcanum, manifest_therioform, display_equipped_item, add_invention
 from pages.character_view.view_state import ViewState
 
 
@@ -79,6 +79,10 @@ def build(controller: CharacterController):
     @st.dialog(loc.page_view_add_arcanum_dialog_title, width="large")
     def add_arcanum_dialog(controller: CharacterController, loc: LocNamespace):
         add_arcanum(controller, loc)
+
+    @st.dialog(loc.page_view_add_invention_dialog_title, width="large")
+    def add_invention_dialog(controller: CharacterController, loc: LocNamespace):
+        add_invention(controller, loc)
 
     st.title(f"{controller.character.name}")
 
@@ -509,6 +513,18 @@ def build(controller: CharacterController):
                 if st.button(loc.add_arcanum_button):
                     add_arcanum_dialog(controller, loc)
             ArcanumTableWriter(loc).write_in_columns(added_arcana)
+            st.divider()
+
+        if controller.is_class_added(ClassName.tinkerer) and controller.has_skill("gadgets"):
+            added_inventions = [i for i in controller.character.special.inventions]
+            col1, col2 = st.columns([0.25, 0.75])
+            with col1:
+                st.markdown(f"##### {loc.page_view_inventions}")
+            with col2:
+                if len(added_inventions) < controller.get_skill_level(ClassName.tinkerer, "gadgets"):
+                    if st.button(loc.add_invention_button):
+                        add_invention_dialog(controller, loc)
+            InventionTableWriter(loc).write_in_columns(added_inventions)
             st.divider()
 
     col1, col2 = st.columns([0.2, 0.8])

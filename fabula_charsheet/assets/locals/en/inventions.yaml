@@ -1,69 +1,56 @@
 # Tinkerer's inventions
-alchemy_basic: "Alchemy (Basic)"
-alchemy_basic_description: |
+invention_alchemy_basic: "Alchemy (Basic)"
+invention_alchemy_basic_description: |
   You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
   Roll **two d20** and assign them to the effects in the table.
-alchemy_basic_base_ip_cost: "3"
 
-alchemy_advanced: "Alchemy (Advanced)"
-alchemy_advanced_description: |
+
+invention_alchemy_advanced: "Alchemy (Advanced)"
+invention_alchemy_advanced_description: |
   You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
   Roll **three d20** and assign two of them to the effects in the table.
-  base_ip_cost: 4
-alchemy_advanced_base_ip_cost: "4"
-
-alchemy_superior: "Alchemy (Superior)"
-alchemy_superior_description: |
-  You treat your **Might** as if it were one die size higher (to a maximum of **d12**).
-
-  When you succeed on a Check to advance or turn back a Clock, if that Check includes **Might**,
-  you may fill or erase 1 additional section of that Clock.
-alchemy_superior_base_ip_cost: "5"
 
 
-magitech_basic: "Magitech (Basic)"
-magitech_basic_description: |
-  When you deal damage with an attack or spell, you may have all that damage become **lightning**.
+invention_alchemy_superior: "Alchemy (Superior)"
+invention_alchemy_superior_description: |
+  You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
+  Roll **four d20** and assign two of them to the effects in the table.
 
-  While your unarmed strikes deal **lightning** damage, any enemy who loses **20 or more** Hit Points
-  due to one of your unarmed strikes also suffers **slow**.
-magitech_basic_base_ip_cost: "0"
 
-magitech_advanced: "Magitech (Advanced)"
-magitech_advanced_description: |
-  When you use the **Biophagy** Skill, you also recover an amount of **Mind Points** equal to
-  **【4 + (your Skill Level in Theriomorphosis)】**.
-magitech_advanced_base_ip_cost: "3"
+invention_magitech_basic: "Magitech (Basic)"
+invention_magitech_basic_description: |
+  You may use an action and spend 10 Mind Points to perform an Opposed【INS + INS】
+  Check against one nearby soldier-rank construct you can see (the Game Master must
+  tell you who is a valid target). If you succeed, you gain control of the creature until
+  the end of the scene.
 
-magitech_superior: "Magitech (Superior)"
-magitech_superior_description: |
-  You may treat your Defense score as being equal to
-  **【13 + (half your Skill Level in Theriomorphosis)】** (you may still use your normal scores if better).
-magitech_superior_base_ip_cost: "2"
+invention_magitech_advanced: "Magitech (Advanced)"
+invention_magitech_advanced_description: |
+  You may perform the Inventory action and spend 3 Inventory Points to create a firearm 
+  weapon known as a magicannon. You can have only one at a time. When you create a magicannon,
+  choose the type of damage it deals (air, bolt, earth, fire, ice, or physical).
 
-infusion_basic: "Infusion (Basic)"
-infusion_basic_description: |
-  When you deal damage with an attack or spell, you may have all that damage become **air**.
+invention_magitech_superior: "Magitech (Superior)"
+invention_magitech_superior_description: |
+  You develop three magisphere prototypes; each of them can replicate a spell chosen
+  from the following lists: Elementalist, Entropist and Spiritist. +2 on level 20 and another +2 on level 40.
 
-  While your unarmed strikes deal **air** damage, any enemy who loses **20 or more** Hit Points
-  due to one of your unarmed strikes also suffers **weak**.
-infusion_basic_base_ip_cost: "2"
+invention_infusion_basic: "Infusion (Basic)"
+invention_infusion_basic_description: |
+  When you successfully hit one or more targets with an attack, you may
+  produce a special infusion and apply the corresponding effect to that attack.
+  Cryo, Pyro, Volt
+  
 
-infusion_advanced: "Infusion (Advanced)"
-infusion_advanced_description: |
-  Your attacks with unarmed strikes gain **multi (3)**.
-infusion_advanced_base_ip_cost: "2"
+invention_infusion_advanced: "Infusion (Advanced)"
+invention_infusion_advanced_description: |
+  When you successfully hit one or more targets with an attack, you may
+  produce a special infusion and apply the corresponding effect to that attack.
+  Cyclone, Exorcism, Seismic, Shadow
 
-infusion_superior: "Infusion (Superior)"
-infusion_superior_description: |
-  You are able to fly. In addition to the obvious advantages in mobility,
-  your melee attacks can target flying creatures and you cannot be targeted by melee attacks
-  unless the attacker is flying or is somehow able to reach flying targets.
-
-  These benefits do not apply if you are unable to fly freely (such as when inside a vehicle
-  designed for human-sized creatures, or in a narrow corridor).
-
-  Additionally, when you suffer **air**, **lightning** or **ice** damage during a conflict scene,
-  you lose these benefits until the start of your next turn.
-infusion_superior_base_ip_cost: "2"
+invention_infusion_superior: "Infusion (Superior)"
+invention_infusion_superior_description: |
+  When you successfully hit one or more targets with an attack, you may
+  produce a special infusion and apply the corresponding effect to that attack.
+  Vampire, Venom
 

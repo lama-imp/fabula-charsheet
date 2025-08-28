@@ -17,6 +17,7 @@ from .table_writer import (
     BondTableWriter,
     DanceTableWriter,
     ArcanumTableWriter,
+    InventionTableWriter,
 )
 
 from .common import (
