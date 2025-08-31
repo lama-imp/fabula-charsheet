@@ -17,6 +17,7 @@ from .table_writer import (
     BondTableWriter,
     DanceTableWriter,
     ArcanumTableWriter,
+    InventionTableWriter,
 )
 
 from .common import (
@@ -48,6 +49,7 @@ from .view_page_actions import (
     add_arcanum,
     manifest_therioform,
     display_equipped_item,
+    add_invention,
 )
 
 from .classes_page_actions import (

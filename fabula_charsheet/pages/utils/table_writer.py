@@ -23,6 +23,7 @@ from data.models import (
     WeaponRange,
     HeroicSkillName,
     Arcanum,
+    Invention,
 )
 from .common import add_item_as, join_with_or, upgrade_item
 
@@ -875,6 +876,41 @@ class ArcanumTableWriter(TableWriter):
             st.markdown(f"**{self.loc.arcana_dismiss}:**")
             st.markdown(arcanum.dismiss(self.loc))
         st.write(" ")
+
+class InventionTableWriter(TableWriter):
+    @property
+    def base_columns(self):
+        return (
+            ColumnConfig(
+                name="invention",
+                width=0.3,
+                process=lambda i, idx=None: st.markdown(f"_{i.localized_name(self.loc)}_"),
+            ),
+            ColumnConfig(
+                name="cost",
+                width=0.1,
+                process=lambda i, idx=None: st.markdown(i.ip_cost),
+            ),
+            ColumnConfig(
+                name="description",
+                width=0.6,
+                process=lambda i, idx=None: st.markdown(i.localized_description(self.loc)),
+            ),
+        )
+
+    def add_one_invention_columns(self, single_selector: Callable):
+        return (
+            *self.columns,
+            ColumnConfig(
+                name="select",
+                width=0.1,
+                process=single_selector,
+            ),
+        )
+
+    def _add_description(self, invention: Invention, idx=None):
+        pass
+
 
 
 class BondTableWriter(TableWriter):

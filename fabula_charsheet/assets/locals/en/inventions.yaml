@@ -1,0 +1,56 @@
+# Tinkerer's inventions
+invention_alchemy_basic: "Alchemy (Basic)"
+invention_alchemy_basic_description: |
+  You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
+  Roll **two d20** and assign them to the effects in the table.
+
+
+invention_alchemy_advanced: "Alchemy (Advanced)"
+invention_alchemy_advanced_description: |
+  You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
+  Roll **three d20** and assign two of them to the effects in the table.
+
+
+invention_alchemy_superior: "Alchemy (Superior)"
+invention_alchemy_superior_description: |
+  You may perform the Inventory action to rapidly craft a potion with powerful but somewhat unpredictable effects.
+  Roll **four d20** and assign two of them to the effects in the table.
+
+
+invention_magitech_basic: "Magitech (Basic)"
+invention_magitech_basic_description: |
+  You may use an action and spend 10 Mind Points to perform an Opposed【INS + INS】
+  Check against one nearby soldier-rank construct you can see (the Game Master must
+  tell you who is a valid target). If you succeed, you gain control of the creature until
+  the end of the scene.
+
+invention_magitech_advanced: "Magitech (Advanced)"
+invention_magitech_advanced_description: |
+  You may perform the Inventory action and spend 3 Inventory Points to create a firearm 
+  weapon known as a magicannon. You can have only one at a time. When you create a magicannon,
+  choose the type of damage it deals (air, bolt, earth, fire, ice, or physical).
+
+invention_magitech_superior: "Magitech (Superior)"
+invention_magitech_superior_description: |
+  You develop three magisphere prototypes; each of them can replicate a spell chosen
+  from the following lists: Elementalist, Entropist and Spiritist. +2 on level 20 and another +2 on level 40.
+
+invention_infusion_basic: "Infusion (Basic)"
+invention_infusion_basic_description: |
+  When you successfully hit one or more targets with an attack, you may
+  produce a special infusion and apply the corresponding effect to that attack.
+  Cryo, Pyro, Volt
+  
+
+invention_infusion_advanced: "Infusion (Advanced)"
+invention_infusion_advanced_description: |
+  When you successfully hit one or more targets with an attack, you may
+  produce a special infusion and apply the corresponding effect to that attack.
+  Cyclone, Exorcism, Seismic, Shadow
+
+invention_infusion_superior: "Infusion (Superior)"
+invention_infusion_superior_description: |
+  When you successfully hit one or more targets with an attack, you may
+  produce a special infusion and apply the corresponding effect to that attack.
+  Vampire, Venom
+
