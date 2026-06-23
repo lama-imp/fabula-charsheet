@@ -37,6 +37,8 @@ if TYPE_CHECKING:
     from data.models import LocNamespace
 
 BASE_ATTRIBUTE_SUM = 32
+ATTRIBUTE_SUM_AT_LEVEL_20 = BASE_ATTRIBUTE_SUM + 2
+ATTRIBUTE_SUM_AT_LEVEL_40 = BASE_ATTRIBUTE_SUM + 4
 
 
 class CharacterController:
@@ -438,9 +440,9 @@ class CharacterController:
             ]
         )
         if (
-                self.character.level == 20 and sum_of_attributes < 34
+                self.character.level == 20 and sum_of_attributes < ATTRIBUTE_SUM_AT_LEVEL_20
         ) or (
-                self.character.level == 40 and sum_of_attributes < 36
+                self.character.level == 40 and sum_of_attributes < ATTRIBUTE_SUM_AT_LEVEL_40
         ):
             return True
 
