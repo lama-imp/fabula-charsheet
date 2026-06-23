@@ -19,7 +19,7 @@ def build(controller: CharacterController):
     st.title(loc.page_equipment_title)
     st.markdown(loc.equipment_message)
 
-    show_martial(controller.character)
+    show_martial(controller.character, loc)
 
     base_equipment = c.COMPENDIUM.equipment
     weapons = base_equipment.weapons_by_categories()

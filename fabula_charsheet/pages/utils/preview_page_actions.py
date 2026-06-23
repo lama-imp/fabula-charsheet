@@ -129,7 +129,7 @@ def edit_class(character_controller: CharacterController, char_class: CharClass,
         st.write(loc.page_class_selected_skills)
         for skill in class_controller.char_class.skills:
             if skill.current_level > 0:
-                show_skill(skill)
+                show_skill(skill, loc)
         class_not_ready = False
 
     if if_show_spells(casting_skill):

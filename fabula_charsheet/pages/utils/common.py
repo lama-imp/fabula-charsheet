@@ -41,23 +41,20 @@ def if_show_spells(casting_skill: Skill):
     return False
 
 
-def list_skills(class_controller: ClassController, can_add_skill_number: int):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def list_skills(class_controller: ClassController, can_add_skill_number: int, loc: LocNamespace):
     with st.container(border=True):
         st.subheader(loc.msg_skills_points_remaining.format(count=can_add_skill_number))
         st.write(loc.msg_skills_selected)
         for skill in class_controller.char_class.skills:
             if skill.current_level > 0:
-                show_skill(skill)
+                show_skill(skill, loc)
 
 
-def show_skill(skill: Skill):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def show_skill(skill: Skill, loc: LocNamespace):
     st.markdown(f"**{skill.localized_name(loc)}** - level {skill.current_level}")
 
 
-def show_martial(input_: CharClass | Character):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def show_martial(input_: CharClass | Character, loc: LocNamespace):
     martial_keys = [
         "melee",
         "ranged",

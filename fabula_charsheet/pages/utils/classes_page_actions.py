@@ -46,7 +46,7 @@ def add_new_class(
 
             show_bonus(class_controller, loc)
 
-            show_martial(selected_class)
+            show_martial(selected_class, loc)
 
             if selected_class.rituals:
                 rituals_str = ', '.join(r.localized_name(loc) for r in selected_class.rituals)
@@ -70,7 +70,7 @@ def add_new_class(
                 st.error(loc.error_class_remove_skill.format(levels=levels_to_remove))
                 st.session_state.class_not_ready = True
             else:
-                list_skills(class_controller, can_add_skill_number)
+                list_skills(class_controller, can_add_skill_number, loc)
                 st.session_state.class_not_ready = False
 
             if if_show_spells(casting_skill) and mode == "creation":

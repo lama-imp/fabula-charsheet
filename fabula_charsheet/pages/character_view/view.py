@@ -284,7 +284,7 @@ def build(controller: CharacterController):
             if accessory:
                 display_equipped_item(controller, accessory, "accessory", loc)
 
-            show_martial(controller.character)
+            show_martial(controller.character, loc)
 
 
         with attributes_col:
