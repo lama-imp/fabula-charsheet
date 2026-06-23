@@ -410,12 +410,7 @@ class WeaponTableWriter(TableWriter):
         st.divider()
 
     def _add_weapon(self, weapon: Weapon, idx=None):
-        cannot_equip = False
-        if weapon.martial:
-            cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.can_equip_weapon(weapon.range):
-                    cannot_equip = False
+        cannot_equip = not st.session_state.creation_controller.can_equip_martial(weapon)
 
         if st.button(
                 self.loc.add_button,
@@ -432,16 +427,7 @@ class WeaponTableWriter(TableWriter):
         def upgrade_item_dialog(item: Item):
             upgrade_item(st.session_state.char_controller, item, self.loc)
 
-        cannot_equip = False
-        if item.martial:
-            cannot_equip = True
-            for char_class in st.session_state.char_controller.character.classes:
-                if (
-                    char_class.martial_melee and item.range == WeaponRange.melee
-                ) or (
-                    char_class.martial_ranged and item.range == WeaponRange.ranged
-                ):
-                    cannot_equip = False
+        cannot_equip = not st.session_state.char_controller.can_equip_martial(item)
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
@@ -523,12 +509,7 @@ class ArmorTableWriter(TableWriter):
         st.divider()
 
     def _add_armor(self, armor: Armor, idx=None):
-        cannot_equip = False
-        if armor.martial:
-            cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_armor:
-                    cannot_equip = False
+        cannot_equip = not st.session_state.creation_controller.can_equip_martial(armor)
 
         disabled = cannot_equip or (st.session_state.start_equipment.zenit < armor.cost)
         if st.button(self.loc.add_button, key=f"{armor.name}-add", disabled=disabled):
@@ -556,13 +537,7 @@ class ArmorTableWriter(TableWriter):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
             upgrade_item(st.session_state.char_controller, item, self.loc)
-        cannot_equip = False
-        if item.martial:
-            cannot_equip = True
-            for char_class in st.session_state.char_controller.character.classes:
-                if char_class.martial_armor:
-                    cannot_equip = False
-
+        cannot_equip = not st.session_state.char_controller.can_equip_martial(item)
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
 
@@ -647,12 +622,7 @@ class ShieldTableWriter(TableWriter):
         st.divider()
 
     def _add_shield(self, shield: Shield, idx=None):
-        cannot_equip = False
-        if shield.martial:
-            cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_shields:
-                    cannot_equip = False
+        cannot_equip = not st.session_state.creation_controller.can_equip_martial(shield)
 
         disabled = cannot_equip or (st.session_state.start_equipment.zenit < shield.cost)
         if st.button(self.loc.add_button, key=f"{shield.name}-add", disabled=disabled):
@@ -672,13 +642,7 @@ class ShieldTableWriter(TableWriter):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
             upgrade_item(st.session_state.char_controller, item, self.loc)
-        cannot_equip = False
-        if item.martial:
-            cannot_equip = True
-            for char_class in st.session_state.char_controller.character.classes:
-                if char_class.martial_armor:
-                    cannot_equip = False
-
+        cannot_equip = not st.session_state.char_controller.can_equip_martial(item)
         if item in st.session_state.char_controller.equipped_items():
             cannot_equip = True
 

@@ -207,6 +207,17 @@ class CharacterController:
             return f"{initiative} +{bonus}"
         return initiative
 
+    def can_equip_martial(self, item: Item) -> bool:
+        if not item.martial:
+            return True
+        if isinstance(item, Weapon):
+            return any(c.can_equip_weapon(item.range) for c in self.character.classes)
+        if isinstance(item, Armor):
+            return any(c.martial_armor for c in self.character.classes)
+        if isinstance(item, Shield):
+            return any(c.martial_shields for c in self.character.classes)
+        return False
+
     def equip_item(self, item: Item):
         equipped = self.character.inventory.equipped
 
