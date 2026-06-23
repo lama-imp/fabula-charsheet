@@ -414,11 +414,10 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
         format_func=lambda x: getattr(loc, key.format(skill_name=x), x),
         label_visibility="hidden"
     )
-    available_therioforms = []
-    if skill == "theriomorphosis":
-        available_therioforms = list(controller.character.special.therioforms)
-    elif skill == "genoclepsis":
-        available_therioforms = sorted(c.COMPENDIUM.therioforms, key=lambda x: x.localized_name(loc))
+    available_therioforms = sorted(
+        controller.available_therioforms_for_skill(skill or ""),
+        key=lambda x: x.localized_name(loc),
+    )
 
     if skill:
         can_manifest_number = controller.max_manifest_therioforms(skill)

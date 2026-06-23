@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 import yaml
 
 from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
+from data import compendium as c
 from data.models import (
     Character,
     CharClass,
@@ -586,6 +587,13 @@ class CharacterController:
         return len(self.character.special.dances) < (
             self.get_skill_level(ClassName.dancer, "dance") or 0
         )
+
+    def available_therioforms_for_skill(self, skill_name: str) -> list[Therioform]:
+        if skill_name == "theriomorphosis":
+            return list(self.character.special.therioforms)
+        if skill_name == "genoclepsis":
+            return list(c.COMPENDIUM.therioforms)
+        return []
 
     def max_manifest_therioforms(self, skill_name: str) -> int:
         if skill_name == "theriomorphosis":
