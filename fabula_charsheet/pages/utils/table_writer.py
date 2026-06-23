@@ -170,8 +170,14 @@ class SkillTableWriter(TableWriter):
                 label_visibility="hidden",
             )
 
+    def write_in_columns(self, data: Iterable, header: bool = True, description: bool = True):
+        skills = list(data)
+        super().write_in_columns(skills, header=header, description=description)
+        if any(col.process == SkillTableWriter._level_input for col in self.columns):
+            SkillTableWriter._sync_skill_levels(skills)
+
     @staticmethod
-    def sync_skill_levels(skills: list[Skill]):
+    def _sync_skill_levels(skills: list[Skill]):
         for skill in skills:
             if skill.max_level > 1:
                 key = f"{skill.name}-slider"
