@@ -116,7 +116,7 @@ def edit_class(character_controller: CharacterController, char_class: CharClass,
 
     with st.expander(loc.page_class_choose_skills):
         SkillTableWriter(loc).write_in_columns(class_controller.char_class.skills)
-        SkillTableWriter.sync_skill_levels(class_controller.char_class.skills)
+    SkillTableWriter.sync_skill_levels(class_controller.char_class.skills)
 
     can_add_skill_number = character_controller.can_add_skill_number()
 
