@@ -102,9 +102,7 @@ def add_spell(controller: CharacterController, class_name: ClassName, loc: LocNa
     writer.write_in_columns(available_spells)
 
     if st.button(loc.add_spell_button, disabled=(len(selected_spells) != 1)):
-        spell = selected_spells[0]
-        controller.character.spells[class_name] = controller.character.spells.get(class_name, [])
-        controller.character.spells[class_name].append(spell)
+        controller.add_spell(selected_spells[0], class_name)
         st.rerun()
 
 
