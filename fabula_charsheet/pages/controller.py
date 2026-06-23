@@ -28,6 +28,7 @@ from data.models import (
     AttributeName,
     GripType,
     Quality,
+    Therioform,
 )
 
 if TYPE_CHECKING:
@@ -553,6 +554,20 @@ class CharacterController:
         return len(self.character.special.dances) < (
             self.get_skill_level(ClassName.dancer, "dance") or 0
         )
+
+    def max_manifest_therioforms(self, skill_name: str) -> int:
+        if skill_name == "theriomorphosis":
+            return 2
+        if skill_name == "genoclepsis":
+            return self.get_skill_level(ClassName.mutant, "genoclepsis") or 0
+        return 0
+
+    def can_manifest_therioform(self) -> bool:
+        return self.current_hp() >= 3
+
+    def apply_manifest_therioform(self, therioforms: list[Therioform]):
+        self.state.minus_hp += math.floor(self.current_hp() / 3)
+        self.state.active_therioforms = therioforms
 
 
 class ClassController:

@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import math
-
 import streamlit as st
 
 from pages.controller import CharacterController, ClassController
@@ -440,17 +438,16 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
     )
     if skill == "theriomorphosis":
         available_therioforms = [t for t in controller.character.special.therioforms]
-        can_manifest_number = 2
     elif skill == "genoclepsis":
         available_therioforms = sorted(c.COMPENDIUM.therioforms, key=lambda x: x.localized_name(loc))
-        can_manifest_number = controller.get_skill_level(ClassName.mutant, "genoclepsis")
 
     if skill:
+        can_manifest_number = controller.max_manifest_therioforms(skill)
         writer = TherioformTableWriter(loc)
         writer.columns = writer.add_one_therioform_columns(selector)
         writer.write_in_columns(available_therioforms, description=False)
         too_many = (len(selected_therioforms) > can_manifest_number)
-        too_low_hp = controller.current_hp() < 3
+        too_low_hp = not controller.can_manifest_therioform()
         if too_many:
             st.warning(loc.warn_therioform_number_warning.format(
                 number=can_manifest_number,
@@ -460,8 +457,7 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
             st.warning(loc.warn_therioform_health_warning, icon="🤏")
 
         if st.button(loc.confirm_button, key="confirm-therioform", disabled=too_many or too_low_hp):
-            controller.state.minus_hp += math.floor(controller.current_hp() / 3)
-            controller.state.active_therioforms = selected_therioforms
+            controller.apply_manifest_therioform(selected_therioforms)
             st.rerun()
 
 
