@@ -479,6 +479,18 @@ class CharacterController:
             self.state = CharState()
             raise Exception("Unable to load state. Switching to default.")
 
+    def apply_levelup(self, skill: Skill, class_name: ClassName, new_class: CharClass | None, spells: list[Spell]):
+        self.character.level += 1
+        if self.is_class_added(class_name):
+            for char_class in self.character.classes:
+                if char_class.get_skill(skill.name):
+                    char_class.levelup_skill(skill.name)
+                    break
+        elif new_class is not None:
+            self.add_class(new_class)
+        if skill.can_add_spell:
+            self.character.spells[class_name] = spells
+
     def apply_heroic_skill_effect(self, skill: HeroicSkill):
         match skill.name:
             case HeroicSkillName.comet:

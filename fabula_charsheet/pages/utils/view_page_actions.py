@@ -70,16 +70,14 @@ def level_up(controller: CharacterController, loc: LocNamespace):
                 ))
 
     if st.button(loc.confirm_button, disabled=(len(st.session_state.selected_hero_skills) != 1)):
-        controller.character.level += 1
         selected_class_name = c.COMPENDIUM.get_class_name_from_skill(selected_skill)
-        if controller.is_class_added(selected_class_name):
-            for char_class in controller.character.classes:
-                if char_class.get_skill(selected_skill.name):
-                    char_class.levelup_skill(selected_skill.name)
-        else:
-            controller.add_class(class_controller.char_class)
-        if selected_skill.can_add_spell:
-            controller.character.spells[selected_class_name] = st.session_state.class_spells
+        new_class = class_controller.char_class if not controller.is_class_added(selected_class_name) else None
+        controller.apply_levelup(
+            skill=selected_skill,
+            class_name=selected_class_name,
+            new_class=new_class,
+            spells=list(st.session_state.class_spells),
+        )
         st.rerun()
 
 
