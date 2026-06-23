@@ -3,7 +3,8 @@ from copy import deepcopy
 import streamlit as st
 
 from pages.utils import SkillTableWriter, if_show_spells, SpellTableWriter, show_skill
-from pages.controller import CharacterController, ClassController, BASE_ATTRIBUTE_SUM
+from config import BASE_ATTRIBUTE_SUM
+from pages.controller import CharacterController, ClassController
 from data.models import Dexterity, Might, Insight, Willpower, Item, CharacterTheme, CharClass, LocNamespace
 from data import compendium as c
 

@@ -41,9 +41,7 @@ if TYPE_CHECKING:
     from streamlit.runtime.uploaded_file_manager import UploadedFile
     from data.models import LocNamespace
 
-BASE_ATTRIBUTE_SUM = 32
-ATTRIBUTE_SUM_AT_LEVEL_20 = BASE_ATTRIBUTE_SUM + 2
-ATTRIBUTE_SUM_AT_LEVEL_40 = BASE_ATTRIBUTE_SUM + 4
+from config import ATTRIBUTE_SUM_AT_LEVEL_20, ATTRIBUTE_SUM_AT_LEVEL_40
 
 
 class CharacterController:

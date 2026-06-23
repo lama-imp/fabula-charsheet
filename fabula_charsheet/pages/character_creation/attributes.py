@@ -3,7 +3,8 @@ import streamlit as st
 from data.models import Dexterity, Might, Insight, Willpower, LocNamespace
 from .creation_state import CreationState
 from pages.utils import set_creation_state
-from pages.controller import CharacterController, BASE_ATTRIBUTE_SUM
+from config import BASE_ATTRIBUTE_SUM
+from pages.controller import CharacterController
 
 
 def build(controller: CharacterController):
