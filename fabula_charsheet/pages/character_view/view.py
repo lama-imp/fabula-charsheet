@@ -2,7 +2,7 @@ import streamlit as st
 
 import config
 from data.models import Status, AttributeName, Weapon, GripType, WeaponCategory, \
-    WeaponRange, ClassName, LocNamespace, HeroicSkillName
+    WeaponRange, ClassName, LocNamespace
 from pages.controller import CharacterController
 from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, SpellTableWriter, DanceTableWriter, \
     AccessoryTableWriter, ItemTableWriter, TherioformTableWriter, ShieldTableWriter, BondTableWriter, ArcanumTableWriter, \
@@ -387,9 +387,7 @@ def build(controller: CharacterController):
                 writer.columns = writer.columns[:-1]
                 chimerist_message = ""
                 if chimerist_condition:
-                    max_n_spells = controller.get_skill_level(ClassName.chimerist, "spell_mimic") + 2
-                    if controller.character.has_heroic_skill(HeroicSkillName.chimeric_mastery):
-                        max_n_spells += 2
+                    max_n_spells = controller.chimerist_max_spells()
                     chimerist_message = loc.page_view_chimerist_spell_count.format(
                         current=len(spell_list),
                         max=max_n_spells
@@ -405,14 +403,9 @@ def build(controller: CharacterController):
                         if st.button(loc.learn_chimerist_spell_button, disabled=(len(spell_list) == max_n_spells)):
                             add_chimerist_spell_dialog(controller, loc)
                     else:
-                        char_class = controller.character.get_class(class_name)
-                        casting_skill = char_class.get_spell_skill()
-                        can_add_spell = False
-                        if casting_skill:
-                            can_add_spell = casting_skill.current_level > len(controller.character.get_spells_by_class(class_name))
                         if st.button(
                                 loc.learn_spell_button,
-                                disabled=not can_add_spell,
+                                disabled=not controller.can_add_spell(class_name),
                                 key=f"{class_name}-add-spell"
                         ):
                             add_spell_dialog(controller, class_name, loc)
@@ -482,7 +475,7 @@ def build(controller: CharacterController):
             with col1:
                 st.markdown(f"##### {loc.page_view_therioforms}")
             with col2:
-                if len(added_therioforms) < controller.get_skill_level(ClassName.mutant, "theriomorphosis"):
+                if controller.can_add_therioform():
                     if st.button(loc.add_therioform_button):
                         add_therioform_dialog(controller, loc)
             TherioformTableWriter(loc).write_in_columns(added_therioforms)
@@ -494,7 +487,7 @@ def build(controller: CharacterController):
             with col1:
                 st.markdown(f"##### {loc.page_view_dances}")
             with col2:
-                if len(added_dances) < controller.get_skill_level(ClassName.dancer, "dance"):
+                if controller.can_add_dance():
                     if st.button(loc.add_dance_button):
                         add_dance_dialog(controller, loc)
             DanceTableWriter(loc).write_in_columns(added_dances)

@@ -517,6 +517,31 @@ class CharacterController:
             case "initiative_up":
                 item.bonus_initiative += 4
 
+    def chimerist_max_spells(self) -> int:
+        max_n = (self.get_skill_level(ClassName.chimerist, "spell_mimic") or 0) + 2
+        if self.character.has_heroic_skill(HeroicSkillName.chimeric_mastery):
+            max_n += 2
+        return max_n
+
+    def can_add_spell(self, class_name: ClassName) -> bool:
+        char_class = self.character.get_class(class_name)
+        if char_class is None:
+            return False
+        casting_skill = char_class.get_spell_skill()
+        if not casting_skill:
+            return False
+        return casting_skill.current_level > len(self.character.get_spells_by_class(class_name))
+
+    def can_add_therioform(self) -> bool:
+        return len(self.character.special.therioforms) < (
+            self.get_skill_level(ClassName.mutant, "theriomorphosis") or 0
+        )
+
+    def can_add_dance(self) -> bool:
+        return len(self.character.special.dances) < (
+            self.get_skill_level(ClassName.dancer, "dance") or 0
+        )
+
 
 class ClassController:
     def __init__(self):
