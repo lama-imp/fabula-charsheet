@@ -59,6 +59,7 @@ def add_new_class(
                 if mode == "addition":
                     writer.columns = writer.level_up_new_class_columns
                 writer.write_in_columns(selected_class.skills)
+                SkillTableWriter.sync_skill_levels(selected_class.skills)
 
             can_add_skill_number = character_controller.can_add_skill_number()
 

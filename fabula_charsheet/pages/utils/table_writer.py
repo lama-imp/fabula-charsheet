@@ -154,7 +154,7 @@ class SkillTableWriter(TableWriter):
     @staticmethod
     def _level_input(skill: Skill, idx=None):
         if skill.max_level > 1:
-            level = st.slider(
+            st.slider(
                 "level",
                 min_value=0,
                 max_value=skill.max_level,
@@ -163,15 +163,24 @@ class SkillTableWriter(TableWriter):
                 label_visibility="hidden",
             )
         else:
-            level = int(
-                st.toggle(
-                    "level2",
-                    value=bool(skill.current_level),
-                    key=f"{skill.name}-toggle",
-                    label_visibility="hidden",
-                )
+            st.toggle(
+                "level2",
+                value=bool(skill.current_level),
+                key=f"{skill.name}-toggle",
+                label_visibility="hidden",
             )
-        skill.current_level = level
+
+    @staticmethod
+    def sync_skill_levels(skills: list[Skill]):
+        for skill in skills:
+            if skill.max_level > 1:
+                key = f"{skill.name}-slider"
+                if key in st.session_state:
+                    skill.current_level = int(st.session_state[key])
+            else:
+                key = f"{skill.name}-toggle"
+                if key in st.session_state:
+                    skill.current_level = int(bool(st.session_state[key]))
 
     @staticmethod
     def _level_input_for_levelup(skill: Skill, idx=None):
