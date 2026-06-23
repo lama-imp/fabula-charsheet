@@ -429,8 +429,9 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
         format_func=lambda x: getattr(loc, key.format(skill_name=x), x),
         label_visibility="hidden"
     )
+    available_therioforms = []
     if skill == "theriomorphosis":
-        available_therioforms = [t for t in controller.character.special.therioforms]
+        available_therioforms = list(controller.character.special.therioforms)
     elif skill == "genoclepsis":
         available_therioforms = sorted(c.COMPENDIUM.therioforms, key=lambda x: x.localized_name(loc))
 
