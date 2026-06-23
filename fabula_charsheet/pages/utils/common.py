@@ -14,6 +14,7 @@ from data.models import (
     Character,
     Shield,
     Item,
+    Inventory,
     LocNamespace,
     Bond,
     Emotion,
@@ -78,25 +79,24 @@ def show_martial(input_: CharClass | Character, loc: LocNamespace):
         st.write(loc.msg_cannot_equip_martial)
 
 
-def add_item_as(item: Item):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def add_item_as(item: Item, inventory: Inventory, loc: LocNamespace):
     new_name = st.text_input(loc.page_equipment_write_new_name)
     button_label = loc.page_equipment_add_item_as_button.format(name=new_name)
 
-    if st.button(button_label, disabled= not new_name):
+    if st.button(button_label, disabled=not new_name):
         item = deepcopy(item)
         item.name = new_name
         if isinstance(item, Armor):
-            st.session_state.start_equipment.backpack.armors.append(item)
+            inventory.backpack.armors.append(item)
         elif isinstance(item, Weapon):
-            st.session_state.start_equipment.backpack.weapons.append(item)
+            inventory.backpack.weapons.append(item)
         elif isinstance(item, Shield):
-            st.session_state.start_equipment.backpack.shields.append(item)
+            inventory.backpack.shields.append(item)
         else:
             st.error(loc.page_equipment_unknown_item_type)
             return
         st.toast(loc.page_equipment_added.format(name=new_name))
-        st.session_state.start_equipment.zenit -= item.cost
+        inventory.zenit -= item.cost
         st.rerun()
 
 

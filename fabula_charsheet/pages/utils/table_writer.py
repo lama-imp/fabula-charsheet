@@ -82,7 +82,7 @@ class TableWriter:
     def _add_item_as(self, item: Item):
         @st.dialog(self.loc.page_equipment_create_new_name)
         def add_item_as_dialog(item: Item):
-            add_item_as(item)
+            add_item_as(item, st.session_state.start_equipment, self.loc)
 
         add_item_as_dialog(item)
 
