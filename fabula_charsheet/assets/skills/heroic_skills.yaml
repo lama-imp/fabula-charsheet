@@ -125,3 +125,26 @@
 - name: volcano
   required_class:
     - elementalist
+
+- name: greater_akromorphosis
+  required_class:
+    - mutant
+  required_skill:
+    name: akromorphosis
+    max_level: 3
+
+- name: greater_ecdysis
+  required_class:
+    - mutant
+
+- name: greater_theriomorphosis
+  required_class:
+    - mutant
+
+- name: mimeoclepsis
+  required_class:
+    - chimerist
+    - mutant
+  required_skill:
+    name: genoclepsis
+    max_level: 2

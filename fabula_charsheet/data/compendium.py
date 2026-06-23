@@ -8,7 +8,7 @@ import yaml
 from pydantic import BaseModel
 
 from data.models import Weapon, CharClass, Spell, ClassName, WeaponCategory, Armor, Shield, Therioform, Dance, Quality, \
-    HeroicSkill, Skill, Arcanum
+    HeroicSkill, Skill, Arcanum, Invention
 
 COMPENDIUM: Compendium | None = None
 
@@ -75,6 +75,8 @@ class Compendium:
     dances: list[Dance] = field(default_factory=list)
     arcana: list[Arcanum] = field(default_factory=list)
     qualities: dict[str, Quality] = field(default_factory=dict)
+    inventions: list[Invention] = field(default_factory=list)
+
 
     def get_class_name_from_skill(self, skill: Skill):
         for char_class in self.classes.classes:
@@ -129,6 +131,7 @@ def init(assets_directory: Path) -> None:
             "therioforms": Therioform,
             "dances": Dance,
             "arcana": Arcanum,
+            "inventions": Invention
         }
         special_dict[yaml_file.stem] = get_assets_from_file(yaml_file, item_mapping[yaml_file.stem])
 

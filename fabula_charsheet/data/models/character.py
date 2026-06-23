@@ -15,6 +15,8 @@ from .spell import Spell, ChimeristSpell
 from .therioform import Therioform
 from .dance import Dance
 from .arcana import Arcanum
+from .invention import Invention
+
 
 if TYPE_CHECKING:
     from data.models import LocNamespace
@@ -44,6 +46,7 @@ class CharSpecial(BaseModel):
     therioforms: list[Therioform] = list()
     dances: list[Dance] = list()
     arcana: list[Arcanum] = list()
+    inventions: list[Invention] = list()
 
     def get_special(self, attribute: str):
         return getattr(self, attribute, None)

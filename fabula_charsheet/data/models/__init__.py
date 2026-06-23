@@ -58,3 +58,5 @@ from .dance import (
 )
 from .quality import Quality
 from .arcana import Arcanum
+
+from .invention import Invention

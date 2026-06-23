@@ -1,12 +1,17 @@
 from __future__ import annotations
 import math
-import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import yaml
 
-from config import SAVED_CHARS_DIRECTORY, SAVED_CHARS_IMG_DIRECTORY, SAVED_STATES_DIRECTORY
+from config import (
+    SAVED_CHARS_DIRECTORY,
+    SAVED_CHARS_IMG_DIRECTORY,
+    SAVED_STATES_DIRECTORY,
+    MIN_ATTRIBUTE_VALUE,
+    MAX_ATTRIBUTE_VALUE,
+)
 from data import compendium as c
 from data.models import (
     Character,
@@ -333,74 +338,50 @@ class CharacterController:
             image_file_path.write_bytes(image.getbuffer())
 
     def apply_status(self):
-        dex_malus = 0
-        mig_malus = 0
-        ins_malus = 0
-        wlp_malus = 0
+        dex_modifier = 0
+        mig_modifier = 0
+        ins_modifier = 0
+        wlp_modifier = 0
+
         if Status.dazed in self.state.statuses:
-            ins_malus -= 2
+            ins_modifier -= 2
         if Status.enraged in self.state.statuses:
-            ins_malus -= 2
-            dex_malus -= 2
+            ins_modifier -= 2
+            dex_modifier -= 2
         if Status.poisoned in self.state.statuses:
-            mig_malus -= 2
-            wlp_malus -= 2
+            mig_modifier -= 2
+            wlp_modifier -= 2
         if Status.shaken in self.state.statuses:
-            wlp_malus -= 2
+            wlp_modifier -= 2
         if Status.slow in self.state.statuses:
-            dex_malus -= 2
+            dex_modifier -= 2
         if Status.weak in self.state.statuses:
-            mig_malus -= 2
-
-        self.character.insight.current = max(6, self.character.insight.base + ins_malus)
-        self.character.dexterity.current = max(6, self.character.dexterity.base + dex_malus)
-        self.character.willpower.current = max(6, self.character.willpower.base + wlp_malus)
-        self.character.might.current = max(6, self.character.might.base + mig_malus)
-
-        return {
-            AttributeName.dexterity: self.character.dexterity.base - self.character.dexterity.current,
-            AttributeName.might: self.character.might.base - self.character.might.current,
-            AttributeName.insight: self.character.insight.base - self.character.insight.current,
-            AttributeName.willpower: self.character.willpower.base - self.character.willpower.current,
-        }
-
-    def apply_attribute_bonus(self):
-        dex_bonus = 0
-        mig_bonus = 0
-        ins_bonus = 0
-        wlp_bonus = 0
+            mig_modifier -= 2
 
         for attribute in self.state.improved_attributes:
             match attribute:
                 case AttributeName.dexterity:
-                    dex_bonus += 2
+                    dex_modifier += 2
                 case AttributeName.might:
-                    mig_bonus += 2
+                    mig_modifier += 2
                 case AttributeName.insight:
-                    ins_bonus += 2
+                    ins_modifier += 2
                 case AttributeName.willpower:
-                    wlp_bonus += 2
+                    wlp_modifier += 2
 
         for t in self.state.active_therioforms:
             match t.name:
                 case "arpaktida":
-                    ins_bonus += 2
+                    ins_modifier += 2
                 case "dynamotheria":
-                    mig_bonus += 2
+                    mig_modifier += 2
                 case "tachytheria":
-                    dex_bonus += 2
+                    dex_modifier += 2
 
-        self.character.insight.current = min(12, self.character.insight.base + ins_bonus)
-        self.character.dexterity.current = min(12, self.character.dexterity.base + dex_bonus)
-        self.character.willpower.current = min(12, self.character.willpower.base + wlp_bonus)
-        self.character.might.current = min(12, self.character.might.base + mig_bonus)
-
-        return {
-            AttributeName.dexterity: self.character.dexterity.current - self.character.dexterity.base,
-            AttributeName.might: self.character.might.current - self.character.might.base,
-            AttributeName.insight: self.character.insight.current - self.character.insight.base,
-            AttributeName.willpower: self.character.willpower.current - self.character.willpower.base,
-        }
+        self.character.insight.current = min(MAX_ATTRIBUTE_VALUE, max(MIN_ATTRIBUTE_VALUE, self.character.insight.base + ins_modifier))
+        self.character.dexterity.current = min(MAX_ATTRIBUTE_VALUE, max(MIN_ATTRIBUTE_VALUE, self.character.dexterity.base + dex_modifier))
+        self.character.willpower.current = min(MAX_ATTRIBUTE_VALUE, max(MIN_ATTRIBUTE_VALUE, self.character.willpower.base + wlp_modifier))
+        self.character.might.current = min(MAX_ATTRIBUTE_VALUE, max(MIN_ATTRIBUTE_VALUE, self.character.might.base + mig_modifier))
 
     def crisis_value(self) -> int:
         return math.floor(self.max_hp() / 2)

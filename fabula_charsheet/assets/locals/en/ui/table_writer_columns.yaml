@@ -28,6 +28,7 @@ column_species: "Species"
 column_dance: "Dance"
 column_arcanum: "Arcanum"
 column_domains: "Domains"
+column_invention: "Invention"
 
 or_separator: ", or "
 and_separator: " and "

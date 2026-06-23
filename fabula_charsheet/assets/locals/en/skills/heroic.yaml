@@ -275,3 +275,30 @@ skill_volcano_description: |
 
   These amounts increase by 5 if you are level 20 or higher, or by 10 if you are level 40 or higher.  
   Damage dealt by this spell ignores **Resistances** and **Immunities**.
+
+skill_greater_akromorphosis: "GREATER AKROMORPHOSIS"
+skill_greater_akromorphosis_description: >
+  You gain the following benefits based on the current Category of your **unarmed strikes**.  
+  - **Arcane, brawling, dagger, thrown**: your attacks with unarmed strikes treat the Defense of each target as being equal to their current Insight die size.  
+  - **Bow, sword**: your attacks with **unarmed strikes** that target **two or more creatures** deal **5** extra damage.  
+  - **Firearm, heavy**: your **unarmed strikes** deal **5** extra damage to **constructs**, and **5** extra damage* to non-construct creatures who have at least one **shield** and/or **martial armor** equipped.  
+  - **Flail, spear**: you gain a **+2** bonus to Defense, and your attacks with **unarmed strikes** may target flying creatures.  
+  If your **unarmed strikes** are treated as belonging to **more than one Category** (for instance due to the **Blade Adept** Heroic Skill*), you gain all the benefits of the corresponding Categories.
+
+skill_greater_ecdysis: "GREATER ECDYSIS"
+skill_greater_ecdysis_description: >
+  When you use the **Ecdysis** Skill, you may also choose one or both options:  
+  you recover from all status effects, **and/or** if you are affected by one or more spells with a **duration** of “Scene”, you are no longer affected by any of those spells.
+
+skill_greater_theriomorphosis: "GREATER THERIOMORPHOSIS"
+skill_greater_theriomorphosis_description: >
+  When you use the **Theriomorphosis** Skill on your turn during a conflict (if this **did not** happen through the **Genoclepsis** Skill), you may manifest the effects of **up to three therioforms** from those you have learned (instead of two).  
+  Then, you may immediately perform an **additional action**.  
+  This additional action **cannot** be used for the **Theriomorphosis** Skill.
+
+skill_mimeoclepsis: "MIMEOCLEPSIS"
+skill_mimeoclepsis_description: >
+  When you use the **Genoclepsis** Skill on an NPC, if that NPC’s **Species** is among those you can learn spells from with the **Spell Mimic** Skill,  
+  the Game Master must reveal all **spells** known by that NPC.  
+  Then, if that NPC knows one or more spells, you may learn **one of those spells** as a Chimerist spell of your own.
+

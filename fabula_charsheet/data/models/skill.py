@@ -14,6 +14,7 @@ class HeroicSkillName(StrEnum):
     monkey_grip = auto()
     chimeric_mastery = auto()
     comet = auto()
+    greater_theriomorphosis = auto()
     hope = auto()
     volcano = auto()
     extra_hp = auto()

@@ -8,13 +8,13 @@ martial_shields: false
 rituals: []
 skills:
   - name: akromorphosis
-    max_level: 5
+    max_level: 3
 
   - name: biophagy
     max_level: 4
 
   - name: ecdysis
-    max_level: 3
+    max_level: 1
 
   - name: genoclepsis
     max_level: 2

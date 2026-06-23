@@ -263,3 +263,13 @@ def select_quality(
     return selected_quality, detail
 
 
+
+
+def colored_attr(name, prefix, current, base):
+    if current > base:
+        color = "green"
+    elif current < base:
+        color = "red"
+    else:
+        color = "black"
+    return f"**{name}**: <span style='color:{color}'>{prefix}{current}</span>"
