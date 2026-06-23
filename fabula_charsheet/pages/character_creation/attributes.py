@@ -3,7 +3,7 @@ import streamlit as st
 from data.models import Dexterity, Might, Insight, Willpower, LocNamespace
 from .creation_state import CreationState
 from pages.utils import set_creation_state
-from pages.controller import CharacterController
+from pages.controller import CharacterController, BASE_ATTRIBUTE_SUM
 
 
 def build(controller: CharacterController):
@@ -30,7 +30,7 @@ def build(controller: CharacterController):
         options=[6, 8, 10, 12],
         value=8
     )
-    not_ready_for_the_next_step = (sum([dexterity, might, insight, willpower]) != 32)
+    not_ready_for_the_next_step = (sum([dexterity, might, insight, willpower]) != BASE_ATTRIBUTE_SUM)
     if not_ready_for_the_next_step:
         st.error(loc.page_attributes_sum_error, icon="🎲")
     try:

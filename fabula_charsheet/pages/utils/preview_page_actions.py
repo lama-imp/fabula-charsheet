@@ -3,7 +3,7 @@ from copy import deepcopy
 import streamlit as st
 
 from pages.utils import SkillTableWriter, if_show_spells, SpellTableWriter, show_skill
-from pages.controller import CharacterController, ClassController
+from pages.controller import CharacterController, ClassController, BASE_ATTRIBUTE_SUM
 from data.models import Dexterity, Might, Insight, Willpower, Item, CharacterTheme, CharClass, LocNamespace
 from data import compendium as c
 
@@ -94,7 +94,7 @@ def edit_attributes(controller: CharacterController, loc: LocNamespace):
         options=[6, 8, 10, 12],
         value=controller.character.willpower.base,
     )
-    attributes_error = (sum([dexterity, might, insight, willpower]) != 32)
+    attributes_error = (sum([dexterity, might, insight, willpower]) != BASE_ATTRIBUTE_SUM)
     if attributes_error:
         st.warning(loc.page_attributes_sum_error, icon="🎲")
     if st.button(loc.attributes_update_button, disabled=attributes_error):

@@ -35,6 +35,8 @@ if TYPE_CHECKING:
     from streamlit.runtime.uploaded_file_manager import UploadedFile
     from data.models import LocNamespace
 
+BASE_ATTRIBUTE_SUM = 32
+
 
 class CharacterController:
     def __init__(self, loc: LocNamespace):
