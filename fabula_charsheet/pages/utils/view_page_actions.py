@@ -259,26 +259,11 @@ def unequip_item(controller, category: str):
 
 def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
     st.session_state.selected_hero_skills = []
-    mastered_classes = [char_class for char_class in controller.character.classes if char_class.class_level() == 10]
-
-    def heroic_skill_availability(skill: HeroicSkill):
-        if skill in controller.character.heroic_skills:
-            return skill.can_add_several_times
-        if not skill.required_class:
-            return True
-        if set(skill.required_class).intersection(set(char_class.name for char_class in mastered_classes)):
-            if skill.required_skill:
-                return any(
-                    (char_class.get_skill(skill.required_skill.name) or Skill()).current_level > 0
-                    for char_class in controller.character.classes
-                )
-            return True
-        return False
 
     st.write(loc.msg_add_heroic_skill)
     writer = HeroicSkillTableWriter(loc)
     sorted_skills = sorted(c.COMPENDIUM.heroic_skills.heroic_skills, key=lambda x: x.localized_name(loc))
-    writer.write_in_columns([skill for skill in sorted_skills if heroic_skill_availability(skill)])
+    writer.write_in_columns([skill for skill in sorted_skills if controller.is_heroic_skill_available(skill)])
 
     if HeroicSkillName.extra_spells in [skill.name for skill in st.session_state.selected_hero_skills]:
         selected_class_name = st.pills(

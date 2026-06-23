@@ -408,6 +408,21 @@ class CharacterController:
             return True
         return False
 
+    def is_heroic_skill_available(self, skill: HeroicSkill) -> bool:
+        if skill in self.character.heroic_skills:
+            return skill.can_add_several_times
+        if not skill.required_class:
+            return True
+        mastered_class_names = {char_class.name for char_class in self.character.classes if char_class.class_level() == 10}
+        if set(skill.required_class).intersection(mastered_class_names):
+            if skill.required_skill:
+                return any(
+                    (char_class.get_skill(skill.required_skill.name) or Skill()).current_level > 0
+                    for char_class in self.character.classes
+                )
+            return True
+        return False
+
     def can_add_class(self) -> bool:
         non_mastered_classes = [char_class for char_class in self.character.classes if char_class.class_level() < 10]
         return len(non_mastered_classes) < 3
