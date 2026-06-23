@@ -176,15 +176,11 @@ class SkillTableWriter(TableWriter):
     @staticmethod
     def _level_input_for_levelup(skill: Skill, idx=None):
         st.session_state.selected_hero_skills = st.session_state.get("selected_hero_skills", [])
-        level = st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden")
-        if level and skill not in st.session_state.selected_hero_skills:
-                st.session_state.selected_hero_skills.append(skill)
-                skill.current_level += 1
-        else:
-            if skill in st.session_state.selected_hero_skills:
-                st.session_state.selected_hero_skills.remove(skill)
-                skill.current_level -= 1
-        skill.current_level = int(level)
+        checked = st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden")
+        if checked and skill not in st.session_state.selected_hero_skills:
+            st.session_state.selected_hero_skills.append(skill)
+        elif not checked and skill in st.session_state.selected_hero_skills:
+            st.session_state.selected_hero_skills.remove(skill)
 
     def _add_description(self, item, idx=None):
         pass
