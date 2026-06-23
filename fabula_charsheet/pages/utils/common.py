@@ -194,7 +194,7 @@ def upgrade_item(controller: CharacterController, item: Item, loc: LocNamespace)
                 controller.unequip_item(category)
         item.quality = selected_quality.name
         item.quality_detail = detail
-        apply_quality_effects(item, selected_quality)
+        controller.apply_quality_effects(item, selected_quality)
         st.rerun()
 
 
@@ -266,14 +266,3 @@ def select_quality(
     return selected_quality, detail
 
 
-def apply_quality_effects(item: Item, selected_quality: Quality):
-    match selected_quality.name:
-        case "amulet":
-            item.bonus_magic_defense += 1
-        case "bulwark":
-            item.bonus_defense += 1
-        case "omnishield":
-            item.bonus_defense += 1
-            item.bonus_magic_defense += 1
-        case "initiative_up":
-            item.bonus_initiative += 4

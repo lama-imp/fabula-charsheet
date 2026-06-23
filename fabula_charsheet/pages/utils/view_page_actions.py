@@ -333,41 +333,9 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
                      disabled=(len(st.session_state.selected_hero_skills) != 1)):
             selected_heroic_skill = st.session_state.selected_hero_skills[0]
             controller.character.heroic_skills.append(selected_heroic_skill)
-            apply_heroic_skill_effect(controller, selected_heroic_skill)
+            controller.apply_heroic_skill_effect(selected_heroic_skill)
             st.rerun()
 
-
-def apply_heroic_skill_effect(controller: CharacterController, skill: HeroicSkill):
-    match skill.name:
-        case HeroicSkillName.comet:
-            controller.character.spells["entropist"].append(
-                Spell(
-                    name="comet",
-                    mp_cost=50,
-                    target=SpellTarget.special,
-                    damage_type=DamageType.no_type,
-                    char_class=ClassName.entropist,
-                )
-            )
-        case HeroicSkillName.hope:
-            controller.character.spells["spiritist"].append(
-                Spell(
-                    name="hope",
-                    mp_cost=40,
-                    target=SpellTarget.special,
-                    char_class=ClassName.spiritist,
-                )
-            )
-        case HeroicSkillName.comet:
-            controller.character.spells["elementalist"].append(
-                Spell(
-                    name="volcano",
-                    mp_cost=40,
-                    target=SpellTarget.special,
-                    damage_type=DamageType.fire,
-                    char_class=ClassName.elementalist,
-                )
-            )
 
 
 def increase_attribute(controller: CharacterController, loc: LocNamespace):

@@ -13,9 +13,12 @@ from data.models import (
     CharClass,
     Ritual,
     Skill,
+    HeroicSkill,
     HeroicSkillName,
     ClassName,
     Spell,
+    SpellTarget,
+    DamageType,
     Accessory,
     Shield,
     Weapon,
@@ -25,6 +28,7 @@ from data.models import (
     Status,
     AttributeName,
     GripType,
+    Quality,
 )
 
 if TYPE_CHECKING:
@@ -474,6 +478,44 @@ class CharacterController:
         except:
             self.state = CharState()
             raise Exception("Unable to load state. Switching to default.")
+
+    def apply_heroic_skill_effect(self, skill: HeroicSkill):
+        match skill.name:
+            case HeroicSkillName.comet:
+                self.add_spell(Spell(
+                    name="comet",
+                    mp_cost=50,
+                    target=SpellTarget.special,
+                    damage_type=DamageType.no_type,
+                    char_class=ClassName.entropist,
+                ), ClassName.entropist)
+            case HeroicSkillName.hope:
+                self.add_spell(Spell(
+                    name="hope",
+                    mp_cost=40,
+                    target=SpellTarget.special,
+                    char_class=ClassName.spiritist,
+                ), ClassName.spiritist)
+            case HeroicSkillName.volcano:
+                self.add_spell(Spell(
+                    name="volcano",
+                    mp_cost=40,
+                    target=SpellTarget.special,
+                    damage_type=DamageType.fire,
+                    char_class=ClassName.elementalist,
+                ), ClassName.elementalist)
+
+    def apply_quality_effects(self, item: Item, quality: Quality):
+        match quality.name:
+            case "amulet":
+                item.bonus_magic_defense += 1
+            case "bulwark":
+                item.bonus_defense += 1
+            case "omnishield":
+                item.bonus_defense += 1
+                item.bonus_magic_defense += 1
+            case "initiative_up":
+                item.bonus_initiative += 4
 
 
 class ClassController:
