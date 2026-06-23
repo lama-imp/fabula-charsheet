@@ -318,7 +318,7 @@ def build(controller: CharacterController):
                 col = col1 if idx < 2 else col2
                 with col:
                     checked = st.checkbox(attribute.localized_name(loc),
-                                          value=(stat in controller.state.improved_attributes))
+                                          value=(attribute in controller.state.improved_attributes))
                     if checked and attribute not in controller.state.improved_attributes:
                         controller.state.improved_attributes.append(attribute)
                     if not checked and attribute in controller.state.improved_attributes:
