@@ -28,11 +28,11 @@ def build(controller: CharacterController):
         for category in sorted_categories:
             localized_cat_name = category.localized_name(loc)
             with st.expander(loc.page_equipment_category.format(name=localized_cat_name)):
-                WeaponTableWriter(loc).write_in_columns(weapons[category])
+                WeaponTableWriter(loc, controller=controller, inventory=st.session_state.start_equipment).write_in_columns(weapons[category])
     with st.expander(loc.page_equipment_armor):
-        ArmorTableWriter(loc).write_in_columns(base_equipment.armors)
+        ArmorTableWriter(loc, controller=controller, inventory=st.session_state.start_equipment).write_in_columns(base_equipment.armors)
     with st.expander(loc.page_equipment_shields):
-        ShieldTableWriter(loc).write_in_columns(base_equipment.shields)
+        ShieldTableWriter(loc, controller=controller, inventory=st.session_state.start_equipment).write_in_columns(base_equipment.shields)
 
     col1, col2 = st.columns(2, border=True)
     with col1:

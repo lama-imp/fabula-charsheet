@@ -450,19 +450,19 @@ def build(controller: CharacterController):
 
         backpack = controller.character.inventory.backpack
         if backpack.weapons:
-            weapon_writer = WeaponTableWriter(loc)
+            weapon_writer = WeaponTableWriter(loc, controller=controller)
             weapon_writer.columns = weapon_writer.equip_columns
             weapon_writer.write_in_columns(backpack.weapons)
         if backpack.armors:
-            armor_writer = ArmorTableWriter(loc)
+            armor_writer = ArmorTableWriter(loc, controller=controller)
             armor_writer.columns = armor_writer.equip_columns
             armor_writer.write_in_columns(backpack.armors)
         if backpack.shields:
-            shield_writer = ShieldTableWriter(loc)
+            shield_writer = ShieldTableWriter(loc, controller=controller)
             shield_writer.columns = shield_writer.equip_columns
             shield_writer.write_in_columns(backpack.shields)
         if backpack.accessories:
-            AccessoryTableWriter(loc).write_in_columns(backpack.accessories)
+            AccessoryTableWriter(loc, controller=controller).write_in_columns(backpack.accessories)
         if backpack.other:
             ItemTableWriter(loc).write_in_columns(backpack.other)
 

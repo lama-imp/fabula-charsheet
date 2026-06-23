@@ -15,6 +15,7 @@ from data.models import (
     Accessory,
     Therioform,
     Item,
+    Inventory,
     LocNamespace,
     HeroicSkill,
     Bond,
@@ -24,6 +25,7 @@ from data.models import (
     HeroicSkillName,
     Arcanum,
 )
+from pages.controller import CharacterController
 from .common import add_item_as, join_with_or, upgrade_item
 
 
@@ -35,8 +37,15 @@ class ColumnConfig(BaseModel):
 class TableWriter:
     columns = None
 
-    def __init__(self, loc: LocNamespace):
+    def __init__(
+        self,
+        loc: LocNamespace,
+        controller: CharacterController | None = None,
+        inventory: Inventory | None = None,
+    ):
         self.loc = loc
+        self.controller = controller
+        self.inventory = inventory
         if self.columns is None:
             if hasattr(self, "base_columns"):
                 self.columns = self.base_columns
@@ -82,7 +91,7 @@ class TableWriter:
     def _add_item_as(self, item: Item):
         @st.dialog(self.loc.page_equipment_create_new_name)
         def add_item_as_dialog(item: Item):
-            add_item_as(item, st.session_state.start_equipment, self.loc)
+            add_item_as(item, self.inventory, self.loc)
 
         add_item_as_dialog(item)
 
@@ -416,37 +425,37 @@ class WeaponTableWriter(TableWriter):
         st.divider()
 
     def _add_weapon(self, weapon: Weapon, idx=None):
-        cannot_equip = not st.session_state.creation_controller.can_equip_martial(weapon)
+        cannot_equip = not self.controller.can_equip_martial(weapon)
 
         if st.button(
                 self.loc.add_button,
                 key=f"{weapon.name}-add",
-                disabled=(cannot_equip or (st.session_state.start_equipment.zenit < weapon.cost))
+                disabled=(cannot_equip or (self.inventory.zenit < weapon.cost))
         ):
-            st.session_state.start_equipment.backpack.weapons.append(deepcopy(weapon))
-            st.session_state.start_equipment.zenit -= weapon.cost
+            self.inventory.backpack.weapons.append(deepcopy(weapon))
+            self.inventory.zenit -= weapon.cost
         if st.button(self.loc.add_as_button, key=f"{weapon.name}-add-as"):
             self._add_item_as(weapon)
 
     def equip(self, item: Weapon, idx: int | None = None):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
-            upgrade_item(st.session_state.char_controller, item, self.loc)
+            upgrade_item(self.controller, item, self.loc)
 
-        cannot_equip = not st.session_state.char_controller.can_equip_martial(item)
-        if item in st.session_state.char_controller.equipped_items():
+        cannot_equip = not self.controller.can_equip_martial(item)
+        if item in self.controller.equipped_items():
             cannot_equip = True
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
         if st.button(self.loc.equip_button,
                      key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
-        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+        if self.controller.character.has_heroic_skill(HeroicSkillName.upgrade):
             if st.button(
                 self.loc.upgrade_button,
                 key=f'{key_suffix}-upgrade',
@@ -515,12 +524,12 @@ class ArmorTableWriter(TableWriter):
         st.divider()
 
     def _add_armor(self, armor: Armor, idx=None):
-        cannot_equip = not st.session_state.creation_controller.can_equip_martial(armor)
+        cannot_equip = not self.controller.can_equip_martial(armor)
 
-        disabled = cannot_equip or (st.session_state.start_equipment.zenit < armor.cost)
+        disabled = cannot_equip or (self.inventory.zenit < armor.cost)
         if st.button(self.loc.add_button, key=f"{armor.name}-add", disabled=disabled):
-            st.session_state.start_equipment.backpack.armors.append(deepcopy(armor))
-            st.session_state.start_equipment.zenit -= armor.cost
+            self.inventory.backpack.armors.append(deepcopy(armor))
+            self.inventory.zenit -= armor.cost
 
         if st.button(self.loc.add_as_button, key=f"{armor.name}-add-as"):
             self._add_item_as(armor)
@@ -542,9 +551,9 @@ class ArmorTableWriter(TableWriter):
     def equip(self, item: Armor, idx: int | None = None):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
-            upgrade_item(st.session_state.char_controller, item, self.loc)
-        cannot_equip = not st.session_state.char_controller.can_equip_martial(item)
-        if item in st.session_state.char_controller.equipped_items():
+            upgrade_item(self.controller, item, self.loc)
+        cannot_equip = not self.controller.can_equip_martial(item)
+        if item in self.controller.equipped_items():
             cannot_equip = True
 
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
@@ -553,13 +562,13 @@ class ArmorTableWriter(TableWriter):
                      key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
-        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+        if self.controller.character.has_heroic_skill(HeroicSkillName.upgrade):
             if st.button(
                 self.loc.upgrade_button,
                 key=f'{key_suffix}-upgrade',
@@ -628,12 +637,12 @@ class ShieldTableWriter(TableWriter):
         st.divider()
 
     def _add_shield(self, shield: Shield, idx=None):
-        cannot_equip = not st.session_state.creation_controller.can_equip_martial(shield)
+        cannot_equip = not self.controller.can_equip_martial(shield)
 
-        disabled = cannot_equip or (st.session_state.start_equipment.zenit < shield.cost)
+        disabled = cannot_equip or (self.inventory.zenit < shield.cost)
         if st.button(self.loc.add_button, key=f"{shield.name}-add", disabled=disabled):
-            st.session_state.start_equipment.backpack.shields.append(deepcopy(shield))
-            st.session_state.start_equipment.zenit -= shield.cost
+            self.inventory.backpack.shields.append(deepcopy(shield))
+            self.inventory.zenit -= shield.cost
 
         if st.button(self.loc.add_as_button, key=f"{shield.name}-add-as"):
             self._add_item_as(shield)
@@ -647,9 +656,9 @@ class ShieldTableWriter(TableWriter):
     def equip(self, item: Shield, idx=None):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
-            upgrade_item(st.session_state.char_controller, item, self.loc)
-        cannot_equip = not st.session_state.char_controller.can_equip_martial(item)
-        if item in st.session_state.char_controller.equipped_items():
+            upgrade_item(self.controller, item, self.loc)
+        cannot_equip = not self.controller.can_equip_martial(item)
+        if item in self.controller.equipped_items():
             cannot_equip = True
 
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
@@ -658,13 +667,13 @@ class ShieldTableWriter(TableWriter):
                      key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
-        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+        if self.controller.character.has_heroic_skill(HeroicSkillName.upgrade):
             if st.button(
                 self.loc.upgrade_button,
                 key=f'{key_suffix}-upgrade',
@@ -712,10 +721,10 @@ class AccessoryTableWriter(TableWriter):
 
     def equip(self, item: Accessory, idx: int | None = None):
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
-        disabled = item in st.session_state.char_controller.equipped_items()
+        disabled = item in self.controller.equipped_items()
         if st.button(self.loc.equip_button, key=f'{key_suffix}-equip', disabled=disabled):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
