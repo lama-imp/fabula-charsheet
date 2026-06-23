@@ -313,21 +313,16 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
                          key="add-extra-spells-skill",
                          disabled=(len(st.session_state.selected_hero_skills) != 1)
                                   or (len(selected_spells) != 2)):
-                selected_heroic_skill = st.session_state.selected_hero_skills[0]
-                controller.character.heroic_skills.append(selected_heroic_skill)
+                controller.add_heroic_skill(st.session_state.selected_hero_skills[0])
                 for spell in selected_spells:
-                    controller.character.spells[selected_class_name] = controller.character.spells.get(
-                        selected_class_name, [])
-                    controller.character.spells[selected_class_name].append(spell)
+                    controller.add_spell(spell, selected_class_name)
                 st.rerun()
 
     else:
         if st.button(loc.confirm_button,
                      key="add-heroic-skill",
                      disabled=(len(st.session_state.selected_hero_skills) != 1)):
-            selected_heroic_skill = st.session_state.selected_hero_skills[0]
-            controller.character.heroic_skills.append(selected_heroic_skill)
-            controller.apply_heroic_skill_effect(selected_heroic_skill)
+            controller.add_heroic_skill(st.session_state.selected_hero_skills[0])
             st.rerun()
 
 

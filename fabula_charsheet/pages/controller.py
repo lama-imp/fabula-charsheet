@@ -492,6 +492,10 @@ class CharacterController:
         if skill.can_add_spell:
             self.character.spells[class_name] = spells
 
+    def add_heroic_skill(self, skill: HeroicSkill):
+        self.character.heroic_skills.append(skill)
+        self.apply_heroic_skill_effect(skill)
+
     def apply_heroic_skill_effect(self, skill: HeroicSkill):
         match skill.name:
             case HeroicSkillName.comet:
