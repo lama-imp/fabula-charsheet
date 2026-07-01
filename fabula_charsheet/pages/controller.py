@@ -315,6 +315,8 @@ class CharacterController:
         self.character.inventory.backpack.remove_item(item)
 
     def dump_character(self):
+        for old_file in SAVED_CHARS_DIRECTORY.glob(f"*.{self.character.id}.character.yaml"):
+            old_file.unlink()
         with Path(
                 SAVED_CHARS_DIRECTORY,
                 f"{self.character.name}.{self.character.id}.character.yaml"
@@ -329,6 +331,8 @@ class CharacterController:
 
     def dump_avatar(self, image: UploadedFile | None ):
         if image is not None:
+            for old_file in SAVED_CHARS_IMG_DIRECTORY.glob(f"*{self.character.id}.*"):
+                old_file.unlink()
             image_file_path = Path(
                     SAVED_CHARS_IMG_DIRECTORY,
                     f"{self.character.name}.{self.character.id}{Path(image.name).suffix}"
