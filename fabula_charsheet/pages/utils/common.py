@@ -14,6 +14,7 @@ from data.models import (
     Character,
     Shield,
     Item,
+    Inventory,
     LocNamespace,
     Bond,
     Emotion,
@@ -41,23 +42,20 @@ def if_show_spells(casting_skill: Skill):
     return False
 
 
-def list_skills(class_controller: ClassController, can_add_skill_number: int):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def list_skills(class_controller: ClassController, can_add_skill_number: int, loc: LocNamespace):
     with st.container(border=True):
         st.subheader(loc.msg_skills_points_remaining.format(count=can_add_skill_number))
         st.write(loc.msg_skills_selected)
         for skill in class_controller.char_class.skills:
             if skill.current_level > 0:
-                show_skill(skill)
+                show_skill(skill, loc)
 
 
-def show_skill(skill: Skill):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def show_skill(skill: Skill, loc: LocNamespace):
     st.markdown(f"**{skill.localized_name(loc)}** - level {skill.current_level}")
 
 
-def show_martial(input_: CharClass | Character):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def show_martial(input_: CharClass | Character, loc: LocNamespace):
     martial_keys = [
         "melee",
         "ranged",
@@ -81,25 +79,24 @@ def show_martial(input_: CharClass | Character):
         st.write(loc.msg_cannot_equip_martial)
 
 
-def add_item_as(item: Item):
-    loc: LocNamespace = st.session_state.localizator.get(st.session_state.language)
+def add_item_as(item: Item, inventory: Inventory, loc: LocNamespace):
     new_name = st.text_input(loc.page_equipment_write_new_name)
     button_label = loc.page_equipment_add_item_as_button.format(name=new_name)
 
-    if st.button(button_label, disabled= not new_name):
+    if st.button(button_label, disabled=not new_name):
         item = deepcopy(item)
         item.name = new_name
         if isinstance(item, Armor):
-            st.session_state.start_equipment.backpack.armors.append(item)
+            inventory.backpack.armors.append(item)
         elif isinstance(item, Weapon):
-            st.session_state.start_equipment.backpack.weapons.append(item)
+            inventory.backpack.weapons.append(item)
         elif isinstance(item, Shield):
-            st.session_state.start_equipment.backpack.shields.append(item)
+            inventory.backpack.shields.append(item)
         else:
             st.error(loc.page_equipment_unknown_item_type)
             return
         st.toast(loc.page_equipment_added.format(name=new_name))
-        st.session_state.start_equipment.zenit -= item.cost
+        inventory.zenit -= item.cost
         st.rerun()
 
 
@@ -194,7 +191,7 @@ def upgrade_item(controller: CharacterController, item: Item, loc: LocNamespace)
                 controller.unequip_item(category)
         item.quality = selected_quality.name
         item.quality_detail = detail
-        apply_quality_effects(item, selected_quality)
+        controller.apply_quality_effects(item, selected_quality)
         st.rerun()
 
 
@@ -266,17 +263,6 @@ def select_quality(
     return selected_quality, detail
 
 
-def apply_quality_effects(item: Item, selected_quality: Quality):
-    match selected_quality.name:
-        case "amulet":
-            item.bonus_magic_defense += 1
-        case "bulwark":
-            item.bonus_defense += 1
-        case "omnishield":
-            item.bonus_defense += 1
-            item.bonus_magic_defense += 1
-        case "initiative_up":
-            item.bonus_initiative += 4
 
 
 def colored_attr(name, prefix, current, base):

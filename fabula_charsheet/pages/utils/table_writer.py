@@ -15,6 +15,7 @@ from data.models import (
     Accessory,
     Therioform,
     Item,
+    Inventory,
     LocNamespace,
     HeroicSkill,
     Bond,
@@ -25,6 +26,7 @@ from data.models import (
     Arcanum,
     Invention,
 )
+from pages.controller import CharacterController
 from .common import add_item_as, join_with_or, upgrade_item
 
 
@@ -36,8 +38,15 @@ class ColumnConfig(BaseModel):
 class TableWriter:
     columns = None
 
-    def __init__(self, loc: LocNamespace):
+    def __init__(
+        self,
+        loc: LocNamespace,
+        controller: CharacterController | None = None,
+        inventory: Inventory | None = None,
+    ):
         self.loc = loc
+        self.controller = controller
+        self.inventory = inventory
         if self.columns is None:
             if hasattr(self, "base_columns"):
                 self.columns = self.base_columns
@@ -83,7 +92,7 @@ class TableWriter:
     def _add_item_as(self, item: Item):
         @st.dialog(self.loc.page_equipment_create_new_name)
         def add_item_as_dialog(item: Item):
-            add_item_as(item)
+            add_item_as(item, self.inventory, self.loc)
 
         add_item_as_dialog(item)
 
@@ -155,7 +164,7 @@ class SkillTableWriter(TableWriter):
     @staticmethod
     def _level_input(skill: Skill, idx=None):
         if skill.max_level > 1:
-            level = st.slider(
+            st.slider(
                 "level",
                 min_value=0,
                 max_value=skill.max_level,
@@ -164,28 +173,39 @@ class SkillTableWriter(TableWriter):
                 label_visibility="hidden",
             )
         else:
-            level = int(
-                st.toggle(
-                    "level2",
-                    value=bool(skill.current_level),
-                    key=f"{skill.name}-toggle",
-                    label_visibility="hidden",
-                )
+            st.toggle(
+                "level2",
+                value=bool(skill.current_level),
+                key=f"{skill.name}-toggle",
+                label_visibility="hidden",
             )
-        skill.current_level = level
+
+    def write_in_columns(self, data: Iterable, header: bool = True, description: bool = True):
+        skills = list(data)
+        super().write_in_columns(skills, header=header, description=description)
+        if any(col.process == SkillTableWriter._level_input for col in self.columns):
+            SkillTableWriter._sync_skill_levels(skills)
+
+    @staticmethod
+    def _sync_skill_levels(skills: list[Skill]):
+        for skill in skills:
+            if skill.max_level > 1:
+                key = f"{skill.name}-slider"
+                if key in st.session_state:
+                    skill.current_level = int(st.session_state[key])
+            else:
+                key = f"{skill.name}-toggle"
+                if key in st.session_state:
+                    skill.current_level = int(bool(st.session_state[key]))
 
     @staticmethod
     def _level_input_for_levelup(skill: Skill, idx=None):
         st.session_state.selected_hero_skills = st.session_state.get("selected_hero_skills", [])
-        level = st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden")
-        if level and skill not in st.session_state.selected_hero_skills:
-                st.session_state.selected_hero_skills.append(skill)
-                skill.current_level += 1
-        else:
-            if skill in st.session_state.selected_hero_skills:
-                st.session_state.selected_hero_skills.remove(skill)
-                skill.current_level -= 1
-        skill.current_level = int(level)
+        checked = st.checkbox(" ", key=f"{skill.name}-point", label_visibility="hidden")
+        if checked and skill not in st.session_state.selected_hero_skills:
+            st.session_state.selected_hero_skills.append(skill)
+        elif not checked and skill in st.session_state.selected_hero_skills:
+            st.session_state.selected_hero_skills.remove(skill)
 
     def _add_description(self, item, idx=None):
         pass
@@ -406,51 +426,37 @@ class WeaponTableWriter(TableWriter):
         st.divider()
 
     def _add_weapon(self, weapon: Weapon, idx=None):
-        cannot_equip = False
-        if weapon.martial:
-            cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.can_equip_weapon(weapon.range):
-                    cannot_equip = False
+        cannot_equip = not self.controller.can_equip_martial(weapon)
 
         if st.button(
                 self.loc.add_button,
                 key=f"{weapon.name}-add",
-                disabled=(cannot_equip or (st.session_state.start_equipment.zenit < weapon.cost))
+                disabled=(cannot_equip or (self.inventory.zenit < weapon.cost))
         ):
-            st.session_state.start_equipment.backpack.weapons.append(deepcopy(weapon))
-            st.session_state.start_equipment.zenit -= weapon.cost
+            self.inventory.backpack.weapons.append(deepcopy(weapon))
+            self.inventory.zenit -= weapon.cost
         if st.button(self.loc.add_as_button, key=f"{weapon.name}-add-as"):
             self._add_item_as(weapon)
 
     def equip(self, item: Weapon, idx: int | None = None):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
-            upgrade_item(st.session_state.char_controller, item, self.loc)
+            upgrade_item(self.controller, item, self.loc)
 
-        cannot_equip = False
-        if item.martial:
-            cannot_equip = True
-            for char_class in st.session_state.char_controller.character.classes:
-                if (
-                    char_class.martial_melee and item.range == WeaponRange.melee
-                ) or (
-                    char_class.martial_ranged and item.range == WeaponRange.ranged
-                ):
-                    cannot_equip = False
-        if item in st.session_state.char_controller.equipped_items():
+        cannot_equip = not self.controller.can_equip_martial(item)
+        if item in self.controller.equipped_items():
             cannot_equip = True
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
         if st.button(self.loc.equip_button,
                      key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
-        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+        if self.controller.character.has_heroic_skill(HeroicSkillName.upgrade):
             if st.button(
                 self.loc.upgrade_button,
                 key=f'{key_suffix}-upgrade',
@@ -519,17 +525,12 @@ class ArmorTableWriter(TableWriter):
         st.divider()
 
     def _add_armor(self, armor: Armor, idx=None):
-        cannot_equip = False
-        if armor.martial:
-            cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_armor:
-                    cannot_equip = False
+        cannot_equip = not self.controller.can_equip_martial(armor)
 
-        disabled = cannot_equip or (st.session_state.start_equipment.zenit < armor.cost)
+        disabled = cannot_equip or (self.inventory.zenit < armor.cost)
         if st.button(self.loc.add_button, key=f"{armor.name}-add", disabled=disabled):
-            st.session_state.start_equipment.backpack.armors.append(deepcopy(armor))
-            st.session_state.start_equipment.zenit -= armor.cost
+            self.inventory.backpack.armors.append(deepcopy(armor))
+            self.inventory.zenit -= armor.cost
 
         if st.button(self.loc.add_as_button, key=f"{armor.name}-add-as"):
             self._add_item_as(armor)
@@ -551,15 +552,9 @@ class ArmorTableWriter(TableWriter):
     def equip(self, item: Armor, idx: int | None = None):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
-            upgrade_item(st.session_state.char_controller, item, self.loc)
-        cannot_equip = False
-        if item.martial:
-            cannot_equip = True
-            for char_class in st.session_state.char_controller.character.classes:
-                if char_class.martial_armor:
-                    cannot_equip = False
-
-        if item in st.session_state.char_controller.equipped_items():
+            upgrade_item(self.controller, item, self.loc)
+        cannot_equip = not self.controller.can_equip_martial(item)
+        if item in self.controller.equipped_items():
             cannot_equip = True
 
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
@@ -568,13 +563,13 @@ class ArmorTableWriter(TableWriter):
                      key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
-        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+        if self.controller.character.has_heroic_skill(HeroicSkillName.upgrade):
             if st.button(
                 self.loc.upgrade_button,
                 key=f'{key_suffix}-upgrade',
@@ -643,17 +638,12 @@ class ShieldTableWriter(TableWriter):
         st.divider()
 
     def _add_shield(self, shield: Shield, idx=None):
-        cannot_equip = False
-        if shield.martial:
-            cannot_equip = True
-            for char_class in st.session_state.creation_controller.character.classes:
-                if char_class.martial_shields:
-                    cannot_equip = False
+        cannot_equip = not self.controller.can_equip_martial(shield)
 
-        disabled = cannot_equip or (st.session_state.start_equipment.zenit < shield.cost)
+        disabled = cannot_equip or (self.inventory.zenit < shield.cost)
         if st.button(self.loc.add_button, key=f"{shield.name}-add", disabled=disabled):
-            st.session_state.start_equipment.backpack.shields.append(deepcopy(shield))
-            st.session_state.start_equipment.zenit -= shield.cost
+            self.inventory.backpack.shields.append(deepcopy(shield))
+            self.inventory.zenit -= shield.cost
 
         if st.button(self.loc.add_as_button, key=f"{shield.name}-add-as"):
             self._add_item_as(shield)
@@ -667,15 +657,9 @@ class ShieldTableWriter(TableWriter):
     def equip(self, item: Shield, idx=None):
         @st.dialog(self.loc.page_view_upgrade_item_dialog_title, width="large")
         def upgrade_item_dialog(item: Item):
-            upgrade_item(st.session_state.char_controller, item, self.loc)
-        cannot_equip = False
-        if item.martial:
-            cannot_equip = True
-            for char_class in st.session_state.char_controller.character.classes:
-                if char_class.martial_armor:
-                    cannot_equip = False
-
-        if item in st.session_state.char_controller.equipped_items():
+            upgrade_item(self.controller, item, self.loc)
+        cannot_equip = not self.controller.can_equip_martial(item)
+        if item in self.controller.equipped_items():
             cannot_equip = True
 
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
@@ -684,13 +668,13 @@ class ShieldTableWriter(TableWriter):
                      key=f'{key_suffix}-equip',
                      disabled=cannot_equip):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")
             st.rerun()
 
-        if st.session_state.char_controller.character.has_heroic_skill(HeroicSkillName.upgrade):
+        if self.controller.character.has_heroic_skill(HeroicSkillName.upgrade):
             if st.button(
                 self.loc.upgrade_button,
                 key=f'{key_suffix}-upgrade',
@@ -738,10 +722,10 @@ class AccessoryTableWriter(TableWriter):
 
     def equip(self, item: Accessory, idx: int | None = None):
         key_suffix = f"{item.name}-{idx}" if idx is not None else item.name
-        disabled = item in st.session_state.char_controller.equipped_items()
+        disabled = item in self.controller.equipped_items()
         if st.button(self.loc.equip_button, key=f'{key_suffix}-equip', disabled=disabled):
             try:
-                st.session_state.char_controller.equip_item(item)
+                self.controller.equip_item(item)
                 st.toast(self.loc.equipped_message.format(item_name=item.localized_name(self.loc)))
             except Exception as e:
                 st.warning(e, icon="🙅‍♂️")

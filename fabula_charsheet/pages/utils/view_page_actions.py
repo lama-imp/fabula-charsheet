@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import math
-
 import streamlit as st
 
 from pages.controller import CharacterController, ClassController
@@ -70,16 +68,14 @@ def level_up(controller: CharacterController, loc: LocNamespace):
                 ))
 
     if st.button(loc.confirm_button, disabled=(len(st.session_state.selected_hero_skills) != 1)):
-        controller.character.level += 1
         selected_class_name = c.COMPENDIUM.get_class_name_from_skill(selected_skill)
-        if controller.is_class_added(selected_class_name):
-            for char_class in controller.character.classes:
-                if char_class.get_skill(selected_skill.name):
-                    char_class.levelup_skill(selected_skill.name)
-        else:
-            controller.add_class(class_controller.char_class)
-        if selected_skill.can_add_spell:
-            controller.character.spells[selected_class_name] = st.session_state.class_spells
+        new_class = class_controller.char_class if not controller.is_class_added(selected_class_name) else None
+        controller.apply_levelup(
+            skill=selected_skill,
+            class_name=selected_class_name,
+            new_class=new_class,
+            spells=list(st.session_state.class_spells),
+        )
         st.rerun()
 
 
@@ -106,9 +102,7 @@ def add_spell(controller: CharacterController, class_name: ClassName, loc: LocNa
     writer.write_in_columns(available_spells)
 
     if st.button(loc.add_spell_button, disabled=(len(selected_spells) != 1)):
-        spell = selected_spells[0]
-        controller.character.spells[class_name] = controller.character.spells.get(class_name, [])
-        controller.character.spells[class_name].append(spell)
+        controller.add_spell(selected_spells[0], class_name)
         st.rerun()
 
 
@@ -265,26 +259,11 @@ def unequip_item(controller, category: str):
 
 def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
     st.session_state.selected_hero_skills = []
-    mastered_classes = [char_class for char_class in controller.character.classes if char_class.class_level() == 10]
-
-    def heroic_skill_availability(skill: HeroicSkill):
-        if skill in controller.character.heroic_skills:
-            return skill.can_add_several_times
-        if not skill.required_class:
-            return True
-        if set(skill.required_class).intersection(set(char_class.name for char_class in mastered_classes)):
-            if skill.required_skill:
-                return any(
-                    (char_class.get_skill(skill.required_skill.name) or Skill()).current_level > 0
-                    for char_class in controller.character.classes
-                )
-            return True
-        return False
 
     st.write(loc.msg_add_heroic_skill)
     writer = HeroicSkillTableWriter(loc)
     sorted_skills = sorted(c.COMPENDIUM.heroic_skills.heroic_skills, key=lambda x: x.localized_name(loc))
-    writer.write_in_columns([skill for skill in sorted_skills if heroic_skill_availability(skill)])
+    writer.write_in_columns([skill for skill in sorted_skills if controller.is_heroic_skill_available(skill)])
 
     if HeroicSkillName.extra_spells in [skill.name for skill in st.session_state.selected_hero_skills]:
         selected_class_name = st.pills(
@@ -318,56 +297,19 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
             if st.button(loc.confirm_button,
                          key="add-extra-spells-skill",
                          disabled=(len(st.session_state.selected_hero_skills) != 1)
-                                  and (len(selected_spells) != 2)):
-                selected_heroic_skill = st.session_state.selected_hero_skills[0]
-                controller.character.heroic_skills.append(selected_heroic_skill)
+                                  or (len(selected_spells) != 2)):
+                controller.add_heroic_skill(st.session_state.selected_hero_skills[0])
                 for spell in selected_spells:
-                    controller.character.spells[selected_class_name] = controller.character.spells.get(
-                        selected_class_name, [])
-                    controller.character.spells[selected_class_name].append(spell)
+                    controller.add_spell(spell, selected_class_name)
                 st.rerun()
 
     else:
         if st.button(loc.confirm_button,
                      key="add-heroic-skill",
                      disabled=(len(st.session_state.selected_hero_skills) != 1)):
-            selected_heroic_skill = st.session_state.selected_hero_skills[0]
-            controller.character.heroic_skills.append(selected_heroic_skill)
-            apply_heroic_skill_effect(controller, selected_heroic_skill)
+            controller.add_heroic_skill(st.session_state.selected_hero_skills[0])
             st.rerun()
 
-
-def apply_heroic_skill_effect(controller: CharacterController, skill: HeroicSkill):
-    match skill.name:
-        case HeroicSkillName.comet:
-            controller.character.spells["entropist"].append(
-                Spell(
-                    name="comet",
-                    mp_cost=50,
-                    target=SpellTarget.special,
-                    damage_type=DamageType.no_type,
-                    char_class=ClassName.entropist,
-                )
-            )
-        case HeroicSkillName.hope:
-            controller.character.spells["spiritist"].append(
-                Spell(
-                    name="hope",
-                    mp_cost=40,
-                    target=SpellTarget.special,
-                    char_class=ClassName.spiritist,
-                )
-            )
-        case HeroicSkillName.comet:
-            controller.character.spells["elementalist"].append(
-                Spell(
-                    name="volcano",
-                    mp_cost=40,
-                    target=SpellTarget.special,
-                    damage_type=DamageType.fire,
-                    char_class=ClassName.elementalist,
-                )
-            )
 
 
 def increase_attribute(controller: CharacterController, loc: LocNamespace):
@@ -498,21 +440,18 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
         format_func=lambda x: getattr(loc, key.format(skill_name=x), x),
         label_visibility="hidden"
     )
-    if skill == "theriomorphosis":
-        available_therioforms = [t for t in controller.character.special.therioforms]
-        can_manifest_number = 2
-        if controller.character.has_heroic_skill(HeroicSkillName.greater_theriomorphosis):
-            can_manifest_number = 3
-    elif skill == "genoclepsis":
-        available_therioforms = sorted(c.COMPENDIUM.therioforms, key=lambda x: x.localized_name(loc))
-        can_manifest_number = controller.get_skill_level(ClassName.mutant, "genoclepsis")
+    available_therioforms = sorted(
+        controller.available_therioforms_for_skill(skill or ""),
+        key=lambda x: x.localized_name(loc),
+    )
 
     if skill:
+        can_manifest_number = controller.max_manifest_therioforms(skill)
         writer = TherioformTableWriter(loc)
         writer.columns = writer.add_one_therioform_columns(selector)
         writer.write_in_columns(available_therioforms, description=False)
         too_many = (len(selected_therioforms) > can_manifest_number)
-        too_low_hp = controller.current_hp() < 3
+        too_low_hp = not controller.can_manifest_therioform()
         if too_many:
             st.warning(loc.warn_therioform_number_warning.format(
                 number=can_manifest_number,
@@ -522,8 +461,7 @@ def manifest_therioform(controller: CharacterController, loc: LocNamespace):
             st.warning(loc.warn_therioform_health_warning, icon="🤏")
 
         if st.button(loc.confirm_button, key="confirm-therioform", disabled=too_many or too_low_hp):
-            controller.state.minus_hp += math.floor(controller.current_hp() / 3)
-            controller.state.active_therioforms = selected_therioforms
+            controller.apply_manifest_therioform(selected_therioforms)
             st.rerun()
 
 

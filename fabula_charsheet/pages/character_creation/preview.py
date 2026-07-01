@@ -174,7 +174,7 @@ def build(controller: CharacterController):
                           disabled=(not equipped_item)):
                     unequip_item(controller, category)
                     st.rerun()
-        show_martial(controller.character)
+        show_martial(controller.character, loc)
         categories = [k for k, v in controller.character.inventory.backpack.model_dump().items() if v]
         st.markdown(f"**{loc.page_view_inventory}**")
         for category in categories:

@@ -17,7 +17,7 @@ def add_new_class(
     loc: LocNamespace,
     mode: Literal["creation", "addition"] = "creation"
 ):
-    st.session_state.class_not_ready = True
+    class_not_ready = True
     if mode == "creation":
         available_classes = [char_class.name for char_class in sorted(c.COMPENDIUM.classes.classes, key=lambda x: x.name)]
     else:
@@ -46,7 +46,7 @@ def add_new_class(
 
             show_bonus(class_controller, loc)
 
-            show_martial(selected_class)
+            show_martial(selected_class, loc)
 
             if selected_class.rituals:
                 rituals_str = ', '.join(r.localized_name(loc) for r in selected_class.rituals)
@@ -63,15 +63,15 @@ def add_new_class(
             can_add_skill_number = character_controller.can_add_skill_number()
 
             if class_controller.char_class.class_level() < 1:
-                st.session_state.class_not_ready = True
+                class_not_ready = True
                 st.error(loc.error_class_need_skill)
             elif can_add_skill_number < 0:
                 levels_to_remove = abs(can_add_skill_number - class_controller.char_class.class_level())
                 st.error(loc.error_class_remove_skill.format(levels=levels_to_remove))
-                st.session_state.class_not_ready = True
+                class_not_ready = True
             else:
-                list_skills(class_controller, can_add_skill_number)
-                st.session_state.class_not_ready = False
+                list_skills(class_controller, can_add_skill_number, loc)
+                class_not_ready = False
 
             if if_show_spells(casting_skill) and mode == "creation":
                 class_spells = c.COMPENDIUM.spells.get_spells(class_controller.char_class.name)
@@ -82,16 +82,16 @@ def add_new_class(
                 total_class_spells = len(st.session_state["class_spells"])
 
                 if total_class_spells != max_n_spells:
-                    st.session_state.class_not_ready = True
+                    class_not_ready = True
                     st.error(loc.error_class_select_exact_spells.format(
                         max_n_spells=max_n_spells,
                         casting_skill=casting_skill.localized_name(loc)
                     ))
                 else:
-                    st.session_state.class_not_ready = False
+                    class_not_ready = False
 
     if mode == "creation":
-        if st.button(loc.page_class_add_button, disabled=st.session_state.class_not_ready):
+        if st.button(loc.page_class_add_button, disabled=class_not_ready):
             character_controller.add_class(class_controller.char_class)
             character_controller.character.spells[selected_class_name] = st.session_state.class_spells
             st.session_state.class_spells = []

@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import yaml
-from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 from config import (
     SAVED_CHARS_DIRECTORY,
@@ -13,14 +12,18 @@ from config import (
     MIN_ATTRIBUTE_VALUE,
     MAX_ATTRIBUTE_VALUE,
 )
+from data import compendium as c
 from data.models import (
     Character,
     CharClass,
     Ritual,
     Skill,
+    HeroicSkill,
     HeroicSkillName,
     ClassName,
     Spell,
+    SpellTarget,
+    DamageType,
     Accessory,
     Shield,
     Weapon,
@@ -29,10 +32,16 @@ from data.models import (
     CharState,
     Status,
     AttributeName,
+    GripType,
+    Quality,
+    Therioform,
 )
 
 if TYPE_CHECKING:
+    from streamlit.runtime.uploaded_file_manager import UploadedFile
     from data.models import LocNamespace
+
+from config import ATTRIBUTE_SUM_AT_LEVEL_20, ATTRIBUTE_SUM_AT_LEVEL_40
 
 
 class CharacterController:
@@ -204,6 +213,17 @@ class CharacterController:
             return f"{initiative} +{bonus}"
         return initiative
 
+    def can_equip_martial(self, item: Item) -> bool:
+        if not item.martial:
+            return True
+        if isinstance(item, Weapon):
+            return any(c.can_equip_weapon(item.range) for c in self.character.classes)
+        if isinstance(item, Armor):
+            return any(c.martial_armor for c in self.character.classes)
+        if isinstance(item, Shield):
+            return any(c.martial_shields for c in self.character.classes)
+        return False
+
     def equip_item(self, item: Item):
         equipped = self.character.inventory.equipped
 
@@ -370,6 +390,21 @@ class CharacterController:
             return True
         return False
 
+    def is_heroic_skill_available(self, skill: HeroicSkill) -> bool:
+        if skill in self.character.heroic_skills:
+            return skill.can_add_several_times
+        if not skill.required_class:
+            return True
+        mastered_class_names = {char_class.name for char_class in self.character.classes if char_class.class_level() == 10}
+        if set(skill.required_class).intersection(mastered_class_names):
+            if skill.required_skill:
+                return any(
+                    (char_class.get_skill(skill.required_skill.name) or Skill()).current_level > 0
+                    for char_class in self.character.classes
+                )
+            return True
+        return False
+
     def can_add_class(self) -> bool:
         non_mastered_classes = [char_class for char_class in self.character.classes if char_class.class_level() < 10]
         return len(non_mastered_classes) < 3
@@ -384,9 +419,9 @@ class CharacterController:
             ]
         )
         if (
-                self.character.level == 20 and sum_of_attributes < 34
+                self.character.level == 20 and sum_of_attributes < ATTRIBUTE_SUM_AT_LEVEL_20
         ) or (
-                self.character.level == 40 and sum_of_attributes < 36
+                self.character.level == 40 and sum_of_attributes < ATTRIBUTE_SUM_AT_LEVEL_40
         ):
             return True
 
@@ -454,6 +489,106 @@ class CharacterController:
         except:
             self.state = CharState()
             raise Exception("Unable to load state. Switching to default.")
+
+    def apply_levelup(self, skill: Skill, class_name: ClassName, new_class: CharClass | None, spells: list[Spell]):
+        self.character.level += 1
+        if self.is_class_added(class_name):
+            for char_class in self.character.classes:
+                if char_class.get_skill(skill.name):
+                    char_class.levelup_skill(skill.name)
+                    break
+        elif new_class is not None:
+            self.add_class(new_class)
+        if skill.can_add_spell:
+            self.character.spells[class_name] = spells
+
+    def add_heroic_skill(self, skill: HeroicSkill):
+        self.character.heroic_skills.append(skill)
+        self.apply_heroic_skill_effect(skill)
+
+    def apply_heroic_skill_effect(self, skill: HeroicSkill):
+        match skill.name:
+            case HeroicSkillName.comet:
+                self.add_spell(Spell(
+                    name="comet",
+                    mp_cost=50,
+                    target=SpellTarget.special,
+                    damage_type=DamageType.no_type,
+                    char_class=ClassName.entropist,
+                ), ClassName.entropist)
+            case HeroicSkillName.hope:
+                self.add_spell(Spell(
+                    name="hope",
+                    mp_cost=40,
+                    target=SpellTarget.special,
+                    char_class=ClassName.spiritist,
+                ), ClassName.spiritist)
+            case HeroicSkillName.volcano:
+                self.add_spell(Spell(
+                    name="volcano",
+                    mp_cost=40,
+                    target=SpellTarget.special,
+                    damage_type=DamageType.fire,
+                    char_class=ClassName.elementalist,
+                ), ClassName.elementalist)
+
+    def apply_quality_effects(self, item: Item, quality: Quality):
+        match quality.name:
+            case "amulet":
+                item.bonus_magic_defense += 1
+            case "bulwark":
+                item.bonus_defense += 1
+            case "omnishield":
+                item.bonus_defense += 1
+                item.bonus_magic_defense += 1
+            case "initiative_up":
+                item.bonus_initiative += 4
+
+    def chimerist_max_spells(self) -> int:
+        max_n = (self.get_skill_level(ClassName.chimerist, "spell_mimic") or 0) + 2
+        if self.character.has_heroic_skill(HeroicSkillName.chimeric_mastery):
+            max_n += 2
+        return max_n
+
+    def can_add_spell(self, class_name: ClassName) -> bool:
+        char_class = self.character.get_class(class_name)
+        if char_class is None:
+            return False
+        casting_skill = char_class.get_spell_skill()
+        if not casting_skill:
+            return False
+        return casting_skill.current_level > len(self.character.get_spells_by_class(class_name))
+
+    def can_add_therioform(self) -> bool:
+        return len(self.character.special.therioforms) < (
+            self.get_skill_level(ClassName.mutant, "theriomorphosis") or 0
+        )
+
+    def can_add_dance(self) -> bool:
+        return len(self.character.special.dances) < (
+            self.get_skill_level(ClassName.dancer, "dance") or 0
+        )
+
+    def available_therioforms_for_skill(self, skill_name: str) -> list[Therioform]:
+        if skill_name == "theriomorphosis":
+            return list(self.character.special.therioforms)
+        if skill_name == "genoclepsis":
+            return list(c.COMPENDIUM.therioforms)
+        return []
+
+    def max_manifest_therioforms(self, skill_name: str) -> int:
+        if skill_name == "theriomorphosis":
+            return 2
+        if skill_name == "genoclepsis":
+            return self.get_skill_level(ClassName.mutant, "genoclepsis") or 0
+        return 0
+
+    def can_manifest_therioform(self) -> bool:
+        return self.current_hp() >= 3
+
+    def apply_manifest_therioform(self, therioforms: list[Therioform]):
+        self.state.minus_hp += math.floor(self.current_hp() / 3)
+        self.state.active_therioforms = therioforms
 
 
 class ClassController:
