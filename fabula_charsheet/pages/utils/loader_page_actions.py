@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import streamlit as st
 
 import config
@@ -20,13 +18,14 @@ def delete_character(character: Character, loc: LocNamespace):
                     icon="💀"
                 ):
             s.SAVED_CHARS.char_list.remove(character)
-            char_path = Path(config.SAVED_CHARS_DIRECTORY, f"{character.name}.{character.id}.character.yaml")
-            try:
-                char_path.unlink()
-            except FileNotFoundError:
+            char_paths = list(config.SAVED_CHARS_DIRECTORY.glob(f"*.{character.id}.character.yaml"))
+            if not char_paths:
                 st.error(loc.page_delete_character_file_missing, icon="📜")
-            except PermissionError:
-                st.error(loc.page_delete_character_file_permission, icon="🔒")
+            for char_path in char_paths:
+                try:
+                    char_path.unlink()
+                except PermissionError:
+                    st.error(loc.page_delete_character_file_permission, icon="🔒")
             avatar_path = get_avatar_path(character.id)
             if avatar_path:
                 try:
