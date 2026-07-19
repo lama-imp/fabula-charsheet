@@ -494,14 +494,16 @@ def build(controller: CharacterController):
             DanceTableWriter(loc).write_in_columns(added_dances)
             st.divider()
 
-        if controller.is_class_added(ClassName.arcanist) and controller.has_skill("bind_and_summon"):
+        if controller.is_class_added(ClassName.arcanist) and (
+                controller.has_skill("bind_and_summon") or controller.character.special.arcana):
             added_arcana = [t for t in controller.character.special.arcana]
             col1, col2 = st.columns([0.25, 0.75])
             with col1:
                 st.markdown(f"##### {loc.page_view_arcana}")
             with col2:
-                if st.button(loc.add_arcanum_button):
-                    add_arcanum_dialog(controller, loc)
+                if controller.has_skill("bind_and_summon"):
+                    if st.button(loc.add_arcanum_button):
+                        add_arcanum_dialog(controller, loc)
             ArcanumTableWriter(loc).write_in_columns(added_arcana)
             st.divider()
 

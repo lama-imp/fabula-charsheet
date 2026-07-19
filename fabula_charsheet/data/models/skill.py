@@ -23,6 +23,7 @@ class HeroicSkillName(StrEnum):
     extra_spells = auto()
     upgrade = auto()
     heroic_companion = auto()
+    revelation = auto()
 
 
 class Skill(BaseModel):

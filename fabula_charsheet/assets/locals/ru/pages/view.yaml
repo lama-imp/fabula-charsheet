@@ -71,3 +71,6 @@ heroic_skill_several_mastery_requirement: "Вы должны овладеть о
 
 page_view_remaining_zenit: "Зениты"
 page_view_remaining_zenit_value: "{zenits}"
+
+page_view_revelation_intro: "Придумайте нового Аркана вместе с Мастером игры и другими Игроками."
+page_view_arcanum_name: "Название Аркана"

@@ -93,3 +93,6 @@ page_view_upgrade_replace_quality: "You can **replace** quality of this item."
 page_view_upgrade_cost: "**Cost**: {cost}"
 page_view_select_status: "Select a status:"
 page_view_select_damage: "Select damage type:"
+
+page_view_revelation_intro: "Design a new Arcanum together with your Game Master and the other Players."
+page_view_arcanum_name: "Arcanum name"
