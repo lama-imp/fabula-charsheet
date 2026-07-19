@@ -10,8 +10,8 @@ def test_init_localizator_loads_translations(streamlit_stub, tmp_path):
     ru_dir = tmp_path / 'ru'
     en_dir.mkdir()
     ru_dir.mkdir()
-    (en_dir / 'base.yaml').write_text('{"error_name_empty": "Name should not be empty.", "bond_explanation": "About Bonds"}')
-    (ru_dir / 'base.yaml').write_text('{"error_name_empty": "Имя не должно быть пустым."}')
+    (en_dir / 'base.yaml').write_text('{"error_name_empty": "Name should not be empty.", "bond_explanation": "About Bonds"}', encoding='utf-8')
+    (ru_dir / 'base.yaml').write_text('{"error_name_empty": "Имя не должно быть пустым."}', encoding='utf-8')
     init_localizator(tmp_path)
     localizator = streamlit_stub.session_state['localizator']
     en = localizator.get(LangEnum.en)

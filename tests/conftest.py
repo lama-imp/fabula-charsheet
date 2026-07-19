@@ -142,4 +142,7 @@ def assets_dir(tmp_path: Path) -> Path:
     (special / 'dances.yaml').write_text('[]')
     (special / 'therioforms.yaml').write_text('[]')
 
+    qualities = tmp_path / 'qualities'
+    qualities.mkdir()
+
     return tmp_path
