@@ -103,3 +103,20 @@ def assets_dir(tmp_path: Path) -> Path:
     qualities.mkdir()
 
     return tmp_path
+
+
+@pytest.fixture
+def loc():
+    from data.models import LocNamespace
+    return LocNamespace(root={
+        "dice_prefix": "d",
+        "error_class_not_found": "Class {class_name} not found.",
+        "error_unexpected_class_type": "Unexpected class type: {class_type}",
+        "error_equipping_item": "Cannot equip this item.",
+    })
+
+
+@pytest.fixture
+def controller(loc):
+    from pages.controller import CharacterController
+    return CharacterController(loc)
