@@ -1,11 +1,11 @@
 import pytest
 import json
 
-from fabula_charsheet.data.models import Character, HeroicSkill, HeroicSkillName
-from fabula_charsheet.data.models.character import InvalidCharacterField
-from fabula_charsheet.data import compendium
-from fabula_charsheet.data.localizator import init_localizator
-from fabula_charsheet.data.models import LangEnum
+from data.models import Character, HeroicSkill, HeroicSkillName
+from data.models.character import InvalidCharacterField
+from data import compendium
+from data.localizator import init_localizator
+from data.models import LangEnum
 
 
 def _setup_loc(streamlit_stub, tmp_path):
@@ -52,7 +52,7 @@ def test_character_utility_methods(assets_dir, streamlit_stub, tmp_path):
     compendium.COMPENDIUM = None
     compendium.init(assets_dir)
     c = compendium.COMPENDIUM
-    from fabula_charsheet.data.models.skill import Skill
+    from data.models.skill import Skill
     for cls in c.classes.classes:
         cls.skills = [Skill(**s) if isinstance(s, dict) else s for s in cls.skills]
     char = Character()

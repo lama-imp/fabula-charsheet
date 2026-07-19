@@ -1,8 +1,8 @@
 from pathlib import Path
 import pytest
 
-from fabula_charsheet.data.localizator import init_localizator
-from fabula_charsheet.data.models import LangEnum
+from data.localizator import init_localizator
+from data.models import LangEnum
 
 
 def test_init_localizator_loads_translations(streamlit_stub, tmp_path):
