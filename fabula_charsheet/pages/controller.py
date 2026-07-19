@@ -306,15 +306,10 @@ class CharacterController:
         self.character.inventory.backpack.add_item(item)
 
     def remove_item(self, item: Item):
-        if item in self.equipped_items():
-            if isinstance(item, Weapon):
-                self.unequip_item("weapon")
-            elif isinstance(item, Armor):
-                self.unequip_item("armor")
-            elif isinstance(item, Shield):
-                self.unequip_item("shield")
-            elif isinstance(item, Accessory):
-                self.unequip_item("accessory")
+        equipped = self.character.inventory.equipped
+        for category in ("main_hand", "off_hand", "armor", "accessory"):
+            if getattr(equipped, category) == item:
+                setattr(equipped, category, None)
         self.character.inventory.backpack.remove_item(item)
 
     def dump_character(self):
