@@ -5,11 +5,25 @@ import streamlit as st
 from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
-    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform, HeroicSkillName, Dance, Arcanum, Invention
+    Skill, LocNamespace, HeroicSkill, Species, ChimeristSpell, Therioform, HeroicSkillName, Dance, Arcanum, Invention, \
+    Status, Companion, CompanionAttack, CompanionSkill, CompanionSkillName, SPECIES_STARTING_SKILLS, \
+    PLANT_VULNERABILITY_CHOICES
 from .table_writer import SkillTableWriter, HeroicSkillTableWriter, SpellTableWriter, TherioformTableWriter, \
     DanceTableWriter, ArcanumTableWriter, InventionTableWriter
 from .classes_page_actions import add_new_class
+from .common import join_with_and
 from data import compendium as c
+
+COMPANION_ATTRIBUTE_ARRAYS = {
+    "jack_of_all_trades": [8, 8, 8, 8],
+    "standard": [10, 8, 8, 6],
+    "specialized": [10, 10, 6, 6],
+    "super_specialized": [12, 8, 6, 6],
+}
+COMPANION_ALLOWED_SPECIES = [Species.beast, Species.construct, Species.elemental, Species.plant]
+COMPANION_SELECTABLE_DAMAGE_TYPES = [
+    d for d in DamageType if d not in (DamageType.no_damage, DamageType.no_type)
+]
 
 
 def avatar_update(controller: CharacterController, loc: LocNamespace):
@@ -585,4 +599,359 @@ def add_arcanum(controller: CharacterController, loc: LocNamespace):
         arcanum = selected_arcanum[0]
         controller.character.special.arcana.append(arcanum)
         st.rerun()
+
+
+def _describe_companion_skill(skill: CompanionSkill, loc: LocNamespace,
+                               attacks: list[CompanionAttack] | None = None) -> str:
+    match skill.name:
+        case CompanionSkillName.damage_resistance:
+            return join_with_and([d.localized_name(loc) for d in skill.damage_types], loc)
+        case CompanionSkillName.damage_immunity:
+            return join_with_and([d.localized_name(loc) for d in skill.damage_types], loc)
+        case CompanionSkillName.damage_absorption:
+            return join_with_and([d.localized_name(loc) for d in skill.damage_types], loc)
+        case CompanionSkillName.status_effect_immunity:
+            return join_with_and([s.localized_name(loc) for s in skill.statuses], loc)
+        case CompanionSkillName.improved_defenses:
+            key = f"companion_defense_option_{skill.defense_option}"
+            return getattr(loc, key, skill.defense_option or "")
+        case CompanionSkillName.specialized:
+            key = f"companion_check_type_{skill.check_type}"
+            base = getattr(loc, key, skill.check_type or "")
+            if skill.check_type == "opposed" and skill.check_context:
+                return f"{base} ({skill.check_context})"
+            return base
+        case CompanionSkillName.improved_damage:
+            if attacks and skill.attack_index is not None and skill.attack_index < len(attacks):
+                attack_name = attacks[skill.attack_index].name
+                if attack_name:
+                    return attack_name
+            return loc.companion_skill_attack_target + f" #{(skill.attack_index or 0) + 1}"
+        case CompanionSkillName.improved_hit_points | CompanionSkillName.flying:
+            return ""
+        case _:
+            return skill.description
+
+
+def _companion_skill_extra_inputs(
+        skill_name: CompanionSkillName,
+        loc: LocNamespace,
+        attacks: list[CompanionAttack],
+        absorbable_types: list[DamageType],
+) -> tuple[dict, bool]:
+    match skill_name:
+        case CompanionSkillName.damage_resistance:
+            types = st.multiselect(loc.page_view_select_damage, COMPANION_SELECTABLE_DAMAGE_TYPES,
+                                    format_func=lambda d: d.localized_name(loc), max_selections=2,
+                                    key="companion-skill-resistance-types")
+            return {"damage_types": types or []}, len(types or []) == 2
+        case CompanionSkillName.damage_immunity:
+            damage_type = st.selectbox(loc.page_view_select_damage, COMPANION_SELECTABLE_DAMAGE_TYPES,
+                                        format_func=lambda d: d.localized_name(loc),
+                                        key="companion-skill-immunity-type")
+            return {"damage_types": [damage_type]}, damage_type is not None
+        case CompanionSkillName.damage_absorption:
+            if not absorbable_types:
+                st.warning(loc.error_companion_no_absorbable_damage)
+                return {}, False
+            damage_type = st.selectbox(loc.page_view_select_damage, absorbable_types,
+                                        format_func=lambda d: d.localized_name(loc),
+                                        key="companion-skill-absorption-type")
+            return {"damage_types": [damage_type]}, damage_type is not None
+        case CompanionSkillName.status_effect_immunity:
+            statuses = st.multiselect(loc.page_view_select_status, [s for s in Status],
+                                       format_func=lambda s: s.localized_name(loc), max_selections=2,
+                                       key="companion-skill-status-types")
+            return {"statuses": statuses or []}, len(statuses or []) == 2
+        case CompanionSkillName.improved_defenses:
+            option = st.pills(
+                loc.companion_defense_option,
+                ["defense", "magic_defense"],
+                format_func=lambda o: getattr(loc, f"companion_defense_option_{o}"),
+                key="companion-skill-defense-option",
+            )
+            return {"defense_option": option}, option is not None
+        case CompanionSkillName.specialized:
+            check_type = st.pills(
+                loc.companion_check_type,
+                ["accuracy", "magic", "opposed"],
+                format_func=lambda o: getattr(loc, f"companion_check_type_{o}"),
+                key="companion-skill-check-type",
+            )
+            context = None
+            if check_type == "opposed":
+                context = st.text_input(loc.companion_check_context, key="companion-skill-check-context")
+            valid = check_type is not None and (check_type != "opposed" or bool(context))
+            return {"check_type": check_type, "check_context": context}, valid
+        case CompanionSkillName.improved_damage:
+            if not attacks:
+                st.warning(loc.companion_basic_attacks)
+                return {}, False
+            attack_index = st.selectbox(
+                loc.companion_skill_attack_target,
+                list(range(len(attacks))),
+                format_func=lambda i: attacks[i].name or f"#{i + 1}",
+                key="companion-skill-attack-index",
+            )
+            return {"attack_index": attack_index}, attack_index is not None
+        case CompanionSkillName.improved_hit_points | CompanionSkillName.flying:
+            return {}, True
+        case _:
+            description = st.text_area(loc.companion_skill_free_text, key="companion-skill-description")
+            return {"description": description}, bool(description)
+
+
+def add_companion(controller: CharacterController, loc: LocNamespace):
+    name = st.text_input(loc.companion_name)
+    species = st.pills(
+        loc.companion_species,
+        COMPANION_ALLOWED_SPECIES,
+        format_func=lambda s: s.localized_name(loc),
+        key="companion-species",
+    )
+
+    species_damage_choice = None
+    if species == Species.elemental:
+        choices = [d for d in COMPANION_SELECTABLE_DAMAGE_TYPES if d != DamageType.poison]
+        species_damage_choice = st.selectbox(
+            loc.companion_species_damage_choice_elemental, choices,
+            format_func=lambda d: d.localized_name(loc), key="companion-species-choice",
+        )
+        st.caption(loc.companion_innate_elemental)
+    elif species == Species.plant:
+        species_damage_choice = st.selectbox(
+            loc.companion_species_damage_choice_plant, PLANT_VULNERABILITY_CHOICES,
+            format_func=lambda d: d.localized_name(loc), key="companion-species-choice",
+        )
+        st.caption(loc.companion_innate_plant)
+    elif species == Species.construct:
+        st.caption(loc.companion_innate_construct)
+
+    st.markdown(f"##### {loc.companion_attribute_array}")
+    dexterity = st.select_slider(loc.attr_dexterity, options=[6, 8, 10, 12], value=8, key="companion-dex")
+    might = st.select_slider(loc.attr_might, options=[6, 8, 10, 12], value=8, key="companion-mig")
+    insight = st.select_slider(loc.attr_insight, options=[6, 8, 10, 12], value=8, key="companion-ins")
+    willpower = st.select_slider(loc.attr_willpower, options=[6, 8, 10, 12], value=8, key="companion-wlp")
+
+    picked_array = sorted([dexterity, might, insight, willpower], reverse=True)
+    is_valid_array = picked_array in [sorted(a, reverse=True) for a in COMPANION_ATTRIBUTE_ARRAYS.values()]
+    if not is_valid_array:
+        st.error(loc.error_companion_invalid_array)
+        for key in COMPANION_ATTRIBUTE_ARRAYS:
+            st.caption(getattr(loc, f"companion_array_{key}"))
+
+    # NOTE: this dialog must NEVER call st.rerun() except in the final "create companion"
+    # submit below — st.rerun() closes an open st.dialog (it forces a full-script rerun
+    # instead of just re-running this dialog's own fragment), so every intermediate
+    # add/remove step here relies on the dialog's own automatic fragment rerun instead.
+    st.divider()
+    st.markdown(f"##### {loc.companion_basic_attacks}")
+    st.session_state.companion_attacks = st.session_state.get("companion_attacks", [])
+
+    if len(st.session_state.companion_attacks) < 2:
+        with st.expander(loc.companion_add_attack_button):
+            attack_name = st.text_input(loc.companion_attack_name, key="companion-attack-name")
+            c1, c2 = st.columns(2)
+            with c1:
+                acc1 = st.selectbox("companion-acc1", [a for a in AttributeName], key="companion-attack-acc1",
+                                    label_visibility="hidden", format_func=lambda a: AttributeName.to_alias(a, loc))
+            with c2:
+                acc2 = st.selectbox("companion-acc2", [a for a in AttributeName], key="companion-attack-acc2",
+                                    label_visibility="hidden", format_func=lambda a: AttributeName.to_alias(a, loc))
+            damage_type = st.pills(loc.page_view_item_damage_type, COMPANION_SELECTABLE_DAMAGE_TYPES,
+                                   format_func=lambda d: d.localized_name(loc), key="companion-attack-dmg")
+            attack_range = st.pills(loc.page_view_item_range, [r for r in WeaponRange],
+                                    format_func=lambda r: r.localized_name(loc), key="companion-attack-range")
+            if st.button(loc.companion_add_attack_button, key="companion-attack-add",
+                         disabled=not (attack_name and damage_type and attack_range)):
+                st.session_state.companion_attacks.append(CompanionAttack(
+                    name=attack_name, accuracy=[acc1, acc2], damage_type=damage_type, range=attack_range,
+                ))
+    else:
+        st.info(loc.error_companion_max_attacks)
+
+    for i, attack in enumerate(st.session_state.companion_attacks):
+        c1, c2 = st.columns([0.8, 0.2])
+        with c1:
+            acc = " + ".join(AttributeName.to_alias(a, loc) for a in attack.accuracy)
+            st.markdown(
+                f"**{attack.name}** ◆ {acc} ◆ {loc.hr} + 5 {attack.damage_type.localized_name(loc)} "
+                f"◆ {attack.range.localized_name(loc)}"
+            )
+        with c2:
+            if st.button(loc.remove_button, key=f"companion-attack-remove-{i}"):
+                st.session_state.companion_attacks.pop(i)
+
+    st.divider()
+    st.markdown(f"##### {loc.companion_skills}")
+    st.session_state.companion_skills = st.session_state.get("companion_skills", [])
+    max_skills = SPECIES_STARTING_SKILLS.get(species, 0)
+
+    if species and len(st.session_state.companion_skills) < max_skills:
+        with st.expander(loc.companion_add_skill_button):
+            limited_taken = {
+                s.name for s in st.session_state.companion_skills
+                if s.name in (CompanionSkillName.flying, CompanionSkillName.final_act)
+            }
+            selectable = [s for s in CompanionSkillName if s not in limited_taken]
+            skill_name = st.selectbox(
+                loc.companion_skill_name, selectable,
+                format_func=lambda s: CompanionSkill(name=s).localized_name(loc),
+                key="companion-skill-select",
+            )
+            if skill_name is not None:
+                st.caption(CompanionSkill(name=skill_name).localized_description(loc))
+
+            temp_companion = Companion(species=species, species_damage_choice=species_damage_choice)
+            absorbable = sorted(set(
+                temp_companion.innate_resistances() + temp_companion.innate_immunities()
+                + [dt for s in st.session_state.companion_skills
+                   if s.name in (CompanionSkillName.damage_resistance, CompanionSkillName.damage_immunity)
+                   for dt in s.damage_types]
+            ), key=lambda d: d.value)
+
+            extra_kwargs, is_valid = _companion_skill_extra_inputs(
+                skill_name, loc, st.session_state.companion_attacks, absorbable,
+            )
+
+            if st.button(loc.companion_add_skill_button, key="companion-skill-add", disabled=not is_valid):
+                st.session_state.companion_skills.append(CompanionSkill(name=skill_name, **extra_kwargs))
+    elif species:
+        st.info(loc.error_companion_max_skills.format(max_skills=max_skills))
+
+    for i, skill in enumerate(st.session_state.companion_skills):
+        c1, c2 = st.columns([0.8, 0.2])
+        with c1:
+            specific = _describe_companion_skill(skill, loc, st.session_state.companion_attacks)
+            st.markdown(f"**{skill.localized_name(loc)}**" + (f" — {specific}" if specific else ""))
+            st.caption(skill.localized_description(loc))
+        with c2:
+            if st.button(loc.remove_button, key=f"companion-skill-remove-{i}"):
+                st.session_state.companion_skills.pop(i)
+
+    can_confirm = bool(name) and species is not None and is_valid_array
+    if st.button(loc.add_companion_button, key="companion-create-confirm", disabled=not can_confirm):
+        companion = Companion(
+            name=name,
+            species=species,
+            dexterity=dexterity,
+            might=might,
+            insight=insight,
+            willpower=willpower,
+            species_damage_choice=species_damage_choice,
+            basic_attacks=st.session_state.companion_attacks,
+            skills=st.session_state.companion_skills,
+        )
+        controller.set_companion(companion)
+        st.session_state.companion_attacks = []
+        st.session_state.companion_skills = []
+        st.toast(loc.msg_companion_added.format(name=companion.name))
+        st.rerun()
+
+
+def display_companion(controller: CharacterController, loc: LocNamespace):
+    companion = controller.character.special.companion
+    if companion is None:
+        return
+
+    c1, c2 = st.columns([0.8, 0.2])
+    with c1:
+        st.markdown(f"##### {companion.name} — _{companion.species.localized_name(loc)}_")
+    with c2:
+        if st.button(loc.remove_companion_button, key="companion-remove"):
+            controller.remove_companion()
+            st.rerun()
+
+    st.caption(loc.companion_no_initiative)
+    st.markdown(f"**{loc.companion_check_bonus.format(bonus=controller.companion_check_bonus())}**")
+
+    att_col1, att_col2, hp_col = st.columns([0.25, 0.25, 0.5])
+    with att_col1:
+        st.markdown(f"**{loc.attr_dexterity}**: {loc.dice_prefix}{companion.dexterity}")
+        st.markdown(f"**{loc.attr_might}**: {loc.dice_prefix}{companion.might}")
+        st.markdown(f"**{loc.column_defense}**: {controller.companion_defense()}")
+    with att_col2:
+        st.markdown(f"**{loc.attr_insight}**: {loc.dice_prefix}{companion.insight}")
+        st.markdown(f"**{loc.attr_willpower}**: {loc.dice_prefix}{companion.willpower}")
+        st.markdown(f"**{loc.column_magic_defense}**: {controller.companion_magic_defense()}")
+    with hp_col:
+        max_hp = controller.companion_max_hp()
+        current_hp = controller.companion_current_hp()
+        st.progress(
+            max(current_hp / max_hp, 0) if max_hp else 0,
+            text=f"{loc.companion_hp} {current_hp} / {max_hp}"
+        )
+        hc1, hc2, hc3, hc4 = st.columns([0.4, 0.2, 0.2, 0.2])
+        with hc1:
+            hp_input = st.number_input("companion_hp_input", min_value=0, label_visibility="hidden", value=10,
+                                       key="companion-hp-input")
+        with hc2:
+            st.write("")
+            if st.button("", icon=":material/add:", key="companion-hp-add"):
+                controller.state.companion_minus_hp = max(0, controller.state.companion_minus_hp - hp_input)
+                st.rerun()
+        with hc3:
+            st.write("")
+            if st.button("", icon=":material/remove:", key="companion-hp-subtract"):
+                controller.state.companion_minus_hp = min(max_hp, controller.state.companion_minus_hp + hp_input)
+                st.rerun()
+        with hc4:
+            st.write("")
+            if st.button("", icon=":material/laps:", key="companion-hp-reset", help="Reset HP"):
+                controller.state.companion_minus_hp = 0
+                st.rerun()
+
+    if current_hp <= 0:
+        if st.button(loc.companion_flee_button, key="companion-flee"):
+            controller.companion_flee()
+            st.rerun()
+
+    if companion.basic_attacks:
+        st.divider()
+        st.markdown(f"##### {loc.companion_basic_attacks}")
+        for idx, attack in enumerate(companion.basic_attacks):
+            acc = " + ".join(f"{loc.dice_prefix}{getattr(companion, a)}" for a in attack.accuracy)
+            dmg_bonus = controller.companion_attack_damage_bonus(idx)
+            ac1, ac2, ac3, ac4, _ = st.columns([0.15, 0.1, 0.1, 0.3, 0.35])
+            with ac1:
+                st.markdown("⚔️")
+                st.write(attack.name)
+            with ac2:
+                st.markdown("_&nbsp;_")
+                st.write(attack.range.localized_name(loc))
+            with ac3:
+                st.markdown(f"_{loc.column_accuracy}_")
+                st.write(acc)
+            with ac4:
+                st.markdown(f"_{loc.column_damage}_")
+                st.markdown(f"{loc.hr} + {5 + dmg_bonus} ◆ {attack.damage_type.localized_name(loc)}")
+
+    if companion.skills:
+        st.divider()
+        st.markdown(f"##### {loc.companion_skills}")
+        for skill in companion.skills:
+            specific = _describe_companion_skill(skill, loc, companion.basic_attacks)
+            st.markdown(f"_{skill.localized_name(loc)}_" + (f" — **{specific}**" if specific else ""))
+            desc_col, _ = st.columns([0.5, 0.5])
+            with desc_col:
+                st.markdown(skill.localized_description(loc))
+
+    resistances = controller.companion_all_resistances()
+    immunities = controller.companion_all_immunities()
+    absorptions = controller.companion_all_absorptions()
+    vulnerabilities = controller.companion_all_vulnerabilities()
+    status_immunities = controller.companion_all_status_immunities()
+
+    if any((resistances, immunities, absorptions, vulnerabilities, status_immunities)):
+        st.divider()
+        if resistances:
+            st.markdown(f"**{loc.companion_resistances}**: {join_with_and([d.localized_name(loc) for d in resistances], loc)}")
+        if immunities:
+            st.markdown(f"**{loc.companion_immunities}**: {join_with_and([d.localized_name(loc) for d in immunities], loc)}")
+        if absorptions:
+            st.markdown(f"**{loc.companion_absorptions}**: {join_with_and([d.localized_name(loc) for d in absorptions], loc)}")
+        if vulnerabilities:
+            st.markdown(f"**{loc.companion_vulnerabilities}**: {join_with_and([d.localized_name(loc) for d in vulnerabilities], loc)}")
+        if status_immunities:
+            st.markdown(f"**{loc.companion_status_immunities}**: {join_with_and([s.localized_name(loc) for s in status_immunities], loc)}")
 

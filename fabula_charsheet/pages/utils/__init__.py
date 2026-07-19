@@ -51,6 +51,8 @@ from .view_page_actions import (
     manifest_therioform,
     display_equipped_item,
     add_invention,
+    add_companion,
+    display_companion,
 )
 
 from .classes_page_actions import (

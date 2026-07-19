@@ -1,0 +1,101 @@
+page_view_companion: "Спутник"
+add_companion_button: "Добавить спутника"
+remove_companion_button: "Удалить спутника"
+companion_flee_button: "Спутник бежит (восстановить ОЗ до Кризиса)"
+page_view_add_companion_dialog_title: "Создайте вашего Верного спутника"
+msg_companion_added: "{name} присоединился к вам в качестве спутника."
+
+companion_name: "Имя спутника"
+companion_species: "Вид"
+companion_no_initiative: "У этого спутника нет показателя Инициативы, и он не повышает уровень."
+companion_check_bonus: "Бонус к проверкам Точности и Магии: +{bonus}"
+companion_hp: "ОЗ"
+
+companion_species_damage_choice_elemental: "Выберите второй тип урона, к которому будет иммунитет"
+companion_species_damage_choice_plant: "Выберите тип урона, к которому у спутника будет уязвимость"
+companion_innate_construct: "Иммунитет к урону ядом, сопротивление урону землёй, иммунитет к отравлению."
+companion_innate_elemental: "Иммунитет к урону ядом и к выбранному типу урона, иммунитет к отравлению."
+companion_innate_plant: "Иммунитет к ошеломлению, испугу и ярости. Уязвимость к выбранному типу урона."
+
+companion_attribute_array: "Набор характеристик"
+companion_array_jack_of_all_trades: "Мастер на все руки (к8, к8, к8, к8)"
+companion_array_standard: "Стандартный (к10, к8, к8, к6)"
+companion_array_specialized: "Специализированный (к10, к10, к6, к6)"
+companion_array_super_specialized: "Узкоспециализированный (к12, к8, к6, к6)"
+error_companion_invalid_array: "Выбранные размеры костей должны соответствовать одному из наборов выше."
+
+companion_basic_attacks: "Базовые атаки"
+companion_add_attack_button: "Добавить атаку"
+companion_attack_name: "Название атаки"
+error_companion_max_attacks: "У спутника может быть не более двух базовых атак."
+
+companion_skills: "Навыки спутника"
+companion_add_skill_button: "Добавить навык"
+companion_skill_name: "Навык"
+companion_skill_free_text: "Опишите эффект этого навыка"
+companion_skill_attack_target: "Какая атака?"
+error_companion_max_skills: "У этого спутника может быть не более {max_skills} навыков."
+error_companion_no_absorbable_damage: "У этого спутника пока нет сопротивления или иммунитета ни к одному типу урона. Сначала добавьте Сопротивление урону или Иммунитет к урону."
+
+companion_defense_option: "Какая защита получает +2?"
+companion_defense_option_defense: "+2 Защита / +1 Маг. защита"
+companion_defense_option_magic_defense: "+1 Защита / +2 Маг. защита"
+
+companion_check_type: "Какая проверка?"
+companion_check_type_accuracy: "Проверки Точности (+3)"
+companion_check_type_magic: "Проверки Магии (+3)"
+companion_check_type_opposed: "Встречные проверки в определённом контексте (+3)"
+companion_check_context: "Контекст для встречной проверки"
+
+companion_resistances: "Сопротивление"
+companion_immunities: "Иммунитет"
+companion_absorptions: "Поглощение"
+companion_vulnerabilities: "Уязвимость"
+companion_status_immunities: "Иммунитет к состояниям"
+
+npc_skill_crisis_effect: "Кризисный эффект"
+npc_skill_crisis_effect_description: >
+  Пока спутник находится в Кризисе, он получает особое преимущество или способность (описано ниже).
+npc_skill_damage_absorption: "Поглощение урона"
+npc_skill_damage_absorption_description: >
+  Спутник получает Поглощение к типу урона, к которому у него уже есть Сопротивление или Иммунитет.
+npc_skill_damage_immunity: "Иммунитет к урону"
+npc_skill_damage_immunity_description: >
+  Спутник получает Иммунитет к одному типу урона, к которому у него не было Уязвимости.
+npc_skill_damage_resistance: "Сопротивление урону"
+npc_skill_damage_resistance_description: >
+  Спутник получает Сопротивление к двум типам урона.
+npc_skill_final_act: "Последний акт (Ограниченный)"
+npc_skill_final_act_description: >
+  При падении до 0 ОЗ спутник может немедленно совершить особое действие или атаку (описано ниже).
+npc_skill_flying: "Полёт (Ограниченный)"
+npc_skill_flying_description: >
+  Спутник может летать или левитировать. Его атаки ближнего боя могут поражать летающих существ, и он не может
+  быть целью атак ближнего боя, если атакующий не может дотянуться до летающих целей. Если он получает урон типа,
+  к которому уязвим, он вынужден приземлиться до конца раунда. Находясь в Кризисе, он теряет преимущества этого навыка.
+npc_skill_improved_damage: "Улучшенный урон"
+npc_skill_improved_damage_description: >
+  Одна из базовых атак спутника наносит на 5 больше урона.
+npc_skill_improved_defenses: "Улучшенная защита"
+npc_skill_improved_defenses_description: >
+  Спутник получает либо +2 к Защите и +1 к Маг. защите, либо +1 к Защите и +2 к Маг. защите.
+npc_skill_improved_hit_points: "Улучшенные очки здоровья"
+npc_skill_improved_hit_points_description: >
+  Максимальные очки здоровья спутника увеличиваются на 10.
+npc_skill_reaction: "Реакция"
+npc_skill_reaction_description: >
+  Спутник реагирует на определённый триггер, например, промах атаки по нему или попадание вражеского
+  заклинания (описано ниже).
+npc_skill_special_attack: "Особая атака"
+npc_skill_special_attack_description: >
+  Одна из атак спутника получает особый эффект (описано ниже).
+npc_skill_specialized: "Специализация"
+npc_skill_specialized_description: >
+  Спутник получает бонус +3 ко всем проверкам Точности, всем проверкам Магии или встречным проверкам
+  в определённом контексте.
+npc_skill_status_effect_immunity: "Иммунитет к состояниям"
+npc_skill_status_effect_immunity_description: >
+  Спутник становится невосприимчив к двум состояниям на выбор.
+npc_skill_unique_action: "Уникальное действие"
+npc_skill_unique_action_description: >
+  Спутник может совершить действие Навык, чтобы создать уникальный эффект (описано ниже).

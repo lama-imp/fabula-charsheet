@@ -35,6 +35,9 @@ from data.models import (
     GripType,
     Quality,
     Therioform,
+    Companion,
+    CompanionSkillName,
+    SPECIES_STARTING_SKILLS,
 )
 
 if TYPE_CHECKING:
@@ -593,6 +596,107 @@ class CharacterController:
     def apply_manifest_therioform(self, therioforms: list[Therioform]):
         self.state.minus_hp += math.floor(self.current_hp() / 3)
         self.state.active_therioforms = therioforms
+
+    def companion_skill_level(self) -> int:
+        return self.get_skill_level(ClassName.wayfarer, "faithful_companion") or 0
+
+    def can_add_companion(self) -> bool:
+        return self.has_skill("faithful_companion") and self.character.special.companion is None
+
+    def companion_max_skills(self) -> int:
+        companion = self.character.special.companion
+        if companion is None:
+            return 0
+        return SPECIES_STARTING_SKILLS[companion.species]
+
+    def companion_all_resistances(self) -> list[DamageType]:
+        companion = self.character.special.companion
+        resistances = list(companion.innate_resistances())
+        for skill in companion.skills:
+            if skill.name == CompanionSkillName.damage_resistance:
+                resistances.extend(skill.damage_types)
+        return resistances
+
+    def companion_all_immunities(self) -> list[DamageType]:
+        companion = self.character.special.companion
+        immunities = list(companion.innate_immunities())
+        for skill in companion.skills:
+            if skill.name == CompanionSkillName.damage_immunity:
+                immunities.extend(skill.damage_types)
+        return immunities
+
+    def companion_all_absorptions(self) -> list[DamageType]:
+        companion = self.character.special.companion
+        absorptions = []
+        for skill in companion.skills:
+            if skill.name == CompanionSkillName.damage_absorption:
+                absorptions.extend(skill.damage_types)
+        return absorptions
+
+    def companion_all_vulnerabilities(self) -> list[DamageType]:
+        return list(self.character.special.companion.innate_vulnerabilities())
+
+    def companion_all_status_immunities(self) -> list[Status]:
+        companion = self.character.special.companion
+        immunities = list(companion.innate_status_immunities())
+        for skill in companion.skills:
+            if skill.name == CompanionSkillName.status_effect_immunity:
+                immunities.extend(skill.statuses)
+        return immunities
+
+    def companion_max_hp(self) -> int:
+        companion = self.character.special.companion
+        improved_hp_count = sum(
+            1 for skill in companion.skills if skill.name == CompanionSkillName.improved_hit_points
+        )
+        return (
+            self.companion_skill_level() * companion.might
+            + math.floor(self.character.level / 2)
+            + 10 * improved_hp_count
+        )
+
+    def companion_crisis_value(self) -> int:
+        return math.floor(self.companion_max_hp() / 2)
+
+    def companion_current_hp(self) -> int:
+        return max(0, self.companion_max_hp() - self.state.companion_minus_hp)
+
+    def companion_defense(self) -> int:
+        companion = self.character.special.companion
+        bonus = 0
+        for skill in companion.skills:
+            if skill.name == CompanionSkillName.improved_defenses:
+                bonus += 2 if skill.defense_option == "defense" else 1
+        return companion.dexterity + bonus
+
+    def companion_magic_defense(self) -> int:
+        companion = self.character.special.companion
+        bonus = 0
+        for skill in companion.skills:
+            if skill.name == CompanionSkillName.improved_defenses:
+                bonus += 1 if skill.defense_option == "defense" else 2
+        return companion.insight + bonus
+
+    def companion_check_bonus(self) -> int:
+        return self.companion_skill_level()
+
+    def companion_attack_damage_bonus(self, attack_index: int) -> int:
+        companion = self.character.special.companion
+        return 5 * sum(
+            1 for skill in companion.skills
+            if skill.name == CompanionSkillName.improved_damage and skill.attack_index == attack_index
+        )
+
+    def set_companion(self, companion: Companion):
+        self.character.special.companion = companion
+        self.state.companion_minus_hp = 0
+
+    def remove_companion(self):
+        self.character.special.companion = None
+        self.state.companion_minus_hp = 0
+
+    def companion_flee(self):
+        self.state.companion_minus_hp = self.companion_max_hp() - self.companion_crisis_value()
 
 
 class ClassController:
