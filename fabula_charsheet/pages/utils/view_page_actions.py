@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import streamlit as st
 
+from config import MAX_ATTRIBUTE_VALUE
 from pages.controller import CharacterController, ClassController
 from data.models import AttributeName, Weapon, GripType, WeaponCategory, \
     WeaponRange, ClassName, SpellTarget, Spell, SpellDuration, DamageType, Armor, Shield, Accessory, Item, \
@@ -316,6 +317,22 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
                 for spell in selected_spells:
                     controller.add_spell(spell, selected_class_name)
                 st.rerun()
+
+    elif HeroicSkillName.heroic_companion in [skill.name for skill in st.session_state.selected_hero_skills]:
+        companion = controller.character.special.companion
+        eligible_attributes = [a for a in AttributeName if getattr(companion, a.value) < MAX_ATTRIBUTE_VALUE]
+        chosen_attribute = st.pills(
+            loc.companion_heroic_attribute_choice,
+            eligible_attributes,
+            format_func=lambda a: f"{a.localized_name(loc)} ({loc.dice_prefix}{getattr(companion, a.value)})",
+            key="heroic-companion-attribute",
+        )
+        if st.button(loc.confirm_button,
+                     key="add-heroic-companion-skill",
+                     disabled=(len(st.session_state.selected_hero_skills) != 1) or chosen_attribute is None):
+            controller.add_heroic_skill(st.session_state.selected_hero_skills[0])
+            controller.apply_heroic_companion_attribute(chosen_attribute)
+            st.rerun()
 
     else:
         if st.button(loc.confirm_button,
@@ -638,17 +655,18 @@ def _companion_skill_extra_inputs(
         loc: LocNamespace,
         attacks: list[CompanionAttack],
         absorbable_types: list[DamageType],
+        key_prefix: str = "companion-skill",
 ) -> tuple[dict, bool]:
     match skill_name:
         case CompanionSkillName.damage_resistance:
             types = st.multiselect(loc.page_view_select_damage, COMPANION_SELECTABLE_DAMAGE_TYPES,
                                     format_func=lambda d: d.localized_name(loc), max_selections=2,
-                                    key="companion-skill-resistance-types")
+                                    key=f"{key_prefix}-resistance-types")
             return {"damage_types": types or []}, len(types or []) == 2
         case CompanionSkillName.damage_immunity:
             damage_type = st.selectbox(loc.page_view_select_damage, COMPANION_SELECTABLE_DAMAGE_TYPES,
                                         format_func=lambda d: d.localized_name(loc),
-                                        key="companion-skill-immunity-type")
+                                        key=f"{key_prefix}-immunity-type")
             return {"damage_types": [damage_type]}, damage_type is not None
         case CompanionSkillName.damage_absorption:
             if not absorbable_types:
@@ -656,19 +674,19 @@ def _companion_skill_extra_inputs(
                 return {}, False
             damage_type = st.selectbox(loc.page_view_select_damage, absorbable_types,
                                         format_func=lambda d: d.localized_name(loc),
-                                        key="companion-skill-absorption-type")
+                                        key=f"{key_prefix}-absorption-type")
             return {"damage_types": [damage_type]}, damage_type is not None
         case CompanionSkillName.status_effect_immunity:
             statuses = st.multiselect(loc.page_view_select_status, [s for s in Status],
                                        format_func=lambda s: s.localized_name(loc), max_selections=2,
-                                       key="companion-skill-status-types")
+                                       key=f"{key_prefix}-status-types")
             return {"statuses": statuses or []}, len(statuses or []) == 2
         case CompanionSkillName.improved_defenses:
             option = st.pills(
                 loc.companion_defense_option,
                 ["defense", "magic_defense"],
                 format_func=lambda o: getattr(loc, f"companion_defense_option_{o}"),
-                key="companion-skill-defense-option",
+                key=f"{key_prefix}-defense-option",
             )
             return {"defense_option": option}, option is not None
         case CompanionSkillName.specialized:
@@ -676,11 +694,11 @@ def _companion_skill_extra_inputs(
                 loc.companion_check_type,
                 ["accuracy", "magic", "opposed"],
                 format_func=lambda o: getattr(loc, f"companion_check_type_{o}"),
-                key="companion-skill-check-type",
+                key=f"{key_prefix}-check-type",
             )
             context = None
             if check_type == "opposed":
-                context = st.text_input(loc.companion_check_context, key="companion-skill-check-context")
+                context = st.text_input(loc.companion_check_context, key=f"{key_prefix}-check-context")
             valid = check_type is not None and (check_type != "opposed" or bool(context))
             return {"check_type": check_type, "check_context": context}, valid
         case CompanionSkillName.improved_damage:
@@ -691,13 +709,13 @@ def _companion_skill_extra_inputs(
                 loc.companion_skill_attack_target,
                 list(range(len(attacks))),
                 format_func=lambda i: attacks[i].name or f"#{i + 1}",
-                key="companion-skill-attack-index",
+                key=f"{key_prefix}-attack-index",
             )
             return {"attack_index": attack_index}, attack_index is not None
         case CompanionSkillName.improved_hit_points | CompanionSkillName.flying:
             return {}, True
         case _:
-            description = st.text_area(loc.companion_skill_free_text, key="companion-skill-description")
+            description = st.text_area(loc.companion_skill_free_text, key=f"{key_prefix}-description")
             return {"description": description}, bool(description)
 
 
@@ -849,6 +867,38 @@ def add_companion(controller: CharacterController, loc: LocNamespace):
         st.rerun()
 
 
+def add_companion_skill(controller: CharacterController, loc: LocNamespace):
+    companion = controller.character.special.companion
+
+    limited_taken = {
+        s.name for s in companion.skills
+        if s.name in (CompanionSkillName.flying, CompanionSkillName.final_act)
+    }
+    selectable = [s for s in CompanionSkillName if s not in limited_taken]
+    skill_name = st.selectbox(
+        loc.companion_skill_name, selectable,
+        format_func=lambda s: CompanionSkill(name=s).localized_name(loc),
+        key="companion-view-skill-select",
+    )
+    if skill_name is not None:
+        st.caption(CompanionSkill(name=skill_name).localized_description(loc))
+
+    absorbable = sorted(set(
+        companion.innate_resistances() + companion.innate_immunities()
+        + [dt for s in companion.skills
+           if s.name in (CompanionSkillName.damage_resistance, CompanionSkillName.damage_immunity)
+           for dt in s.damage_types]
+    ), key=lambda d: d.value)
+
+    extra_kwargs, is_valid = _companion_skill_extra_inputs(
+        skill_name, loc, companion.basic_attacks, absorbable, key_prefix="companion-view-skill",
+    )
+
+    if st.button(loc.companion_add_skill_button, key="companion-view-skill-add", disabled=not is_valid):
+        companion.skills.append(CompanionSkill(name=skill_name, **extra_kwargs))
+        st.rerun()
+
+
 def display_companion(controller: CharacterController, loc: LocNamespace):
     companion = controller.character.special.companion
     if companion is None:
@@ -926,9 +976,22 @@ def display_companion(controller: CharacterController, loc: LocNamespace):
                 st.markdown(f"_{loc.column_damage}_")
                 st.markdown(f"{loc.hr} + {5 + dmg_bonus} ◆ {attack.damage_type.localized_name(loc)}")
 
-    if companion.skills:
+    max_skills = controller.companion_max_skills()
+    if companion.skills or max_skills > 0:
         st.divider()
-        st.markdown(f"##### {loc.companion_skills}")
+
+        @st.dialog(loc.page_view_add_companion_skill_dialog_title, width="large")
+        def add_companion_skill_dialog():
+            add_companion_skill(controller, loc)
+
+        sk_col1, sk_col2 = st.columns([0.8, 0.2])
+        with sk_col1:
+            st.markdown(f"##### {loc.companion_skills}")
+        with sk_col2:
+            if len(companion.skills) < max_skills:
+                if st.button(loc.companion_add_skill_button, key="companion-view-add-skill-button"):
+                    add_companion_skill_dialog()
+
         for skill in companion.skills:
             specific = _describe_companion_skill(skill, loc, companion.basic_attacks)
             st.markdown(f"_{skill.localized_name(loc)}_" + (f" — **{specific}**" if specific else ""))

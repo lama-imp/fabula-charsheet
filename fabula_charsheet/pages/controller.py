@@ -400,6 +400,8 @@ class CharacterController:
     def is_heroic_skill_available(self, skill: HeroicSkill) -> bool:
         if skill in self.character.heroic_skills:
             return skill.can_add_several_times
+        if skill.name == HeroicSkillName.heroic_companion and self.character.special.companion is None:
+            return False
         if not skill.required_class:
             return True
         mastered_class_names = {char_class.name for char_class in self.character.classes if char_class.class_level() == 10}
@@ -607,7 +609,17 @@ class CharacterController:
         companion = self.character.special.companion
         if companion is None:
             return 0
-        return SPECIES_STARTING_SKILLS[companion.species]
+        max_skills = SPECIES_STARTING_SKILLS[companion.species]
+        if self.character.has_heroic_skill(HeroicSkillName.heroic_companion):
+            max_skills += 1
+            if self.character.level >= 40:
+                max_skills += 1
+        return max_skills
+
+    def apply_heroic_companion_attribute(self, attribute: AttributeName):
+        companion = self.character.special.companion
+        current = getattr(companion, attribute.value)
+        setattr(companion, attribute.value, min(MAX_ATTRIBUTE_VALUE, current + 2))
 
     def companion_all_resistances(self) -> list[DamageType]:
         companion = self.character.special.companion
@@ -649,10 +661,12 @@ class CharacterController:
         improved_hp_count = sum(
             1 for skill in companion.skills if skill.name == CompanionSkillName.improved_hit_points
         )
+        heroic_bonus = 10 if self.character.has_heroic_skill(HeroicSkillName.heroic_companion) else 0
         return (
             self.companion_skill_level() * companion.might
             + math.floor(self.character.level / 2)
             + 10 * improved_hp_count
+            + heroic_bonus
         )
 
     def companion_crisis_value(self) -> int:
