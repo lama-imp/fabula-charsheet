@@ -16,6 +16,7 @@ from .therioform import Therioform
 from .dance import Dance
 from .arcana import Arcanum
 from .invention import Invention
+from .companion import Companion
 
 
 if TYPE_CHECKING:
@@ -47,6 +48,7 @@ class CharSpecial(BaseModel):
     dances: list[Dance] = list()
     arcana: list[Arcanum] = list()
     inventions: list[Invention] = list()
+    companion: Companion | None = None
 
     def get_special(self, attribute: str):
         return getattr(self, attribute, None)

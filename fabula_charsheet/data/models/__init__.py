@@ -60,3 +60,11 @@ from .quality import Quality
 from .arcana import Arcanum
 
 from .invention import Invention
+from .companion import (
+    Companion,
+    CompanionAttack,
+    CompanionSkill,
+    CompanionSkillName,
+    SPECIES_STARTING_SKILLS,
+    PLANT_VULNERABILITY_CHOICES,
+)

@@ -1,0 +1,100 @@
+page_view_companion: "Companion"
+add_companion_button: "Add Companion"
+remove_companion_button: "Remove Companion"
+companion_flee_button: "Companion Flees (reset to Crisis HP)"
+page_view_add_companion_dialog_title: "Create your Faithful Companion"
+msg_companion_added: "{name} has joined you as a companion."
+
+companion_name: "Companion name"
+companion_species: "Species"
+companion_no_initiative: "This companion has no Initiative score and does not level up."
+companion_check_bonus: "Accuracy & Magic Check bonus: +{bonus}"
+companion_hp: "HP"
+
+companion_species_damage_choice_elemental: "Choose a second damage type to be Immune to"
+companion_species_damage_choice_plant: "Choose a damage type this companion is Vulnerable to"
+companion_innate_construct: "Immune to Poison damage, Resistant to Earth damage, Immune to poisoned."
+companion_innate_elemental: "Immune to Poison damage and to the chosen damage type, Immune to poisoned."
+companion_innate_plant: "Immune to dazed, shaken and enraged. Vulnerable to the chosen damage type."
+
+companion_attribute_array: "Attribute array"
+companion_array_jack_of_all_trades: "Jack of All Trades (d8, d8, d8, d8)"
+companion_array_standard: "Standard (d10, d8, d8, d6)"
+companion_array_specialized: "Specialized (d10, d10, d6, d6)"
+companion_array_super_specialized: "Super Specialized (d12, d8, d6, d6)"
+error_companion_invalid_array: "The chosen die sizes must match one of the arrays above."
+
+companion_basic_attacks: "Basic Attacks"
+companion_add_attack_button: "Add Attack"
+companion_attack_name: "Attack name"
+error_companion_max_attacks: "A companion can have a maximum of two basic attacks."
+
+companion_skills: "Companion Skills"
+companion_add_skill_button: "Add Skill"
+companion_skill_name: "Skill"
+companion_skill_free_text: "Describe this Skill's effect"
+companion_skill_attack_target: "Which attack?"
+error_companion_max_skills: "This companion can only have {max_skills} Skills."
+error_companion_no_absorbable_damage: "This companion isn't Resistant or Immune to any damage type yet. Add Damage Resistance or Damage Immunity first."
+
+companion_defense_option: "Which defense gets +2?"
+companion_defense_option_defense: "+2 Defense / +1 M.Defense"
+companion_defense_option_magic_defense: "+1 Defense / +2 M.Defense"
+
+companion_check_type: "Which Check?"
+companion_check_type_accuracy: "Accuracy Checks (+3)"
+companion_check_type_magic: "Magic Checks (+3)"
+companion_check_type_opposed: "Opposed Checks in a specific context (+3)"
+companion_check_context: "Context for the Opposed Check"
+
+companion_resistances: "Resistant to"
+companion_immunities: "Immune to"
+companion_absorptions: "Absorbs"
+companion_vulnerabilities: "Vulnerable to"
+companion_status_immunities: "Immune to statuses"
+
+npc_skill_crisis_effect: "Crisis Effect"
+npc_skill_crisis_effect_description: >
+  As long as the companion is in Crisis, it gains a special benefit or ability (described below).
+npc_skill_damage_absorption: "Damage Absorption"
+npc_skill_damage_absorption_description: >
+  The companion gains Absorption towards a damage type it is already Resistant or Immune to.
+npc_skill_damage_immunity: "Damage Immunity"
+npc_skill_damage_immunity_description: >
+  The companion gains Immunity to one damage type it was not Vulnerable to.
+npc_skill_damage_resistance: "Damage Resistance"
+npc_skill_damage_resistance_description: >
+  The companion gains Resistance to two damage types.
+npc_skill_final_act: "Final Act (Limited)"
+npc_skill_final_act_description: >
+  When reduced to 0 HP, the companion can immediately perform a special action or attack (described below).
+npc_skill_flying: "Flying (Limited)"
+npc_skill_flying_description: >
+  The companion can fly or levitate. Its melee attacks can target flying creatures, and it cannot be targeted
+  by melee attacks unless the attacker can also reach flying targets. If it takes damage of a type it is
+  Vulnerable to, it is forced to land until the end of the round. While in Crisis, it loses this Skill's benefits.
+npc_skill_improved_damage: "Improved Damage"
+npc_skill_improved_damage_description: >
+  One of the companion's basic attacks deals 5 extra damage.
+npc_skill_improved_defenses: "Improved Defenses"
+npc_skill_improved_defenses_description: >
+  The companion gains either +2 Defense and +1 Magic Defense, or +1 Defense and +2 Magic Defense.
+npc_skill_improved_hit_points: "Improved Hit Points"
+npc_skill_improved_hit_points_description: >
+  The companion's maximum Hit Points are increased by 10.
+npc_skill_reaction: "Reaction"
+npc_skill_reaction_description: >
+  The companion reacts to a specific trigger, such as being missed by an attack or hit by an offensive spell
+  (described below).
+npc_skill_special_attack: "Special Attack"
+npc_skill_special_attack_description: >
+  One of the companion's attacks gains a special effect (described below).
+npc_skill_specialized: "Specialized"
+npc_skill_specialized_description: >
+  The companion gains a +3 bonus to all Accuracy Checks, all Magic Checks, or Opposed Checks in a specific context.
+npc_skill_status_effect_immunity: "Status Effect Immunity"
+npc_skill_status_effect_immunity_description: >
+  The companion becomes immune to two status effects of choice.
+npc_skill_unique_action: "Unique Action"
+npc_skill_unique_action_description: >
+  The companion may perform the Skill action to generate a unique effect (described below).

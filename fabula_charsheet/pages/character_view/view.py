@@ -9,7 +9,7 @@ from pages.utils import WeaponTableWriter, ArmorTableWriter, SkillTableWriter, S
     show_martial, set_view_state, get_avatar_path, avatar_update, level_up, add_chimerist_spell, \
     remove_chimerist_spell, add_item, remove_item, unequip_item, add_heroic_skill, add_spell, add_bond, remove_bond, \
     increase_attribute, add_therioform, add_dance, add_arcanum, manifest_therioform, display_equipped_item, add_invention, \
-    colored_attr
+    colored_attr, add_companion, display_companion
 from pages.character_view.view_state import ViewState
 
 
@@ -84,6 +84,10 @@ def build(controller: CharacterController):
     @st.dialog(loc.page_view_add_invention_dialog_title, width="large")
     def add_invention_dialog(controller: CharacterController, loc: LocNamespace):
         add_invention(controller, loc)
+
+    @st.dialog(loc.page_view_add_companion_dialog_title, width="large")
+    def add_companion_dialog(controller: CharacterController, loc: LocNamespace):
+        add_companion(controller, loc)
 
     st.title(f"{controller.character.name}")
 
@@ -511,6 +515,17 @@ def build(controller: CharacterController):
                     if st.button(loc.add_invention_button):
                         add_invention_dialog(controller, loc)
             InventionTableWriter(loc).write_in_columns(added_inventions)
+            st.divider()
+
+        if controller.is_class_added(ClassName.wayfarer) and controller.has_skill("faithful_companion"):
+            col1, col2 = st.columns([0.25, 0.75])
+            with col1:
+                st.markdown(f"##### {loc.page_view_companion}")
+            with col2:
+                if controller.can_add_companion():
+                    if st.button(loc.add_companion_button):
+                        add_companion_dialog(controller, loc)
+            display_companion(controller, loc)
             st.divider()
 
     col1, col2 = st.columns([0.2, 0.8])

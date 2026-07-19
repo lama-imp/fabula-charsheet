@@ -10,6 +10,7 @@ class CharState(BaseModel):
     minus_hp: int = 0
     minus_mp: int = 0
     minus_ip: int = 0
+    companion_minus_hp: int = 0
     statuses: list[Status] = list()
     improved_attributes: list[Attribute] = list()
     active_therioforms: list[Therioform] = list()
