@@ -48,10 +48,6 @@ UI text and game data descriptions are translated via YAML files under `fabula_c
   2. Create `fabula_charsheet/assets/locals/<lang>/`, mirroring the file structure of `assets/locals/en/`, and translate the keys.
 - Keys are looked up by name, so a translated string must use the exact same key as its English counterpart — copying the English key and translating only the value is the safest approach.
 
-## License
-
-[MIT](LICENSE)
-
 ## Releases
 
 See the [Releases page](https://github.com/lama-imp/fabula-charsheet/releases) for version history and changelogs.
