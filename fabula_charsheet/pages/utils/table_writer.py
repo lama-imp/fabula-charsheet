@@ -122,7 +122,11 @@ class SkillTableWriter(TableWriter):
     def level_readonly_columns(self):
         return (
             self.base_columns[0],
-            self.base_columns[1],
+            ColumnConfig(
+                name="description",
+                width=0.7,
+                process=lambda s, idx=None: st.markdown(s.resolved_description(self.loc)),
+            ),
             ColumnConfig(
                 name="level",
                 width=0.2,

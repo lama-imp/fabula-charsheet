@@ -22,6 +22,9 @@ initiative: "Инициатива"
 # Dice
 dice_prefix: "к"
 
+# Skills
+skill_level_short: "УН"
+
 # Rituals
 ritual_ritualism: "Ритуализм"
 ritual_spiritism: "Спиритизм"
