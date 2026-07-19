@@ -334,6 +334,25 @@ def add_heroic_skill(controller: CharacterController, loc: LocNamespace):
             controller.apply_heroic_companion_attribute(chosen_attribute)
             st.rerun()
 
+    elif HeroicSkillName.revelation in [skill.name for skill in st.session_state.selected_hero_skills]:
+        st.markdown(loc.page_view_revelation_intro)
+        arcanum_name = st.text_input(loc.page_view_arcanum_name, key="revelation-arcanum-name")
+        arcanum_domains = st.text_area(loc.column_domains, key="revelation-arcanum-domains")
+        arcanum_merge = st.text_area(loc.arcana_merge, key="revelation-arcanum-merge")
+        arcanum_dismiss = st.text_area(loc.arcana_dismiss, key="revelation-arcanum-dismiss")
+        can_confirm = bool(arcanum_name) and bool(arcanum_domains) and bool(arcanum_merge) and bool(arcanum_dismiss)
+        if st.button(loc.confirm_button,
+                     key="add-revelation-skill",
+                     disabled=(len(st.session_state.selected_hero_skills) != 1) or not can_confirm):
+            controller.add_heroic_skill(st.session_state.selected_hero_skills[0])
+            controller.character.special.arcana.append(Arcanum(
+                name=arcanum_name,
+                custom_domains=arcanum_domains,
+                custom_merge=arcanum_merge,
+                custom_dismiss=arcanum_dismiss,
+            ))
+            st.rerun()
+
     else:
         if st.button(loc.confirm_button,
                      key="add-heroic-skill",
@@ -958,7 +977,7 @@ def display_companion(controller: CharacterController, loc: LocNamespace):
 
     if companion.basic_attacks:
         st.divider()
-        st.markdown(f"##### {loc.companion_basic_attacks}")
+        st.markdown(f"###### {loc.companion_basic_attacks}")
         for idx, attack in enumerate(companion.basic_attacks):
             acc = " + ".join(f"{loc.dice_prefix}{getattr(companion, a)}" for a in attack.accuracy)
             dmg_bonus = controller.companion_attack_damage_bonus(idx)
@@ -986,7 +1005,7 @@ def display_companion(controller: CharacterController, loc: LocNamespace):
 
         sk_col1, sk_col2 = st.columns([0.8, 0.2])
         with sk_col1:
-            st.markdown(f"##### {loc.companion_skills}")
+            st.markdown(f"###### {loc.companion_skills}")
         with sk_col2:
             if len(companion.skills) < max_skills:
                 if st.button(loc.companion_add_skill_button, key="companion-view-add-skill-button"):
