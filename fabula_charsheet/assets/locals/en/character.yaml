@@ -25,6 +25,9 @@ initiative: "Initiative"
 # Dice
 dice_prefix: "d"
 
+# Skills
+skill_level_short: "SL"
+
 # Rituals
 ritual_ritualism: "Ritualism"
 ritual_spiritism: "Spiritism"

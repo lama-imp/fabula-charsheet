@@ -67,4 +67,7 @@ class Weapon(Item):
     bonus_damage: int = 0
 
     def format_accuracy(self, loc: LocNamespace):
-        return f"{AttributeName.to_alias(self.accuracy[0], loc)} + {AttributeName.to_alias(self.accuracy[1], loc)}"
+        accuracy_str = f"{AttributeName.to_alias(self.accuracy[0], loc)} + {AttributeName.to_alias(self.accuracy[1], loc)}"
+        if self.bonus_accuracy:
+            accuracy_str += f" + {self.bonus_accuracy}"
+        return accuracy_str

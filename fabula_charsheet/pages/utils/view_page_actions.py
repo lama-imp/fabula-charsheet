@@ -555,6 +555,8 @@ def display_equipped_item(controller: CharacterController,
         if isinstance(item, Weapon):
             st.markdown(f"_{loc.column_accuracy}_")
             accuracy_str = " + ".join(f"{loc.dice_prefix}{getattr(controller.character, attr).current}" for attr in item.accuracy)
+            if item.bonus_accuracy:
+                accuracy_str += f" + {item.bonus_accuracy}"
             st.write(accuracy_str)
         elif isinstance(item, Armor):
             st.markdown(f"_{loc.column_defense}_")
