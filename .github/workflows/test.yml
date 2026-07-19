@@ -7,6 +7,8 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.13"
 
     steps:
     # Step 1: Clone the repository
@@ -18,6 +20,7 @@ jobs:
       uses: astral-sh/setup-uv@v5
       with:
         version: "latest"
+        python-version: "3.13" # pinned: newer Pythons can outpace pyarrow's prebuilt wheels, forcing a from-source build
         enable-cache: true # Caches your dependencies so subsequent PR runs are even faster
 
     # Step 3: Run your tests using uv
