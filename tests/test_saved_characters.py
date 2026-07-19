@@ -1,4 +1,4 @@
-from fabula_charsheet.data import saved_characters
+from data import saved_characters
 
 
 def test_saved_characters_init(tmp_path):

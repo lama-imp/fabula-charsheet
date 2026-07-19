@@ -12,7 +12,8 @@ PKG = ROOT / 'fabula_charsheet'
 if str(PKG) not in sys.path:
     sys.path.insert(0, str(PKG))
 
-# Stub streamlit module
+# Stub streamlit module (pages/controller.py and most model code never touch it;
+# only data/localizator.py and UI code do, via st.session_state).
 class SessionState(dict):
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
@@ -20,53 +21,9 @@ class SessionState(dict):
 st_stub = types.SimpleNamespace(session_state=SessionState())
 sys.modules.setdefault('streamlit', st_stub)
 
-# Stub yaml module using json
-yaml_stub = types.SimpleNamespace()
-
-def _yaml_load(stream, Loader=None):
-    return json.load(stream)
-
-yaml_stub.load = _yaml_load
-yaml_stub.SafeLoader = yaml_stub.UnsafeLoader = yaml_stub.Loader = object
-sys.modules.setdefault('yaml', yaml_stub)
-
-# Stub pydantic module
-pydantic_stub = types.SimpleNamespace()
-
-class BaseModel:
-    def __init__(self, **data):
-        for k, v in data.items():
-            setattr(self, k, v)
-
-def Field(*, default=None, default_factory=None):
-    if default_factory is not None:
-        return default_factory()
-    return default
-
-class RootModel(BaseModel):
-    def __init__(self, root=None):
-        super().__init__()
-        self.root = root
-
-    def __class_getitem__(cls, item):
-        return cls
-
-class ConfigDict(dict):
-    pass
-
-def conint(**kwargs):
-    return int
-
-pydantic_stub.BaseModel = BaseModel
-pydantic_stub.Field = Field
-pydantic_stub.RootModel = RootModel
-pydantic_stub.ConfigDict = ConfigDict
-pydantic_stub.conint = conint
-sys.modules.setdefault('pydantic', pydantic_stub)
-
-# Stub annotated_types
-annotated_stub = types.SimpleNamespace(Len=lambda *args, **kwargs: None)
-sys.modules.setdefault('annotated_types', annotated_stub)
+# yaml, pydantic and annotated_types are used for real (not stubbed) so that
+# model validation, per-instance default_factory behavior, and enum/type
+# coercion match production exactly.
 
 @pytest.fixture(scope='session')
 def streamlit_stub():
@@ -142,4 +99,24 @@ def assets_dir(tmp_path: Path) -> Path:
     (special / 'dances.yaml').write_text('[]')
     (special / 'therioforms.yaml').write_text('[]')
 
+    qualities = tmp_path / 'qualities'
+    qualities.mkdir()
+
     return tmp_path
+
+
+@pytest.fixture
+def loc():
+    from data.models import LocNamespace
+    return LocNamespace(root={
+        "dice_prefix": "d",
+        "error_class_not_found": "Class {class_name} not found.",
+        "error_unexpected_class_type": "Unexpected class type: {class_type}",
+        "error_equipping_item": "Cannot equip this item.",
+    })
+
+
+@pytest.fixture
+def controller(loc):
+    from pages.controller import CharacterController
+    return CharacterController(loc)

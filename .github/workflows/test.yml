@@ -1,0 +1,29 @@
+name: Run Unit Tests
+
+on:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.13"
+
+    steps:
+    # Step 1: Clone the repository
+    - name: Check out repository code
+      uses: actions/checkout@v4
+
+    # Step 2: Install uv and set up Python automatically
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+        python-version: "3.13" # pinned: newer Pythons can outpace pyarrow's prebuilt wheels, forcing a from-source build
+        enable-cache: true # Caches your dependencies so subsequent PR runs are even faster
+
+    # Step 3: Run your tests using uv
+    - name: Run tests
+      run: |
+        uv run pytest

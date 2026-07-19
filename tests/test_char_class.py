@@ -1,5 +1,5 @@
-from fabula_charsheet.data import compendium
-from fabula_charsheet.data.models.skill import Skill
+from data import compendium
+from data.models.skill import Skill
 
 
 def _get_class(name, assets_dir):
