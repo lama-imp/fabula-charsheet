@@ -10,22 +10,7 @@ The app has two pages:
 
 Supported classes, including their special abilities (e.g. Arcanist's Arcana, Tinkerer's Inventions, Wayfarer's Companion):
 
-Core classes:
-- Arcanist
-- Chimerist
-- Dark Blade
-- Elementalist
-- Entropist
-- Fury
-- Guardian
-- Loremaster
-- Orator
-- Rogue
-- Sharpshooter
-- Spiritist
-- Tinkerer
-- Wayfarer
-- Weaponmaster
+- All core classes
 
 Also supported, from supplement books:
 - Dancer (High Fantasy)
