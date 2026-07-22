@@ -11,8 +11,6 @@ The app has two pages:
 Supported classes, including their special abilities (e.g. Arcanist's Arcana, Tinkerer's Inventions, Wayfarer's Companion):
 
 - All core classes
-
-Also supported, from supplement books:
 - Dancer (High Fantasy)
 - Mutant (Techno Fantasy)
 
