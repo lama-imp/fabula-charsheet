@@ -1,0 +1,80 @@
+name: Build executables
+
+# Builds the click-to-run app for Windows, macOS and Linux.
+# - Manual run (Actions tab -> "Run workflow"): builds are attached to the run as artifacts.
+# - Pushing a tag like v0.2.0: builds are also attached to a GitHub Release for that tag.
+on:
+  workflow_dispatch:
+  push:
+    tags: [ "v*" ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows-x64
+          - os: macos-latest
+            name: macos-arm64
+          - os: macos-15-intel
+            name: macos-x64
+          - os: ubuntu-22.04 # older glibc so the build runs on more Linux distros
+            name: linux-x64
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+        python-version: "3.13"
+        enable-cache: true
+
+    - name: Run tests
+      run: uv run pytest
+
+    - name: Build with PyInstaller
+      run: uv run --with pyinstaller pyinstaller packaging/fabula_charsheet.spec --noconfirm
+
+    - name: Package (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: Compress-Archive -Path dist/FabulaCharsheet -DestinationPath FabulaCharsheet-${{ matrix.name }}.zip
+
+    - name: Package (macOS)
+      if: runner.os == 'macOS'
+      run: ditto -c -k --keepParent dist/FabulaCharsheet.app FabulaCharsheet-${{ matrix.name }}.zip
+
+    - name: Package (Linux)
+      if: runner.os == 'Linux'
+      run: tar -czf FabulaCharsheet-${{ matrix.name }}.tar.gz -C dist FabulaCharsheet
+
+    - name: Upload build
+      uses: actions/upload-artifact@v4
+      with:
+        name: FabulaCharsheet-${{ matrix.name }}
+        path: FabulaCharsheet-${{ matrix.name }}.*
+        if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Download builds
+      uses: actions/download-artifact@v4
+      with:
+        path: builds
+        merge-multiple: true
+
+    - name: Attach builds to the release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: builds/*

@@ -1,12 +1,38 @@
+import os
+import sys
 from pathlib import Path
 
 
 PROJECT_ROOT_DIRECTORY = Path(__file__).parent
 
+# True when running from the packaged executable (PyInstaller build).
+IS_FROZEN = getattr(sys, "frozen", False)
+
+
+def _saved_chars_directory() -> Path:
+    """Where characters are saved.
+
+    - FABULA_CHARACTERS_DIR environment variable, if set.
+    - Running from source: fabula_charsheet/characters (unchanged).
+    - Packaged app on Windows/Linux: a "characters" folder next to the
+      executable, so the whole app folder stays portable.
+    - Packaged app on macOS: ~/Documents/Fabula Charsheet/characters, because
+      the .app bundle itself must not be written to.
+    """
+    override = os.environ.get("FABULA_CHARACTERS_DIR")
+    if override:
+        return Path(override)
+    if not IS_FROZEN:
+        return Path(PROJECT_ROOT_DIRECTORY, "characters")
+    if sys.platform == "darwin":
+        return Path.home() / "Documents" / "Fabula Charsheet" / "characters"
+    return Path(sys.executable).parent / "characters"
+
+
 ASSETS_DIRECTORY = Path(PROJECT_ROOT_DIRECTORY, "assets").resolve()
 assert ASSETS_DIRECTORY.is_dir(), "Assets directory does not exist"
 
-SAVED_CHARS_DIRECTORY = Path(PROJECT_ROOT_DIRECTORY, "characters").resolve()
+SAVED_CHARS_DIRECTORY = _saved_chars_directory().resolve()
 SAVED_CHARS_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 SAVED_CHARS_IMG_DIRECTORY = Path(SAVED_CHARS_DIRECTORY, "character_images").resolve()
