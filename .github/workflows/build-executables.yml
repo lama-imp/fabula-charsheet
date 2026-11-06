@@ -3,10 +3,17 @@ name: Build executables
 # Builds the click-to-run app for Windows, macOS and Linux.
 # - Manual run (Actions tab -> "Run workflow"): builds are attached to the run as artifacts.
 # - Pushing a tag like v0.2.0: builds are also attached to a GitHub Release for that tag.
+# - Pull requests that change the packaging: builds run as a check.
 on:
   workflow_dispatch:
   push:
     tags: [ "v*" ]
+  pull_request:
+    paths:
+      - "packaging/**"
+      - ".github/workflows/build-executables.yml"
+      - "pyproject.toml"
+      - "uv.lock"
 
 jobs:
   build:
