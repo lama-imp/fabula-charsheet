@@ -80,6 +80,6 @@ See the [Releases page](https://github.com/lama-imp/fabula-charsheet/releases) f
 
 Interactive Character Sheet is an independent production and is not affiliated with Need Games or Rooster Games. It is published under the [Fabula Ultima Third-Party Tabletop License 1.0](https://need.games/wp-content/uploads/2024/06/Fabula-Ultima-Third-Party-Tabletop-License-1.0.pdf). Fabula Ultima is © Need Games and Rooster Games. Requires the Fabula Ultima Core Rulebook.
 
-The default character portraits (`fabula_charsheet/assets/images/default_avatar*.png`) were generated with AI.
+The default character portrait (`fabula_charsheet/assets/images/default_avatar.png`) was generated with AI.
 
 The app's source code is released under the [MIT License](LICENSE). The MIT License does not cover Fabula Ultima game content (rules text, names and other material), which remains © Need Games and Rooster Games.
