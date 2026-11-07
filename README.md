@@ -1,6 +1,6 @@
-# Fabula Ultima Interactive Character Sheet
+# Interactive Character Sheet
 
-Character creation and view.
+An unofficial character creation and management app, compatible with Fabula Ultima. Requires the Fabula Ultima Core Rulebook.
 
 ## How it works
 
@@ -20,15 +20,15 @@ Partial Russian translation (thanks to [Katayando](https://github.com/Katayando)
 
 Ready-to-run builds for Windows, macOS and Linux are attached to each release on the [Releases page](https://github.com/lama-imp/fabula-charsheet/releases). No Python or uv needed.
 
-- **Windows**: unzip `FabulaCharsheet-windows-x64.zip` and double-click `FabulaCharsheet.exe` inside the folder. If SmartScreen warns about an unknown app, click *More info → Run anyway*.
-- **macOS**: unzip `FabulaCharsheet-macos-arm64.zip` (Apple Silicon) or `FabulaCharsheet-macos-x64.zip` (Intel) and open `FabulaCharsheet.app`. The first time, right-click the app and choose *Open* (the app isn't signed with an Apple developer certificate). To quit, right-click its Dock icon and choose *Quit*.
-- **Linux**: extract `FabulaCharsheet-linux-x64.tar.gz` and run `FabulaCharsheet/FabulaCharsheet`.
+- **Windows**: unzip `charsheet-windows-x64.zip` and double-click `charsheet.exe` inside the folder. If SmartScreen warns about an unknown app, click *More info → Run anyway*.
+- **macOS**: unzip `charsheet-macos-arm64.zip` (Apple Silicon) or `charsheet-macos-x64.zip` (Intel) and open `charsheet.app`. The first time, right-click the app and choose *Open* (the app isn't signed with an Apple developer certificate). To quit, right-click its Dock icon and choose *Quit*.
+- **Linux**: extract `charsheet-linux-x64.tar.gz` and run `charsheet/charsheet`.
 
 The app opens in your default browser. On Windows and Linux a console window stays open while the app runs; close it to quit.
 
 Where characters are saved in the downloaded app:
-- **Windows and Linux**: the `characters` folder next to the `FabulaCharsheet` executable. Keep this folder when you update to a new version.
-- **macOS**: `~/Documents/Fabula Charsheet/characters`.
+- **Windows and Linux**: the `characters` folder next to the `charsheet` executable. Keep this folder when you update to a new version.
+- **macOS**: `~/Documents/Interactive Character Sheet/characters`.
 
 Set the `FABULA_CHARACTERS_DIR` environment variable to use a different folder.
 
@@ -76,3 +76,10 @@ The result is in `dist/`.
 
 See the [Releases page](https://github.com/lama-imp/fabula-charsheet/releases) for version history and changelogs.
 
+## License and legal notice
+
+Interactive Character Sheet is an independent production and is not affiliated with Need Games or Rooster Games. It is published under the [Fabula Ultima Third-Party Tabletop License 1.0](https://need.games/wp-content/uploads/2024/06/Fabula-Ultima-Third-Party-Tabletop-License-1.0.pdf). Fabula Ultima is © Need Games and Rooster Games. Requires the Fabula Ultima Core Rulebook.
+
+The default character portraits (`fabula_charsheet/assets/images/default_avatar*.png`) were generated with AI.
+
+The app's source code is released under the [MIT License](LICENSE). The MIT License does not cover Fabula Ultima game content (rules text, names and other material), which remains © Need Games and Rooster Games.

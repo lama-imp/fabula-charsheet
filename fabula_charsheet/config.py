@@ -16,7 +16,7 @@ def _saved_chars_directory() -> Path:
     - Running from source: fabula_charsheet/characters (unchanged).
     - Packaged app on Windows/Linux: a "characters" folder next to the
       executable, so the whole app folder stays portable.
-    - Packaged app on macOS: ~/Documents/Fabula Charsheet/characters, because
+    - Packaged app on macOS: ~/Documents/Interactive Character Sheet/characters, because
       the .app bundle itself must not be written to.
     """
     override = os.environ.get("FABULA_CHARACTERS_DIR")
@@ -25,7 +25,7 @@ def _saved_chars_directory() -> Path:
     if not IS_FROZEN:
         return Path(PROJECT_ROOT_DIRECTORY, "characters")
     if sys.platform == "darwin":
-        return Path.home() / "Documents" / "Fabula Charsheet" / "characters"
+        return Path.home() / "Documents" / "Interactive Character Sheet" / "characters"
     return Path(sys.executable).parent / "characters"
 
 
@@ -44,7 +44,7 @@ SAVED_STATES_DIRECTORY.mkdir(parents=True, exist_ok=True)
 LOCALS_DIRECTORY = Path(ASSETS_DIRECTORY, "locals").resolve()
 LOCALS_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
-default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar_2.png")
+default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar.png")
 
 MIN_ATTRIBUTE_VALUE = 6
 MAX_ATTRIBUTE_VALUE = 12

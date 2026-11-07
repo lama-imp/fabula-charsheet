@@ -8,7 +8,7 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy
 
 ROOT = Path(SPECPATH).parent
 APP = ROOT / "fabula_charsheet"
-NAME = "FabulaCharsheet"
+NAME = "charsheet"
 
 # The app's own modules are imported by main.py, which Streamlit runs as a
 # script, so PyInstaller can't see them on its own.
@@ -55,6 +55,6 @@ if sys.platform == "darwin":
     app = BUNDLE(
         coll,
         name=f"{NAME}.app",
-        bundle_identifier="io.github.lama-imp.fabula-charsheet",
-        info_plist={"CFBundleDisplayName": "Fabula Charsheet"},
+        bundle_identifier="io.github.lama-imp.charsheet",
+        info_plist={"CFBundleDisplayName": "Interactive Character Sheet"},
     )
