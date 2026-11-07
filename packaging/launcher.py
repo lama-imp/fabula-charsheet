@@ -50,7 +50,7 @@ def main() -> None:
 
     port = free_port()
     url = f"http://localhost:{port}"
-    print(f"Fabula Charsheet is running at {url}")
+    print(f"Interactive Character Sheet is running at {url}")
     print("Keep this window open while using the app. Close it to quit.")
     # Headless mode skips Streamlit's first-run email prompt (which would
     # block without a terminal), so the browser is opened here instead.

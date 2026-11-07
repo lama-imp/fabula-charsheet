@@ -1,7 +1,7 @@
 [project]
-name = "fu-charsheet"
+name = "charsheet"
 version = "0.1.0"
-description = "Fabula Ultima Charsheet"
+description = "Interactive Character Sheet, compatible with Fabula Ultima"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
