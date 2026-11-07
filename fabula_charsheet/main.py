@@ -13,13 +13,12 @@ LICENSE_URL = "https://need.games/wp-content/uploads/2024/06/Fabula-Ultima-Third
 # Notice required by the Fabula Ultima Third-Party Tabletop License 1.0 (section 6).
 # Kept in English and not translated, so the wording always matches the license.
 LEGAL_NOTICE = (
-    "Interactive Character Sheet is an independent production by lama-imp "
+    "Interactive Character Sheet is an independent production "
     "and is not affiliated with Need Games or Rooster Games. "
     "It is published under the "
     f"[Fabula Ultima Third-Party Tabletop License 1.0]({LICENSE_URL}). "
     "Fabula Ultima is © Need Games and Rooster Games. "
     "Requires the Fabula Ultima Core Rulebook. "
-    "The default character portraits were generated with AI."
 )
 
 

@@ -44,7 +44,7 @@ SAVED_STATES_DIRECTORY.mkdir(parents=True, exist_ok=True)
 LOCALS_DIRECTORY = Path(ASSETS_DIRECTORY, "locals").resolve()
 LOCALS_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
-default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar_2.png")
+default_avatar_path = Path(ASSETS_DIRECTORY, "images/default_avatar.png")
 
 MIN_ATTRIBUTE_VALUE = 6
 MAX_ATTRIBUTE_VALUE = 12
